@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
+  before_filter :authorize,:only => :index
   include AuthenticatedSystem
   
 
@@ -18,10 +19,14 @@ class UsersController < ApplicationController
     if @user.errors.empty?
       self.current_user = @user
       flash[:notice] = "Thanks for signing up!"
-      redirect_back_or_default('/')
+      redirect_to new_session_path
     else
       render :action => 'new'
     end
+  end
+  
+  def index
+    
   end
 
 end

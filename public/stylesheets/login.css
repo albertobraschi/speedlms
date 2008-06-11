@@ -5,11 +5,11 @@
 }                                                        
 
 #main {
-  width: 75%;
-  margin: 2px 12%;
+  width: 98%;
+  margin: 2px;
 }        
         
-#main_top {
+#main-top {
   padding: 5px;
   height: 5%;
   width: auto;
@@ -17,34 +17,73 @@
   text-align: center;
 }
  
-#main_content {
+#main-content {
   position: relative;  
   margin: 2px;
   text-align: left;
   padding: 0px;
 }
 
-#content_right {
+#content-right {
   margin: 2px; 
   float: right;
-  width: 24%;
-  background: #DBEDE3;
+  width: 38%;
   padding: 4px 1px 4px 0px;
   text-align: center;
   
 }
 
-#content_left {
+#content-left {
   margin: 2px 5px 2px 8px;
   padding: 4px 0px 4px 10px; 
   float: left;
-  width: 73%;
-  background: #ffffff;
+  width: 58%;
 }       
 
-#main_footer {
+#main-footer {
   position: relative;
   clear: both;
   height: 10%;
   padding: 20px;
 } 
+fieldset.mar-bot {
+  margin-bottom: 10px;
+}
+.align-left {
+  text-align: left;
+}
+p.bold {
+  font-weight: bold;
+}
+
+#notice {
+  color: #ffffff;  
+  border :1px solid #0000ff;
+  background: #7F38EC;
+}
+
+#error {
+  color: #ffffff;  
+  border :1px solid #ff0000;
+  background: #F62817;
+}
+
+#message {
+  color: #ffffff;  
+  border :1px solid #00ff00;
+  background: #B5EAAA;
+}
+
+.fieldset-left {
+  width: 48%;
+  float: left;
+  text-align: left;
+  font-size: 110%; 
+}
+
+.fieldset-right {
+  width: 51%;
+  float: left;
+  margin-left: 0px;
+}
+

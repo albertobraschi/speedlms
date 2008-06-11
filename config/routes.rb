@@ -5,8 +5,15 @@ ActionController::Routing::Routes.draw do |map|
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
+  
   map.open_id_complete 'session', :controller => "sessions", :action => "create", :requirements => { :method => :get }
-  map.resource :session
+  map.root :controller => 'sessions', :action => 'new'
+  map.resource :session,:collection => {:destroy => :delete}
+  map.namespace :admin do |admin|
+     admin.resources :users
+     end
+  map.connect 'admin', :controller => 'admin/users', :action => 'index'
+  
   # Sample of named route:
   #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
   # This route can be invoked with purchase_url(:id => product.id)
