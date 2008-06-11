@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>
+      Welcome to SpeedLMS
+    </title>
+    <%= stylesheet_link_tag "login.css" , :media => "all" %>
+  </head>
+  <body> 
+      
+        <div id = "header">
+          <h1>Welcome to SpeedLMS</h1>
+        </div>
+        <div id = "main">
+          <div id = "main-top">          
+          </div>
+          <div id = "main-content">
+          </div>
+            <div id = "content-left">
+              <h3>
+                The super fast learing platform
+              </h3>
+            </div>
+            <div id = "content-right">
+              <%= yield %>  
+            </div>
+          <div id = "main-footer">
+          </div>
+             
+
+    
