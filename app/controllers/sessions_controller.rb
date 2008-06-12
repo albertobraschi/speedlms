@@ -10,7 +10,10 @@ class SessionsController < ApplicationController
     def destroy
       session[:user_id] = nil
       flash[:message] = "You are successfully logout."
-      redirect_to new_session_path
+      respond_to do |format|
+        format.html {redirect_to new_session_path}
+        format.js
+        end
     end
 
     protected
@@ -41,13 +44,17 @@ class SessionsController < ApplicationController
       def successful_login
         session[:user_id] = @current_user.id      
         flash[:notice] = "Logged in successfully"
-        redirect_to users_path
-        #redirect_back_or_default(index_url)
-        #redirect_to(root_url)
+        respond_to do |format|
+          format.html {redirect_to users_path}
+          format.js
+        end    
       end
 
       def failed_login(message)
         flash[:error] = message
-        redirect_to(new_session_url)
+        respond_to do |format|
+          format.html {redirect_to new_session_url}
+          format.js
+        end
       end
 end

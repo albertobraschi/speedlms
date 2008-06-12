@@ -36,10 +36,10 @@
                  <p><%= submit_tag 'Sign up' %></p>
                </div>
                <div class = "fieldset-right"> 
-                 <p><%= f.text_field :login %></p>
-                 <p><%= f.text_field :email %></p>
-                 <p><%= f.password_field :password %></p>
-                 <p><%= f.password_field :password_confirmation %></p>
+                 <p><%= f.text_field :login, :size => 20 %></p>
+                 <p><%= f.text_field :email, :size => 20 %></p>
+                 <p><%= f.password_field :password, :size => 20 %></p>
+                 <p><%= f.password_field :password_confirmation, :size => 20 %></p>
                </div>  
               <% end -%>
               </fieldset>

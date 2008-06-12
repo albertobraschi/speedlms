@@ -19,7 +19,10 @@ class UsersController < ApplicationController
     if @user.errors.empty?
       self.current_user = @user
       flash[:notice] = "Thanks for signing up!"
-      redirect_to new_session_path
+      respond_to do |format|
+        format.html {redirect_to users_path}
+        format.js
+      end
     else
       render :action => 'new'
     end
