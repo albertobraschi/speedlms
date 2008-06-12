@@ -1,50 +1,79 @@
-  
-           <h2 class = "align-left">
-                The Super Fast Management Learing Platform
-              </h2>
-              <p>
-                <h3 class = "align-left">
-                  Fast Course Development
-                </h3>
-                A whole new way of developing courses that are quick click,drag and drop with the ability to see a 
-                WYSIWYG approach to combine content and questions.
-              </p>
-              <p>
-                <h3 class = "align-left">
-                  Interactive Learning For Students
-                </h3>
-                Allow students to read,listen,view and then Interact with the course on that they get immediate 
-                feedback on their learning.Plus you can deliver content into multiple streams.
-              </p>
-              <p>
-                <h3 class = "align-left">
-                  Web 2.0 + Collaboration
-                </h3>
-                Chat with tutors and other students in a classroom like environment that is like a real classroom 
-                only much better because every question and answer is remembered by SpeedLMS for you.
-              </p>
-            </div>
-   <div id = "content-right">
-<fieldset class = "mar-bot">
-  <% form_tag(session_url) do %>
-    <p class = 'bold' >
-      Signin to SpeedLMS with your 
-    </p>
-    <div class = 'fieldset-left'>
-      <p><label for="name">Username:</label></p>
-      <p><label for="password">Password:</label></p>
-      <p>or Use...<label for="openid_url">OpenID:</label></p>
-      <p><%= submit_tag 'Sign in', :disable_with => "Signing in&hellip;" %></p>
-    </div>
-    <div class = "fieldset-right">
-      <p><%= text_field_tag "name" %></p>
-      <p><%= password_field_tag %></p>
-       <p><%= text_field_tag "openid_url" %></p>
-      
-  <% end %>
-</fieldset>
-<fieldset>
-  <h3>
-     <%= link_to 'Sign up for FREE to SpeedLMS',new_user_path %>
+<script type = "text/javascript">  
+  function swap(f) {
+    if(f.checked == true)
+    {
+     $('credential-openid').style.display='block'; 
+     $('credential-login').style.display='none'; 
+    }     
+   else
+   {
+    $('credential-openid').style.display='none'; 
+     $('credential-login').style.display='block'; 
+   }
+  }
+</script>
+<div id="content-left">
+<h2 class = "align-left">
+   The Super Fast Management Learing Platform
+</h2>
+<p>
+  <h3 class = "align-left">
+     Fast Course Development
   </h3>
-</fieldset>
+  A whole new way of developing courses that are quick click,drag and drop with the ability to see a 
+  WYSIWYG approach to combine content and questions.
+</p>
+<p>
+  <h3 class = "align-left">
+     Interactive Learning For Students
+  </h3>
+  Allow students to read,listen,view and then Interact with the course on that they get immediate 
+  feedback on their learning.Plus you can deliver content into multiple streams.
+</p>
+<p>
+  <h3 class = "align-left">
+     Web 2.0 + Collaboration
+  </h3>
+  Chat with tutors and other students in a classroom like environment that is like a real classroom 
+  only much better because every question and answer is remembered by SpeedLMS for you.
+</p>
+</div>
+   <div id = "content-right">
+     <fieldset class = "mar-bot">
+       <p class = "normal" >
+           Signin to SpeedLMS with your 
+       </p>
+       <p class = "normal">
+           <%= check_box_tag "openid_url",{},false,{:onClick => "javascript:swap(this)"}  %>
+           <label for="openid_url">
+             Use an OpenID for Sign in
+           </label>
+         </p>
+       <% form_tag(session_url) do %>  
+         <div id = 'credential-openid'>
+           <div class = 'fieldset-left'>
+             <p class = "normal" ><label for="openid_url">OpenID:</label></p>
+           </div> 
+           <div class = "fieldset-right">
+             <p class = "normal" ><%= text_field_tag "openid_url",{},:size => 15  %></p>
+           </div> 
+         </div>
+         <div id = 'credential-login'>
+           <div class = 'fieldset-left'>
+             <p class = "normal" ><label for="name">Username:</label></p>
+             <p class = "normal" ><label for="password">Password:</label></p>
+           </div>
+           <div class = "fieldset-right">
+             <p class = "normal" ><%= text_field_tag "name",{},:size => 15 %></p>
+             <p class = "normal" ><%= password_field_tag "password",{},:size => 15  %></p>
+          </div>
+        </div>
+        <p><%= submit_tag 'Sign in', :disable_with => "Signing in&hellip;" %></p>
+      <% end %>
+     </fieldset>
+     <fieldset>
+      <h3>
+        <%= link_to 'Sign up for FREE to SpeedLMS',new_user_path %>
+      </h3>
+    </fieldset>
+  </div>  

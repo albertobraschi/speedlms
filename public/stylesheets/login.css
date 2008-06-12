@@ -1,5 +1,17 @@
+*{
+margin:0px;
+}
+
+body {
+  
+  color:#222222;
+  font-family: verdana,arial,helvetica,sans-serif;
+  text-align:center;
+  font-size:smaller;
+}
+
 #header {
-  height: 20%;
+  height: 12%;
   width: 100%;
   margin-top: 0px 2px 1px;        
 }                                                        
@@ -27,7 +39,7 @@
 #content-right {
   margin: 2px; 
   float: right;
-  width: 38%;
+  width: 28%;
   padding: 4px 1px 4px 0px;
   text-align: center;
   
@@ -37,7 +49,7 @@
   margin: 2px 5px 2px 8px;
   padding: 4px 0px 4px 10px; 
   float: left;
-  width: 58%;
+  width: 68%;
 }       
 
 #main-footer {
@@ -52,8 +64,13 @@ fieldset.mar-bot {
 .align-left {
   text-align: left;
 }
-p.bold {
+.bold {
   font-weight: bold;
+}
+
+p.normal {
+  margin: 14px;
+  font-size: 125%;
 }
 
 #notice {
@@ -74,11 +91,23 @@ p.bold {
   background: #B5EAAA;
 }
 
+#credential-login {
+  margin: 1px;
+  width: 98%;
+}
+
+#credential-openid {
+  margin: 1px;
+  width: 98%;
+  display: none;
+}
+
 .fieldset-left {
   width: 48%;
   float: left;
   text-align: left;
-  font-size: 110%; 
+  font-size: 100%;
+  text-align: right;
 }
 
 .fieldset-right {
