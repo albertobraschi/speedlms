@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   before_filter :authorize,:only => :index
+  before_filter :current_user, :only => :index
   include AuthenticatedSystem
   
 
@@ -17,7 +18,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.save
     if @user.errors.empty?
-      self.current_user = @user
+      @current_user = @user
       flash[:notice] = "Thanks for signing up!"
       respond_to do |format|
         format.html {redirect_to users_path}
@@ -29,7 +30,6 @@ class UsersController < ApplicationController
   end
   
   def index
-    
   end
 
 end

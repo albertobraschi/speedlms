@@ -1,51 +1,32 @@
-<div id = "content-left">
-  <h2 class = "align-left">
-     The Super Fast Management Learing Platform
-  </h2>
-              <p>
-                <h3 class = "align-left">
-                  Fast Course Development
-                </h3>
-                A whole new way of developing courses that are quick click,drag and drop with the ability to see a 
-                WYSIWYG approach to combine content and questions.
-              </p>
-              <p>
-                <h3 class = "align-left">
-                  Interactive Learning For Students
-                </h3>
-                Allow students to read,listen,view and then Interact with the course on that they get immediate 
-                feedback on their learning.Plus you can deliver content into multiple streams.
-              </p>
-              <p>
-                <h3 class = "align-left">
-                  Web 2.0 + Collaboration
-                </h3>
-                Chat with tutors and other students in a classroom like environment that is like a real classroom 
-                only much better because every question and answer is remembered by SpeedLMS for you.
-              </p>
-            </div>
-            <div id = "content-right">
-            <%= error_messages_for :user %>
-              <fieldset class = "mar-bot">
-              <% form_for :user, :url => users_path do |f| -%>
-               <div class = "fieldset-left">
-                 <p class = "normal" ><label for="login">Login:</label></p>
-                 <p class = "normal" ><label for="email">Email:</label></p>
-                 <p class = "normal" ><label for="password">Password:</label></p>
-                 <p class = "normal" ><label for="password_confirmation">Confirm Password:</label></p>
+<div align = "center" >  
+  <div id = "signup_container">
+            
+              <fieldset class = "signup" >
+                <% unless error_messages_for('user').empty? %>           
+                  
+                    <%= error_messages_for :user %>
+                 
+              <% end %>
+              <% form_for :user, :url => users_path do |f| %>
+               <div id = "signup" class = "fieldset_left">
+                 <div class = "normal" ><label for="login">Login:</label></div>
+                 <div class = "normal" ><label for="email">Email:</label></div>
+                 <div class = "normal" ><label for="password">Password:</label></div>
+                 <div class = "normal" ><label for="password_confirmation">Confirm Password:</label></div>
                  <p><%= submit_tag 'Sign up' %></p>
                </div>
-               <div class = "fieldset-right"> 
-                 <p class = "normal" ><%= f.text_field :login, :size => 15 %></p>
-                 <p class = "normal" ><%= f.text_field :email, :size => 15 %></p>
-                 <p class = "normal" ><%= f.password_field :password, :size => 15 %></p>
-                 <p class = "normal" ><%= f.password_field :password_confirmation, :size => 15 %></p>
+               <div id = "signup" class = "fieldset_right"> 
+                 <div class = "normal" ><%= f.text_field :login, :size => 15, :class => 'first' %></div>
+                 <div class = "normal" ><%= f.text_field :email, :size => 15, :class => 'first' %></div>
+                 <div class = "normal" ><%= f.password_field :password, :size => 15, :class => 'first' %></div>
+                 <div class = "normal" ><%= f.password_field :password_confirmation, :size => 15, :class => 'first' %></div>
                </div>  
-              <% end -%>
+              <% end %>
               </fieldset>
-              <fieldset>
-                <h3>
+              <fieldset class = "signup">
+                <h3 class = "align_center">
                   <%= link_to 'Login',new_session_path %>
                 </h3>
               </fieldset>
+	</div>              
 </div>

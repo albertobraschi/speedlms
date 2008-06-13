@@ -8,10 +8,20 @@
   </head>
   <body> 
     <div id = "header">
+      <h3>
+        <span id = "top_right" >
+        <% unless @current_user %>
+		<%= link_to 'Login',new_session_path %>
+        	<%= link_to 'Sign In',new_user_path %>
+	<% else %>
+		<%= link_to 'Sign out', destroy_session_path, :method => :delete %>
+	<% end %> 
+        </span>
+      </h3>
       <h1>Welcome to SpeedLMS</h1>
     </div>
     <div id = "main">
-     <div id = "main-top">
+     <div id = "main_top">
        <% if flash[:notice] %>
          <div id="notice">
            <%= flash[:notice] %>
@@ -28,10 +38,10 @@
          </div>
        <% end %>
      </div>
-     <div id = "main-content">
+     <div id = "main_content">
        <%= yield %>        
      </div>
-     <div id = "main-footer">
+     <div id = "main_footer">
      </div>
    </div>
  </body>

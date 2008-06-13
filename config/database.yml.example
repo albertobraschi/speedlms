@@ -17,9 +17,9 @@
 development:
   adapter: mysql
   encoding: utf8
-  database: proj_development
-  username: jitendra
-  password: magadh
+  database: speedlms_development
+  username: root
+  password: 
   socket: /var/run/mysqld/mysqld.sock
 
 # Warning: The database defined as 'test' will be erased and
@@ -28,7 +28,7 @@ development:
 test:
   adapter: mysql
   encoding: utf8
-  database: proj_test
+  database: speedlms_test
   username: root
   password:
   socket: /var/run/mysqld/mysqld.sock
@@ -36,7 +36,7 @@ test:
 production:
   adapter: mysql
   encoding: utf8
-  database: proj_production
+  database: speedlms_production
   username: root
   password: 
   socket: /var/run/mysqld/mysqld.sock
