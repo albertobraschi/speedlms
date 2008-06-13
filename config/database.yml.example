@@ -31,7 +31,7 @@ test:
   database: speedlms_test
   username: root
   password:
-  socket: /var/run/mysqld/mysqld.sock
+  socket: /tmp/mysql.sock
 
 production:
   adapter: mysql
@@ -39,4 +39,4 @@ production:
   database: speedlms_production
   username: root
   password: 
-  socket: /var/run/mysqld/mysqld.sock
+  socket: /tmp/mysql.sock
