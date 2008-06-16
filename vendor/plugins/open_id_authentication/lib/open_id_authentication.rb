@@ -83,7 +83,6 @@ module OpenIdAuthentication
 
     def authenticate_with_open_id(identity_url = params[:openid_url], options = {}, &block) #:doc:
       if params[:open_id_complete].nil?
- 
         begin_open_id_authentication(normalize_url(identity_url), options, &block)
       else
         complete_open_id_authentication(&block)
@@ -95,8 +94,8 @@ module OpenIdAuthentication
       return_to = options.delete(:return_to)
       open_id_request = open_id_consumer.begin(identity_url)
       add_simple_registration_fields(open_id_request, options)
-      redirect_to(open_id_redirect_url(open_id_request, return_to))         
-      rescue OpenID::OpenIDError, Timeout::Error => e
+      redirect_to(open_id_redirect_url(open_id_request, return_to))
+    rescue OpenID::OpenIDError, Timeout::Error => e
       logger.error("[OPENID] #{e}")
       yield Result[:missing], identity_url, nil
     end
@@ -142,9 +141,9 @@ module OpenIdAuthentication
       open_id_request.add_extension(sreg_request)
     end
 
-    def open_id_redirect_url(open_id_request, return_to = nil)        
+    def open_id_redirect_url(open_id_request, return_to = nil)
       open_id_request.return_to_args['open_id_complete'] = '1'
-      open_id_request.redirect_url(realm, return_to || requested_url)          
+      open_id_request.redirect_url(realm, return_to || requested_url)
     end
 
     def requested_url

@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   # Keep in mind you can assign values other than :controller and :action
   
   map.open_id_complete 'session', :controller => "sessions", :action => "create", :requirements => { :method => :get }
-  map.root :controller => 'sessions', :action => 'new'
+  map.root :controller => 'users', :action => 'index'
   map.resource :session,:collection => {:destroy => :delete}
   map.namespace :admin do |admin|
      admin.resources :users
