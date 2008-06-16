@@ -1,40 +1,4 @@
 class SessionsController < ApplicationController
-include AuthenticatedSystem
-    def create
-    #############################start from here 
-      if logged_in?          
-        if using_open_id?
-          open_id_authentication
-          if params[:remember_me]
-            @remember = 1
-          else
-            @remember = 0
-          end       
-        else
-          password_authentication(params[:name], params[:password])
-           if params[:remember_me]
-             @remember = 1
-           else
-             @remember = 0
-           end       
-        end 
-      else
-        flash[:notice] = "Welcome Back."
-        redirect_to users_path
-      end         
-    end
-    
-    def destroy
-      @current_user = User.find_by_id(session[:user_id]) if session[:user_id]
-      @current_user.forget_me if @current_user
-      cookies.delete :auth_token
-      reset_session
-      flash[:notice] = "You have been logged out."
-      respond_to do |format|
-        format.html {redirect_to new_session_path}
-        format.js
-        end
-    end
 	include AuthenticatedSystem
 	before_filter :login_from_cookie, :only => [:new,:create] 
 	before_filter :current_user 
@@ -62,7 +26,6 @@ include AuthenticatedSystem
 			format.js
 		end
 	end
->>>>>>> ff9d951d4bf1103c54cb6bba3bab5130f70c199a:app/controllers/sessions_controller.rb
                             
 	protected
 		def password_authentication(name, password)
@@ -114,6 +77,7 @@ include AuthenticatedSystem
 			render :action => 'new'
 		end    
 	end
+
 
 	def failed_login(message)
 		flash[:error] = message
