@@ -1,7 +1,8 @@
 class SessionsController < ApplicationController
+include AuthenticatedSystem
     def create
     #############################start from here 
-      if remember_token?          
+      if logged_in?          
         if using_open_id?
           open_id_authentication
           if params[:remember_me]

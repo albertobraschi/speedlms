@@ -4,9 +4,9 @@ class UsersController < ApplicationController
   before_filter :current_user, :only => :index
   include AuthenticatedSystem
   
-
   # render new.rhtml
   def new
+    @user = User.new  
   end
 
   def create
