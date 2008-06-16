@@ -1,32 +1,55 @@
 <div align = "center" >  
-  <div id = "signup_container">
-            
-              <fieldset class = "signup" >
-                <% unless error_messages_for('user').empty? %>           
-                  
-                    <%= error_messages_for :user %>
-                 
-              <% end %>
-              <% form_for :user, :url => users_path do |f| %>
-               <div id = "signup" class = "fieldset_left">
-                 <div class = "normal" ><label for="login">Login:</label></div>
-                 <div class = "normal" ><label for="email">Email:</label></div>
-                 <div class = "normal" ><label for="password">Password:</label></div>
-                 <div class = "normal" ><label for="password_confirmation">Confirm Password:</label></div>
-                 <p><%= submit_tag 'Sign up' %></p>
-               </div>
-               <div id = "signup" class = "fieldset_right"> 
-                 <div class = "normal" ><%= f.text_field :login, :size => 15, :class => 'first' %></div>
-                 <div class = "normal" ><%= f.text_field :email, :size => 15, :class => 'first' %></div>
-                 <div class = "normal" ><%= f.password_field :password, :size => 15, :class => 'first' %></div>
-                 <div class = "normal" ><%= f.password_field :password_confirmation, :size => 15, :class => 'first' %></div>
-               </div>  
-              <% end %>
-              </fieldset>
-              <fieldset class = "signup">
-                <h3 class = "align_center">
-                  <%= link_to 'Login',new_session_path %>
-                </h3>
-              </fieldset>
+	<div id = "signup_container">            
+		<fieldset class = "signup" >
+			<% unless error_messages_for('user').empty? %>                             
+				<%= error_messages_for :user %>
+			<% end %>
+			<% form_for :user, :url => users_path do |f| %>
+				<div id = "signup" class = "fieldset_left">
+					<div class = "normal" >
+						<label for="login">
+							Login:
+						</label>
+					</div>
+					<div class = "normal" >
+						<label for="email">
+							Email:
+						</label>
+					</div>
+					<div class = "normal" >
+						<label for="password">
+							Password:
+						</label>
+					</div>
+					<div class = "normal" >
+						<label for="password_confirmation">
+							Confirm Password:
+						</label>
+					</div>
+					<p>
+						<%= submit_tag 'Sign up' %>
+					</p>
+				</div>
+				<div id = "signup" class = "fieldset_right"> 
+					<div class = "normal" >
+						<%= f.text_field :login, :size => 15, :class => 'first' %>
+					</div>
+					<div class = "normal" >
+						<%= f.text_field :email, :size => 15, :class => 'first' %>
+					</div>
+					<div class = "normal" >
+						<%= f.password_field :password, :size => 15, :class => 'first' %>
+					</div>
+					<div class = "normal" >
+						<%= f.password_field :password_confirmation, :size => 15, :class => 'first' %>
+					</div>
+				</div>  
+			<% end %>
+		</fieldset>
+		<fieldset class = "signup">
+			<h3 class = "align_center">
+				<%= link_to 'Login',new_session_path %>
+			</h3>
+		</fieldset>
 	</div>              
 </div>
