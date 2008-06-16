@@ -1,12 +1,10 @@
 class UsersController < ApplicationController
-  # Be sure to include AuthenticationSystem in Application Controller instead
-  before_filter :authorize,:only => :index
-  before_filter :current_user, :only => :index
-  include AuthenticatedSystem
+include AuthenticatedSystem
+before_filter :authorize,:only => :index
+before_filter :current_user, :only => :index
   
-
-  # render new.rhtml
   def new
+  
   end
 
   def create
@@ -30,6 +28,7 @@ class UsersController < ApplicationController
   end
   
   def index
+  
   end
 
 end
