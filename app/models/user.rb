@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
     self.remember_token            = nil
     save(false)
   end
+  
 
   # Returns true if the user has just been activated.
   def recently_activated?

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-include AuthenticatedSystem
-before_filter :authorize,:only => :index
-before_filter :current_user, :only => :index
+	include AuthenticatedSystem
+	before_filter :authorize,:only => :index
+	before_filter :current_user, :only => :index
   
   def new
   
@@ -12,7 +12,7 @@ before_filter :current_user, :only => :index
     # protects against session fixation attacks, wreaks havoc with 
     # request forgery protection.
     # uncomment at your own risk
-    # reset_session
+    reset_session
     @user = User.new(params[:user])
     @user.save
     if @user.errors.empty?
