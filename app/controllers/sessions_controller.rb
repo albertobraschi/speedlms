@@ -78,7 +78,6 @@ class SessionsController < ApplicationController
 		end    
 	end
 
-
 	def failed_login(message)
 		flash[:error] = message
 		respond_to do |format|
