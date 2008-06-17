@@ -14,7 +14,10 @@ class ApplicationController < ActionController::Base
     end       
   end
   
+
   # It automatically logins user if he has checked remember_me option.
+
+
   def login_from_cookie
     return unless cookies[:auth_token] && session[:user_id].nil?
     user = User.find_by_remember_token(cookies[:auth_token]) 

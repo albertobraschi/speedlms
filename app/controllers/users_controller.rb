@@ -9,6 +9,10 @@ class UsersController < ApplicationController
 
   def create
     cookies.delete :auth_token # Delete cookie "auth_token" if remember_me is checked.
+    cookies.delete :auth_token
+    # protects against session fixation attacks, wreaks havoc with 
+    # request forgery protection.
+    # uncomment at your own risk
     reset_session
     @user = User.new(params[:user])
     @user.save
