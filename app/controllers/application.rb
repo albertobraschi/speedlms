@@ -1,9 +1,6 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
 class ApplicationController < ActionController::Base
+ 
   helper :all # include all helpers, all the time
-
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '9a32d74aad8124005db44b1b832882bb'
@@ -17,16 +14,22 @@ class ApplicationController < ActionController::Base
     end       
   end
   
-  def logged_in
-    if current_user
-      return true
-    else
-      return false
-    end  
+  # It automatically logins user if he has checked remember_me option.
+  def login_from_cookie
+    return unless cookies[:auth_token] && session[:user_id].nil?
+    user = User.find_by_remember_token(cookies[:auth_token]) 
+    if user && !user.remember_token_expires.nil? && Time.now < user.remember_token_expires 
+      session[:user_id] = user.id
+      respond_to do |format|
+        format.html {redirect_to users_path}
+        format.js
+      end
+    end
   end
   
+  #Finds current user 
   def current_user
-    @current_user = User.find_by_id(session[:user_id]) if session[:user_id]
+    @current_user = User.find_by_id(session[:user_id])  if session[:user_id]    
   end
   
 end
