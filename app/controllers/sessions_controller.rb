@@ -1,15 +1,17 @@
 class SessionsController < ApplicationController
 	include AuthenticatedSystem
+	
+	# This filter looks for presence of remember_me.
 	before_filter :login_from_cookie, :only => [:new,:create] 
 	before_filter :current_user 
 
+  #creates new instance of Session.
 	def new
-  
+
 	end
   
 	def create
 		if using_open_id?
-
 			open_id_authentication
 		else
 			password_authentication(params[:name], params[:password])       
@@ -20,6 +22,7 @@ class SessionsController < ApplicationController
 		@current_user.forget_me if logged_in?
 		cookies.delete :auth_token
 		reset_session
+		session= nil
 		flash[:message] = "You are successfully logout."
 		respond_to do |format|
 			format.html {redirect_to new_session_path}
@@ -28,6 +31,7 @@ class SessionsController < ApplicationController
 	end
                             
 	protected
+	
 		def password_authentication(name, password)
 			if @current_user =User.authenticate(params[:name], params[:password])
 				successful_login
@@ -37,13 +41,9 @@ class SessionsController < ApplicationController
 		end
 
 		def open_id_authentication 
-   
 			authenticate_with_open_id do |result, identity_url|
-		
 			if result.successful?
-	
 				if @current_user = User.find_or_create_by_identity_url(identity_url)
-		
 					successful_login
 				else
 					failed_login "Sorry, no user by that identity URL exists (#{identity_url})"
@@ -55,19 +55,14 @@ class SessionsController < ApplicationController
 	end
         
 	private
-	def successful_login
-	 
-		session[:user_id] = @current_user.id 
 	
+	def successful_login
+		session[:user_id] = @current_user.id 
 		if logged_in?
-
 			if params[:remember_me] 
-
 				@current_user.remember_me unless @current_user.remember_token?
 				cookies[:auth_token] = { :value => @current_user.remember_token , :expires => @current_user.remember_token_expires_at }
-
-			end     
-
+			end    
 			flash[:notice] = "Logged in successfully"
 			respond_to do |format|
 				format.html {redirect_to users_path}
