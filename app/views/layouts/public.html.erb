@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>
+      Welcome to SpeedLMS
+    </title>
+<%= stylesheet_link_tag "login.css" , :media => "all" %>
+<%= javascript_include_tag :defaults %>
+  </head>
+  <body> 
+    <div id = "header">
+      <h3>
+        <span id = "top_right" >
+				<%= link_to 'Tutor',new_session_path(:role => "Tutor") %>
+				<%= link_to 'Student',new_session_path(:role => "Student") %>
+				<% if Page.find_viewable_pages %>
+					<% for page in Page.find_viewable_pages %>
+				  	<%= link_to page.title, view_pages_session_path(:id => page.id) %>
+					<% end %>        
+				<% end %>
+        </span>
+      </h3>
+      <h1>Welcome to SpeedLMS</h1>
+    </div>
+    <div id = "main">
+     <div id = "main_top">
+       <% if flash[:notice] %>
+         <div id="notice">
+           <%= flash[:notice] %>
+         </div>
+       <% end %>
+       <% if flash[:error] %>
+         <div id="error">
+           <%= flash[:error] %>
+         </div>
+       <% end %>
+       <% if flash[:message] %>
+         <div id="message">
+           <%= flash[:message] %>
+         </div>
+       <% end %>
+     </div>
+     <div id = "main_content">
+     	 <%= yield %>        
+     </div>
+     <div id = "main_footer">
+     </div>
+   </div>
+ </body>
+</html>
+
