@@ -4,7 +4,8 @@ class UsersController < ApplicationController
 	before_filter :current_user, :only => :index
   
   def new
-  
+    @user = User.new()
+    @user.role = params[:role] if params[:role]
   end
 
   def create
@@ -16,20 +17,19 @@ class UsersController < ApplicationController
     reset_session
     @user = User.new(params[:user])
     @user.save
+    @current_user = @user
+      session[:user_id] = @current_user.id 
     if @user.errors.empty?
-      @current_user = @user
+      
       flash[:notice] = "Thanks for signing up!"
-      respond_to do |format|
-        format.html {redirect_to users_path}
-        format.js
-      end
+      render :action => "#{@current_user.role.downcase}_index" if @current_user.role
     else
       render :action => 'new'
     end
   end
   
   def index
-  
+    render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end
 
 end

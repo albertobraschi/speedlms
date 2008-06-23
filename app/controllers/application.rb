@@ -14,6 +14,12 @@ class ApplicationController < ActionController::Base
     end       
   end
   
+  def authorized_as_admin
+  	unless  @current_user and @current_user.is_admin?
+  		flash[:notice]="Please login as Administrator"
+      redirect_to new_session_path and return
+  	end
+  end
 
   # It automatically logins user if he has checked remember_me option.
 
@@ -34,5 +40,5 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user = User.find_by_id(session[:user_id])  if session[:user_id]    
   end
-  
+	 
 end

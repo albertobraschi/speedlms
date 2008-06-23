@@ -3,21 +3,25 @@
     <title>
       Welcome to SpeedLMS
     </title>
-<%= stylesheet_link_tag "login.css" , :media => "all" %>
-<%= javascript_include_tag :defaults %>
+		<%= stylesheet_link_tag "login.css" , :media => "all" %>
+ 		<%= javascript_include_tag :defaults %>
   </head>
   <body> 
     <div id = "header">
-      <h3>
+      <h6>
         <span id = "top_right" >
-        <% unless @current_user %>
-		<%= link_to 'Login',new_session_path %>
-        	<%= link_to 'Sign In',new_user_path %>
-	<% else %>
-		<%= link_to 'Sign out', destroy_session_path, :method => :delete %>
-	<% end %> 
+          <%= link_to 'Home',root_path %>
+          <%= link_to 'Login',new_session_path(:role => @role) %>
+        	<% unless @current_user %>						
+						<% if @role %>
+						  
+  	      		<%= link_to "#{@role} Signup",new_user_path(:role => @role) %>        		
+        		<% end %>
+					<% else %>
+						<%= link_to 'Sign out', destroy_session_path, :method => :delete %>
+					<% end %> 
         </span>
-      </h3>
+      </h6>
       <h1>Welcome to SpeedLMS</h1>
     </div>
     <div id = "main">
@@ -39,7 +43,8 @@
        <% end %>
      </div>
      <div id = "main_content">
-       <%= yield %>        
+       <%= yield %> 
+       
      </div>
      <div id = "main_footer">
      </div>

@@ -7,7 +7,9 @@ class SessionsController < ApplicationController
 
   #creates new instance of Session.
 	def new
-
+	  if params[:role]
+		  @role = params[:role]
+		end
 	end
   
 	def create
@@ -17,15 +19,24 @@ class SessionsController < ApplicationController
 			password_authentication(params[:name], params[:password])       
 		end
 	end
+	
+	def index
+	  render :layout => 'public'
+	end
+	
+	def view_pages
+	  @page = Page.find_by_id(params[:id])
+	  render :layout => 'public'
+	end
+	
       
 	def destroy
 		@current_user.forget_me if logged_in?
 		cookies.delete :auth_token
 		reset_session
-		session= nil
 		flash[:message] = "You are successfully logout."
 		respond_to do |format|
-			format.html {redirect_to new_session_path}
+			format.html {redirect_to root_path}
 			format.js
 		end
 	end
@@ -57,17 +68,24 @@ class SessionsController < ApplicationController
 	private
 	
 	def successful_login
-		session[:user_id] = @current_user.id 
+		session[:user_id] = @current_user.id
 		if logged_in?
-			if params[:remember_me] 
+			if params[:remember_me] == "yes"
 				@current_user.remember_me unless @current_user.remember_token?
 				cookies[:auth_token] = { :value => @current_user.remember_token , :expires => @current_user.remember_token_expires_at }
-			end    
-			flash[:notice] = "Logged in successfully"
-			respond_to do |format|
-				format.html {redirect_to users_path}
-				format.js
 			end
+			flash[:notice] = "Logged in successfully"
+			if @current_user.is_admin?
+				respond_to do |format|
+					format.html {redirect_to admin_users_path and return}
+					format.js
+				end
+			else
+			  respond_to do |format|
+					format.html {redirect_to users_path}
+					format.js
+				end
+			end    
 		else
 			render :action => 'new'
 		end    

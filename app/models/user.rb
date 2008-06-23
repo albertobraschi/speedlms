@@ -1,6 +1,7 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
+  ROLE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
   attr_accessor :password
 
   validates_presence_of     :login, :email, :if => :not_openid?
@@ -15,7 +16,7 @@ class User < ActiveRecord::Base
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation
+  attr_accessible :login, :email, :password, :password_confirmation, :role
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
@@ -66,6 +67,14 @@ class User < ActiveRecord::Base
   # Returns true if the user has just been activated.
   def recently_activated?
     @activated
+  end
+  
+  def is_admin?
+  	if self.role = ROLE[:admin]
+  		return true
+  	else
+  	  return false
+  	end
   end
 
   protected
