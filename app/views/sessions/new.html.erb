@@ -10,8 +10,10 @@
 				$('credential_openid').style.display='none'; 
 				$('credential_login').style.display='block'; 
 			}
-		}
+		}	
 </script>
+
+
 <div id="content_left">
 	<h2>
 		The Super Fast Management Learing Platform
@@ -40,6 +42,7 @@
 </div>
 <div id = "content_right">
 	<fieldset class = "mar_bot">
+	  <h2><%= @role %> Login</h2>
 		<p class = "normal" >
 			Signin to SpeedLMS with your 
 		</p>
@@ -87,7 +90,7 @@
 				</div>
 			</div>
 			<div class = "normal">
-				<%= check_box_tag "remember_me","no",false %>
+				<%= check_box_tag "remember_me","yes",false %>
 				<label for="remember_me">
 					Remember me on this Computer.
 				</label>
@@ -110,3 +113,5 @@
 		</p>
 	</fieldset>
 </div>  
+<div id = "clear" >
+</div>

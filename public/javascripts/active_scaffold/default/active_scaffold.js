@@ -245,6 +245,7 @@ ActiveScaffold.ActionLink.Abstract.prototype = {
 
 	      onComplete: function(request) {
 	        if (this.loading_indicator) this.loading_indicator.style.visibility = 'hidden';
+	        init_tinyMCE();
 	      }.bind(this)
 			});
 		}
