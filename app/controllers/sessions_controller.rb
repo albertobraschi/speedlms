@@ -75,15 +75,12 @@ class SessionsController < ApplicationController
 				cookies[:auth_token] = { :value => @current_user.remember_token , :expires => @current_user.remember_token_expires_at }
 			end
 			flash[:notice] = "Logged in successfully"
-			debugger
 			if @current_user.is_admin?
-			debugger
 				respond_to do |format|
 					format.html {redirect_to admin_users_path and return}
 					format.js
 				end					
 			else
-			debugger
 			  respond_to do |format|
 					format.html {redirect_to users_path}
 					format.js
