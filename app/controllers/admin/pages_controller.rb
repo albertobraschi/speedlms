@@ -28,6 +28,5 @@ class Admin::PagesController < ApplicationController
   list.columns.exclude [:description]
   list.sorting = {:title => 'DESC'}   
   end
-  
-  
+    
 end
