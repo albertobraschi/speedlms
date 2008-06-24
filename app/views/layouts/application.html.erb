@@ -8,7 +8,7 @@
   </head>
   <body> 
     <div id = "header">
-      <h6>
+      <h3>
         <span id = "top_right" >
           <%= link_to 'Home',root_path %>
           <%= link_to 'Login',new_session_path(:role => @role) %>
@@ -21,7 +21,7 @@
 						<%= link_to 'Sign out', destroy_session_path, :method => :delete %>
 					<% end %> 
         </span>
-      </h6>
+      </h3>
       <h1>Welcome to SpeedLMS</h1>
     </div>
     <div id = "main">

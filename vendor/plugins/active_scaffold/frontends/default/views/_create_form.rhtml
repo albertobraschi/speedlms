@@ -7,6 +7,7 @@ if request.xhr?
                            :class => 'create'
   else
     form_remote_tag :url => url_options,
+    								:before => "create_from_tinyMCE(this);",
                     :after => "$('#{loading_indicator_id(:action => :create, :id => params[:id])}').style.visibility = 'visible'; Form.disable('#{element_form_id(:action => :create)}');",
                     :complete => "$('#{loading_indicator_id(:action => :create, :id => params[:id])}').style.visibility = 'hidden'; Form.enable('#{element_form_id(:action => :create)}');",
                     :failure => "ActiveScaffold.report_500_response('#{active_scaffold_id}')",

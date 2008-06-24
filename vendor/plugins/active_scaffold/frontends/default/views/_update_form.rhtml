@@ -8,6 +8,7 @@ if request.xhr?
                            :method => :put
   else
     form_remote_tag :url => url_options,
+                    :before => "update_from_tinyMCE(this);",
                     :after => "$('#{loading_indicator_id(:action => :update, :id => params[:id])}').style.visibility = 'visible'; Form.disable('#{element_form_id(:action => :update)}');",
                     :complete => "$('#{loading_indicator_id(:action => :update, :id => params[:id])}').style.visibility = 'hidden'; Form.enable('#{element_form_id(:action => :update)}');",
                     :failure => "ActiveScaffold.report_500_response('#{active_scaffold_id}')",
