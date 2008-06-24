@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
   end
   
   def is_admin?
-  	if self.role = ROLE[:admin]
+  	if self.role == ROLE[:admin]
   		return true
   	else
   	  return false

@@ -1,0 +1,36 @@
+*{
+margin:0px;
+}
+
+body {
+background-color:#D7D7D7;
+color:#222222;
+font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;
+margin: 0px;
+padding: 0px;
+}
+
+#header {
+  background:#003366 none repeat scroll 0%;
+  padding:0px;
+  border-bottom: 3px solid #999999;
+} 
+
+#main {
+  margin: 0pt;
+  padding:12px 30px 0px;
+  width: 1180px;
+}        
+        
+#main_top {
+  padding: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+ 
+#main_content {
+  position: relative;  
+  margin: 2px;
+  text-align: left;
+  padding: 0px;
+}
