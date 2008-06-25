@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
   validates_length_of       :login,    :within => 3..40, :if => :not_openid?
   validates_length_of       :email,    :within => 3..100, :if => :not_openid?
   validates_uniqueness_of   :login, :email, :salt, :allow_nil => true
+  validates_format_of :logo, :with => /\b[a-z0-9_-]+\.(jpg|jpeg|gif|png|bmp|tiff)\b/i, 
+                      :if => Proc.new{|a| a.logo.length > 0 if a.logo}
+  validates_format_of :speedlms_url, :with => /^[a-zA-Z0-9-]+\.speedlms\.com$/, 
+                      :if => Proc.new{|a| a.speedlms_url.length > 0 if a.speedlms_url}                      
   before_save :encrypt_password
   
   # prevents a user from submitting a crafted form that bypasses activation
