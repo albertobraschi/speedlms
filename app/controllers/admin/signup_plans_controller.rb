@@ -1,4 +1,4 @@
-class Admin::UsersController < ApplicationController
+class Admin::SignupPlansController < ApplicationController
   layout 'admin'
   before_filter :current_user 
   before_filter :authorized_as_admin
