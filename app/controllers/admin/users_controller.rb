@@ -10,5 +10,4 @@ class Admin::UsersController < ApplicationController
     list.columns.exclude  [:password,:password_confirmation]
     list.sorting = {:login => 'ASC'}
   end  
-  active_scaffold :signup_plan
 end
