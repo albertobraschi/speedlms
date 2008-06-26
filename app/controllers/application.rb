@@ -1,8 +1,4 @@
 class ApplicationController < ActionController::Base
-  
-  ActiveScaffold.set_defaults do |config|
-    config.ignore_columns.add [:created_at, :updated_at, :status]
-  end
  
   helper :all # include all helpers, all the time
   # See ActionController::RequestForgeryProtection for details

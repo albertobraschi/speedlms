@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session, :collection => {:destroy => :delete}, :member => {:view_pages => :get}
   
   map.namespace :admin do |admin|
-     admin.resources :users, :sessions, :pages
+     admin.resources :users, :sessions, :pages, :signup_plans
      end
   map.connect 'admin', :controller => 'admin/users', :action => 'index'
   
