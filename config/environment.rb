@@ -62,15 +62,6 @@ Rails::Initializer.run do |config|
   config.load_paths += Dir["#{RAILS_ROOT}/vendor/gems/**"].map do |dir| 
     File.directory?(lib = "#{dir}/lib") ? lib : dir
   end
-
 end
 ActionMailer::Base.delivery_method = :smtp
-ActionMailer::Base.smtp_settings = {
-   :address => "smtp.gmail.com",
-   :port => 587,
-   :domain => "gmail.com",
-   :authentication => :plain,
-   :user_name => "vibha.dei",
-   :password => "hellovinsol",
-}
 ActionMailer::Base.default_content_type = "text/html"
