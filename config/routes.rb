@@ -15,8 +15,10 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :admin do |admin|
      admin.resources :users, :sessions, :pages, :signup_plans
      end
+     
   map.connect 'admin', :controller => 'admin/users', :action => 'index'
-  
+  map.forgot '/forgot', :controller => 'users',     :action => 'forgot'
+  map.reset '/reset/:pcode',  :controller => 'users',   :action => 'reset', :method => 'get'
   # Sample of named route:
   #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
   # This route can be invoked with purchase_url(:id => product.id)

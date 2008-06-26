@@ -10,7 +10,7 @@ RAILS_GEM_VERSION = '2.0.2' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-Rails::Initializer.run do |config|
+Rails::Initializer.run do |config|  
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -64,3 +64,13 @@ Rails::Initializer.run do |config|
   end
 
 end
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+   :address => "smtp.gmail.com",
+   :port => 587,
+   :domain => "gmail.com",
+   :authentication => :plain,
+   :user_name => "vibha.dei",
+   :password => "hellovinsol",
+}
+ActionMailer::Base.default_content_type = "text/html"
