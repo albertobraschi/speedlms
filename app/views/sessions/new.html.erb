@@ -99,7 +99,7 @@
 				<%= submit_tag 'Sign in', :disable_with => "Signing in&hellip;" %>
 			</p>
 			<p class = 'normal'>
-				<%= link_to 'I cannot access my account',"" %>
+				<%= link_to 'I cannot access my account', :controller=> "users", :action => "forgot" %>
 			</p>
 		<% end %>
 	</fieldset>
