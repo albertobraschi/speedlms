@@ -5,25 +5,25 @@ class PaymentsController < ApplicationController
   end
 
 	def checkout
-  	setup_response = gateway.purchase(5000,credit_card,{ 
+  	setup_response = gateway.purchase(50,credit_card,{ 
   																		:ip => request.remote_ip, 
 																		  :return_url => url_for(:action => 'confirm', :only_path => false), 
-																		  :cancel_return_url => url_for(:action => 'index', :only_path => false)}
-																		 )											    	
+																		  :cancel_return_url => url_for(:action => 'index', :only_path => false),
+																		  :address => {:name => "Test User", :address1 => "1 Main St", :city => "San Jose", :state => 'CA', :country => "US", :zip => "95131"}})
+		p setup_response 	
   	redirect_to gateway.redirect_url_for(setup_response.token)
-  	debugger
 	end
 	
-	#def credit_card
-	#	credit_card = ActiveMerchant::Billing::CreditCard.new({
-  #	 :first_name => 'jitendra',
-  #	 :last_name => 'rai',
-  #	 :number     => '44689871613497050',
-  #	 :month      => '06',
-  #	 :year       => (Time.now.year + 10).to_s,
-  #	 :verification_value => '050'
-	#	})
-	#end
+	def credit_card
+		credit_card = ActiveMerchant::Billing::CreditCard.new({
+  	 :first_name => 'Test',
+  	 :last_name => 'User',
+  	 :number     => '4493386347508714',
+  	 :month      => '06',
+  	 :year       => '2018',
+  	 :type       => 'visa'
+		})
+	end
 
   def confirm
   	redirect_to :action => 'index' unless params[:token]  
@@ -51,7 +51,7 @@ class PaymentsController < ApplicationController
   
   private
 	def gateway
-  	@gateway ||= PaypalGateway.new(:login => 'gabbaraaya@gmail.com', :password => '12345678', 
-  																 :signature => 'AflkWJ1gSmAfHNwy4N47ZHruvSnBAOrJN3POl.f1PrcHQMNaSQumQyg2 ')
+  	@gateway ||= PaypalGateway.new(:login => 'gabbar_1214372771_biz_api1.gmail.com', :password => '1214372780', :signature => 'AflkWJ1gSmAfHNwy4N47ZHruvSnBAOrJN3POl.f1PrcHQMNaSQumQyg2')
+  														
 	end
 end
