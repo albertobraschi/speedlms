@@ -34,7 +34,7 @@ class SessionsController < ApplicationController
 		@current_user.forget_me if logged_in?
 		cookies.delete :auth_token
 		reset_session
-		flash[:message] = "You are successfully logout."
+		flash[:message] = "You are successfully logged out."
 		respond_to do |format|
 			format.html {redirect_to root_path}
 			format.js
