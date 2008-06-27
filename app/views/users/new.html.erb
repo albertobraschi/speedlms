@@ -1,4 +1,20 @@
-<div align = "center" >  
+<div align = "center" >
+	<% if !SignupPlan.find_plans.blank? %>
+		<h1>There are following SignUp Plans</h1>
+			<ul type = "square"> 
+				<% for plan in SignupPlan.find_plans %>
+					<li>
+						<dl>
+							<dt>
+								<b><%= plan.name %></b>
+							</dt>
+						<dd>
+							<%= plan.price/plan.time_period %> per month, <%= plan.no_of_tutors %> tutors , <%= plan.no_of_courses %> Courses, <%= plan.no_of_students %> Students. 
+						</dd>
+					</li>
+				<% end %>
+			</ul>
+	<% end %>
 	<div id = "signup_container">            
 		<fieldset class = "signup" >
 			<% unless error_messages_for('user').empty? %>                             
