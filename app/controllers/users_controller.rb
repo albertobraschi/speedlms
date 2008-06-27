@@ -6,15 +6,13 @@ class UsersController < ApplicationController
   def new
     @user = User.new()
     @user.role = params[:role] if params[:role]
+    if params[:role] == User::ROLE[:owner]
+    	@user.plan = params[:plan]
+    end
   end
 
   def create
-    cookies.delete :auth_token # Delete cookie "auth_token" if remember_me is checked.
-    cookies.delete :auth_token
-    # protects against session fixation attacks, wreaks havoc with 
-    # request forgery protection.
-    # uncomment at your own risk
-    reset_session
+    cookies.delete :auth_token 
     @user = User.new(params[:user])
     @user.save
     @current_user = @user
