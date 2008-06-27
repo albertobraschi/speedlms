@@ -1,6 +1,7 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
+  ROLE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
   attr_accessor :password
 
   validates_presence_of     :login, :email, :if => :not_openid?
@@ -11,11 +12,15 @@ class User < ActiveRecord::Base
   validates_length_of       :login,    :within => 3..40, :if => :not_openid?
   validates_length_of       :email,    :within => 3..100, :if => :not_openid?
   validates_uniqueness_of   :login, :email, :salt, :allow_nil => true
+  validates_format_of :logo, :with => /\b[a-z0-9_-]+\.(jpg|jpeg|gif|png|bmp|tiff)\b/i, 
+                      :if => Proc.new{|a| a.logo.length > 0 if a.logo}
+  validates_format_of :speedlms_url, :with => /^[a-zA-Z0-9-]+\.speedlms\.com$/, 
+                      :if => Proc.new{|a| a.speedlms_url.length > 0 if a.speedlms_url}                      
   before_save :encrypt_password
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation
+  attr_accessible :login, :email, :password, :password_confirmation, :role
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
@@ -69,6 +74,19 @@ class User < ActiveRecord::Base
   # Returns true if the user has just been activated.
   def recently_activated?
     @activated
+  end
+  
+  def is_admin?
+  	if self.role == ROLE[:admin]
+  		return true
+  	else
+  	  return false
+  	end
+  end
+  
+  def delete_pcode
+    self.pcode = nil
+    self.save
   end
 
   protected

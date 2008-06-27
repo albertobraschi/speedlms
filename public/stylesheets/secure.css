@@ -1,0 +1,276 @@
+*{
+margin:0px;
+}
+
+body {
+background-color:#D7D7D7;
+color:#222222;
+font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;
+margin: 0px;
+padding: 0px;
+}
+
+#header {
+  background:#003366 none repeat scroll 0%;
+  padding:0px;
+  border-bottom: 3px solid #999999;
+} 
+
+#main {
+  margin: 0pt;
+  padding:12px 30px 0px;
+  width: 1180px;
+}        
+        
+#main_top {
+  padding: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+ 
+#main_content {
+  position: relative;  
+  margin: 2px;
+  text-align: left;
+  padding: 0px;
+}
+
+#content_right {
+  margin: 0 2px 4px 4px; 
+  float: left;
+  width: 345px; 
+  padding: 0 1px 4px 0px;
+  text-align: center;
+}
+
+#content_left {
+  margin: 2px 5px 2px 8px;
+  padding: 4px 0px 4px 10px; 
+  float: left;
+  width: 800px;
+  background: #FFFFFF;  
+}       
+
+#clear {
+  clear: both;
+}
+
+#main_footer {
+  position: relative;
+  clear: both;
+  width: 1180px;
+  padding: 20px;
+}
+
+#credential_login {
+  margin: 1px;
+  width: 320px;
+  height: 50px;
+}
+
+#credential_openid {
+  margin: 1px;
+  width: 320px;
+  height: 25px;
+  display: none;
+}
+
+.fieldset_left {
+  width: 150px;
+  float: left;
+  text-align: right;
+}
+
+.fieldset_right {
+  width: 160px;
+  float: right;
+  margin-left: 0px;
+}
+
+#header h1 {
+  color:#FFCC00;
+  font-size:24px;
+  font-weight:normal;
+  margin:0pt 0pt 0pt 30px;
+  padding:0pt 0pt 10px;
+  text-align:left;
+}   
+
+#header h3 {
+  font-size:12px;
+  font-weight:normal;
+  margin:0pt;
+  padding:7px 20px 7px 25px;
+  text-align:left;
+}
+
+#header h3 span#top_right {
+  float:right;
+  position:relative;
+  text-align:right;
+} 
+
+#header h3 a:link, #header h3 a:visited {
+  color:#FFFFFF;
+} 
+
+#header h3 a:hover {
+  background: #0000ff;
+  color: #FFFFFF;
+}
+
+h2 {
+  color:#333333;
+  font-family:"Lucida Grande",arial,sans-serif;
+  font-size:18px;
+}
+
+#content_left h2 {
+  color:#333333;
+  font-family:"Lucida Grande",arial,sans-serif;
+  font-size:18px;
+  margin:20px 0pt 5px 0px;
+  padding:0pt;
+}
+
+#content_left h3.align_left {
+  color:#000000;
+  font-size:12px;
+  margin:0pt 0pt 3px;
+  padding:0pt;
+} 
+
+h3 {all.css (line 7247)
+color:#000000;
+font-size:12px;
+margin:0pt 0pt 3px;
+padding:0pt;
+}                                                
+ 
+fieldset.mar_bot {
+  margin-bottom: 10px;
+  background-color:#EDF3FE;
+}
+
+fieldset.signup {
+  background-color:#FFFFFF;
+}
+
+.align_left {
+  text-align: left;
+}
+
+.align_center {
+  text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.normal {
+  color:#222222;
+  font-size:14px;
+  line-height:1.3em;
+  padding: 4px;
+}
+
+#notice {
+  color: #ffffff;
+  font-size:12px;
+  line-height:1.3em;  
+  border :1px solid #0000ff;
+  background: #7F38EC;
+}
+
+#error {
+  color: #ffffff;  
+  font-size:12px;
+  line-height:1.3em;
+  border :1px solid #ff0000;
+  background: #F62817;
+}
+
+#message {
+  color: #ffffff;  
+  font-size:12px;
+  line-height:1.3em;
+  border :1px solid #00ff00;
+  background: #B5EAAA;
+}
+
+.container {
+margin:0pt auto;
+min-width:750px;
+text-align:center;
+}
+
+#signup_container {
+  width: 400px;
+  margin: 20px 40px;
+  padding: 8px 16px;
+}
+
+div#signup .fieldset_left {
+  width: 150px;
+  float: left;
+  text-align: right;  
+}
+
+div#signup .fieldset_right {
+  width: 160px;
+  float: right;
+  margin-left: 0px;
+}
+
+input.first {
+
+  border : 1px solid Black;
+  font-size: 12px;
+  margin-top: 0px;
+}
+
+#errorExplanation {
+  	border: 1px solid #bbb;
+  	line-height: 20px;
+  	color: #000;
+  	width: 350px;
+  	overflow: hidden;
+        margin: 2px;
+        border :1px solid #ff0000;
+        background: #FDF8EB;
+        padding: 0px;
+}
+
+#errorExplanation h2 {
+    background: #CC0000 url(/images/alertbad_icon.gif) no-repeat scroll left center;
+  	font-weight: normal;
+  	padding: 5px;
+  	font-size: 14px;
+  	border-bottom:1px solid #bbb;
+        color:#fff;
+}
+
+#errorExplanation p {
+  	margin-top:10px;
+  	padding: 5px;
+  	font-size: 14px;}
+
+#errorExplanation ul li {
+  	font-size: 12px;
+  	list-style: square;
+  	margin: 2px;
+  	text-align: left;
+}
+
+.error {
+  margin: 20px 40px;
+  padding:10px 20px 10px 50px;
+  border: 1px solid;
+  border-color: #ccc #aaa #aaa #ccc;
+  background: #ffc url(/images/warning.gif) 10px 6px no-repeat;
+  text-align: left;
+  font-size: 8pt;
+  line-height:1.1em;
+  }
+

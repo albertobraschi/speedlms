@@ -1,4 +1,20 @@
-<div align = "center" >  
+<div align = "center" >
+	<% if !SignupPlan.find_plans.blank? %>
+		<h1>There are following SignUp Plans</h1>
+			<ul type = "square"> 
+				<% for plan in SignupPlan.find_plans %>
+					<li>
+						<dl>
+							<dt>
+								<b><%= plan.name %></b>
+							</dt>
+						<dd>
+							<%= plan.price/plan.time_period %> per month, <%= plan.no_of_tutors %> tutors , <%= plan.no_of_courses %> Courses, <%= plan.no_of_students %> Students. 
+						</dd>
+					</li>
+				<% end %>
+			</ul>
+	<% end %>
 	<div id = "signup_container">            
 		<fieldset class = "signup" >
 			<% unless error_messages_for('user').empty? %>                             
@@ -26,9 +42,7 @@
 							Confirm Password:
 						</label>
 					</div>
-					<p>
-						<%= submit_tag 'Sign up' %>
-					</p>
+					
 				</div>
 				<div id = "signup" class = "fieldset_right"> 
 					<div class = "normal" >
@@ -43,12 +57,16 @@
 					<div class = "normal" >
 						<%= f.password_field :password_confirmation, :size => 15, :class => 'first' %>
 					</div>
+					<%= f.hidden_field :role %>
+					<p>
+						<%= submit_tag 'Sign up' %>
+					</p>
 				</div>  
 			<% end %>
 		</fieldset>
 		<fieldset class = "signup">
 			<h3 class = "align_center">
-				<%= link_to 'Login',new_session_path %>
+				<%= link_to 'Login',new_session_path(:role => @role) %>
 			</h3>
 		</fieldset>
 	</div>              

@@ -7,13 +7,18 @@ ActionController::Routing::Routes.draw do |map|
   # Keep in mind you can assign values other than :controller and :action
   
   map.open_id_complete 'session', :controller => "sessions", :action => "create", :requirements => { :method => :get }
-  map.root :controller => 'users', :action => 'index'
-  map.resource :session,:collection => {:destroy => :delete}
-  map.namespace :admin do |admin|
-     admin.resources :users
-     end
-  map.connect 'admin', :controller => 'admin/users', :action => 'index'
   
+  map.root :controller => 'sessions'
+  
+  map.resource :session, :collection => {:destroy => :delete}, :member => {:view_pages => :get}
+  
+  map.namespace :admin do |admin|
+     admin.resources :users, :sessions, :pages, :signup_plans
+     end
+     
+  map.connect 'admin', :controller => 'admin/users', :action => 'index'
+  map.forgot '/forgot', :controller => 'users',     :action => 'forgot'
+  map.reset '/reset/:pcode',  :controller => 'users',   :action => 'reset', :method => 'get'
   # Sample of named route:
   #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
   # This route can be invoked with purchase_url(:id => product.id)

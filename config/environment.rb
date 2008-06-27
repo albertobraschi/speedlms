@@ -10,7 +10,7 @@ RAILS_GEM_VERSION = '2.0.2' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-Rails::Initializer.run do |config|
+Rails::Initializer.run do |config|  
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -40,7 +40,9 @@ Rails::Initializer.run do |config|
     :session_key => '_proj_session',
     :secret      => '1e7e3f46984858be9afa42f0ea6f634c8a144e8ed3edf389db38452218a7d5491c6c95f740d325bde16493802413e36fb5a0cc204c4414fed20f7b4fe81d1cb0'
   }
-
+	config.after_initialize do
+ 		ActiveMerchant::Billing::Base.mode = :test
+	end
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
   # (create the session table with 'rake db:sessions:create')
@@ -62,5 +64,6 @@ Rails::Initializer.run do |config|
   config.load_paths += Dir["#{RAILS_ROOT}/vendor/gems/**"].map do |dir| 
     File.directory?(lib = "#{dir}/lib") ? lib : dir
   end
-
 end
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.default_content_type = "text/html"
