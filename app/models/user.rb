@@ -76,6 +76,11 @@ class User < ActiveRecord::Base
   	  return false
   	end
   end
+  
+  def delete_pcode
+    self.pcode = nil
+    self.save
+  end
 
   protected
     # before filter 
