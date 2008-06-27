@@ -33,10 +33,13 @@ class User < ActiveRecord::Base
     self.class.encrypt(password, salt)
   end
 
+  # Returns the authenticated password encrypted
   def authenticated?(password)
     crypted_password == encrypt(password)
   end
 
+  # ruby: no such file to load -- ubygems (LoadError)
+  
   def remember_token?
     remember_token_expires_at && Time.now.utc < remember_token_expires_at 
   end
