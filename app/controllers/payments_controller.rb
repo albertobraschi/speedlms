@@ -9,7 +9,7 @@ class PaymentsController < ApplicationController
   																		:ip => request.remote_ip, 
 																		  :return_url => url_for(:action => 'confirm', :only_path => false), 
 																		  :cancel_return_url => url_for(:action => 'index', :only_path => false),
-																		  :billing_address => {:name => "Test User", :address1 => "1 Main St", :city => "San Jose", :state => 'CA', :country => "US", :zip => "95131"}})	
+																		  :billing_address => {:name => "Test User", :address1 => "1 Main St", :city => "San Jose", :state => 'CA', :country => "US", :zip => "95131"},:token => params[:token]})	
   	redirect_to gateway.redirect_url_for(setup_response.token)
 	end
 	
@@ -51,7 +51,7 @@ class PaymentsController < ApplicationController
   
   private
 	def gateway																	
-  	@gateway ||= PaypalGateway.new(:login => 'gabbar_1214372771_biz_api1.gmail.com', :password => 'UNCTDY86XMCHT5KA', :signature => 'AVReWe8pMghs6PlTSHdNH-4-RnWJAVQZi7Q46npRoHWSS21r8o0.-GJ0')
+  	@gateway ||= PaypalGateway.new(:login => 'raijit_1214641464_biz_api1.gmail.com', :password => '1214641471', :signature => 'A0asK6oiIZmtBFrRCq-Iiqf8lrk.A3Z807sw8C53d556kfDlsDx.fgTY')
   														
 	end
 end
