@@ -208,9 +208,9 @@ text-align:center;
 }
 
 #signup_container {
-  width: 400px;
-  margin: 20px 40px;
-  padding: 8px 16px;
+  width: 360px;
+  margin: 0px;
+  padding: 0px;
 }
 
 div#signup .fieldset_left {

@@ -1,22 +1,47 @@
-<div align = "center" >
+<div id = "content_left" >
 	<% if !SignupPlan.find_plans.blank? %>
-		<h1>There are following SignUp Plans</h1>
+		<h2>There are following SignUp Plans</h2>
 			<ul type = "square"> 
 				<% for plan in SignupPlan.find_plans %>
 					<li>
 						<dl>
 							<dt>
-								<b><%= plan.name %></b>
+								<b><%= plan.name.capitalize %></b>
 							</dt>
 						<dd>
-							<%= plan.price/plan.time_period %> per month, <%= plan.no_of_tutors %> tutors , <%= plan.no_of_courses %> Courses, <%= plan.no_of_students %> Students. 
+							<% if plan.price == 0.0 %>
+								Free,
+							<% else %>
+								$<%= plan.price/plan.time_period %> per month, 
+							<% end %>
+							<% if plan.no_of_tutors == 0 %>
+								Unlimited
+							<% else %>
+								<%= plan.no_of_tutors %> 
+							<% end %> tutors,
+							<% if plan.no_of_courses == 0 %>
+								Unlimited
+							<% else %> 
+								<%= plan.no_of_courses %> 
+							<% end %>Courses, 
+							<% if plan.no_of_students == 0 %>
+								Unlimited
+							<% else %>
+								<%=	plan.no_of_students %>  
+							<% end %>Students.
 						</dd>
 					</li>
 				<% end %>
 			</ul>
 	<% end %>
+</div>
+<div id = "content_right" >
+<div align = "center" >
 	<div id = "signup_container">            
 		<fieldset class = "signup" >
+			<h3>
+				<%= @user.role %> Sign Up
+			</h3>
 			<% unless error_messages_for('user').empty? %>                             
 				<%= error_messages_for :user %>
 			<% end %>
@@ -42,7 +67,13 @@
 							Confirm Password:
 						</label>
 					</div>
-					
+					<% if @user.role == User::ROLE[:owner] %>
+						<div class = "normal" >
+							<label for="plan">
+								Select a Plan
+							</label>
+						</div>
+					<% end %>
 				</div>
 				<div id = "signup" class = "fieldset_right"> 
 					<div class = "normal" >
@@ -58,10 +89,14 @@
 						<%= f.password_field :password_confirmation, :size => 15, :class => 'first' %>
 					</div>
 					<%= f.hidden_field :role %>
-					<p>
-						<%= submit_tag 'Sign up' %>
-					</p>
-				</div>  
+					<% if @user.role == User::ROLE[:owner] %>
+							<%= f.select :plan, SignupPlan.find(:all).collect{|p| [p.name, p.id]}, {:include_blank => true} %>
+					<% end %>
+				</div>
+				
+				<p>
+					<%= submit_tag 'Sign up' %>
+				</p>  
 			<% end %>
 		</fieldset>
 		<fieldset class = "signup">
@@ -70,4 +105,5 @@
 			</h3>
 		</fieldset>
 	</div>              
+</div>
 </div>

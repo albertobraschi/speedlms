@@ -10,8 +10,8 @@
     <div id = "header">
       <h3>
         <span id = "top_right" >
-				<%= link_to 'Tutor',new_session_path(:role => "Tutor") %>
-				<%= link_to 'Student',new_session_path(:role => "Student") %>
+				<%= link_to 'Owner',new_session_path(:role => User::ROLE[:owner]) %>
+				<%= link_to 'Student',new_session_path(:role => User::ROLE[:student]) %>
 				<% if Page.find_viewable_pages %>
 					<% for page in Page.find_viewable_pages %>
 				  	<%= link_to page.title, view_pages_session_path(:id => page.id) %>

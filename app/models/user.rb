@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   attr_accessor :password
 
   validates_presence_of     :login, :email, :if => :not_openid?
+  validates_presence_of 		:role, :message => "is must for user"
+  validates_presence_of     :plan , :if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
   validates_presence_of     :password,                   :if => :password_required?
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
@@ -20,8 +22,7 @@ class User < ActiveRecord::Base
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation, :role
-
+  attr_accessible :login, :email, :password, :password_confirmation,:role, :plan
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
     u = find_by_login(login) # need to get the salt
