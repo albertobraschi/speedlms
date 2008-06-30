@@ -1,4 +1,4 @@
-module Admin::PagesHelper
+module Admin::PageHelper
 
 	def description_form_column(record,input_name)
   	text_area :record, :description, :name => input_name, :class => "mce-editor"#, :onClick => "javascript:addTinyMCE()"

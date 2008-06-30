@@ -27,6 +27,7 @@ class Admin::PagesController < ApplicationController
   config.columns = [:title,:description,:is_show]
   list.columns.exclude [:description]
   list.sorting = {:title => 'DESC'}   
+#p columns[:title].body
   end
     
 end

@@ -5,7 +5,6 @@ class Admin::SignupPlansController < ApplicationController
   active_scaffold :signup_plan do |config|
     config.label = "SignupPlans"
     config.columns = [:name, :price, :no_of_courses, :time_period, :no_of_tutors, :no_of_students]
-    #debugger
     columns[:no_of_courses].label = "Courses"
     columns[:no_of_tutors].label = "Tutors"
     columns[:no_of_students].label = "Students"
