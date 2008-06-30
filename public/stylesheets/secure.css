@@ -38,7 +38,7 @@ padding: 0px;
 #content_right {
   margin: 0 2px 4px 4px; 
   float: left;
-  width: 345px; 
+  width: 300px; 
   padding: 0 1px 4px 0px;
   text-align: center;
 }
@@ -47,7 +47,9 @@ padding: 0px;
   margin: 2px 5px 2px 8px;
   padding: 4px 0px 4px 10px; 
   float: left;
-  width: 800px;
+  width: 600px;
+  border-bottom: 3px solid #999999;
+  border-right: 3px solid #999999;
   background: #FFFFFF;  
 }       
 
@@ -206,9 +208,9 @@ text-align:center;
 }
 
 #signup_container {
-  width: 400px;
-  margin: 20px 40px;
-  padding: 8px 16px;
+  width: 360px;
+  margin: 0px;
+  padding: 0px;
 }
 
 div#signup .fieldset_left {
@@ -254,7 +256,8 @@ input.first {
 #errorExplanation p {
   	margin-top:10px;
   	padding: 5px;
-  	font-size: 14px;}
+  	font-size: 14px;
+}
 
 #errorExplanation ul li {
   	font-size: 12px;
