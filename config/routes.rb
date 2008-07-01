@@ -14,8 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.namespace :admin do |admin|
      admin.resources :users, :sessions, :pages, :signup_plans
-     end
-     
+     end 
   map.connect 'admin', :controller => 'admin/users', :action => 'index'
   map.forgot '/forgot', :controller => 'users',     :action => 'forgot'
   map.reset '/reset/:pcode',  :controller => 'users',   :action => 'reset', :method => 'get'

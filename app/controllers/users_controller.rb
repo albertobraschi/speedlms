@@ -42,7 +42,13 @@ class UsersController < ApplicationController
   
   def index
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+    debugger
   end
+  
+  def my_info
+    @user = @current_user
+    @id = @current_user.id
+  end  
   
   def forgot
       if request.post?

@@ -259,7 +259,8 @@ input.first {
 #errorExplanation p {
   	margin-top:10px;
   	padding: 5px;
-  	font-size: 14px;}
+  	font-size: 14px;
+}
 
 #errorExplanation ul li {
   	font-size: 12px;
