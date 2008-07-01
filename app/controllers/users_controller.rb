@@ -6,7 +6,6 @@ class UsersController < ApplicationController
   def new
     @user = User.new()
     @user.role = params[:role] if params[:role] 
-    
   end
   
   #need modification,when use in production mode.....(needs inclusion of a transaction complete method,when return from paypal)
@@ -33,7 +32,6 @@ class UsersController < ApplicationController
 	    @current_user = @user
       session[:user_id] = @current_user.id
     end
-       
     if @user.errors.empty?            
       render :action => "#{@current_user.role.downcase}_index" if @current_user.role
     else
@@ -45,6 +43,10 @@ class UsersController < ApplicationController
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end
 
+  def logged_in
+    
+  end  
+  
   def forgot
       if request.post?
         user = User.find_by_email(params[:user][:email])
@@ -67,15 +69,20 @@ class UsersController < ApplicationController
   def reset
     @user = User.find_by_pcode(params[:pcode]) unless params[:pcode].nil?
      if request.post?
-       if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
-         self.current_user = @user
-         @user.delete_pcode
-         flash[:notice] = "Password reset successfully for #{@user.email}"
-         redirect_back_or_default('/')
-       else 
-         flash[:notice] = "Please enter a password"
-         render :action => :reset
-       end
+       if @user.nil?
+          flash[:notice] = "Sorry this link has expired"
+          redirect_back_or_default('/')
+        else  
+         if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
+           self.current_user = @user
+           @user.delete_pcode
+           flash[:notice] = "Password reset successfully for #{@user.email}"
+           redirect_back_or_default('/')
+         else 
+          flash[:notice] = "Please enter a password"
+          render :action => :reset
+         end        
+       end  
      end
   end
    
