@@ -277,3 +277,8 @@ input.first {
   line-height:1.1em;
   }
 
+.resetPwd{
+	text-align: right;
+	margin: 2pt 200pt;
+}
+
