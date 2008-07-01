@@ -1,41 +1,3 @@
-<div id = "content_left" >
-	<% if !SignupPlan.find_plans.blank? %>
-		<h2>There are following SignUp Plans</h2>
-			<ul type = "square"> 
-				<% for plan in SignupPlan.find_plans %>
-					<li>
-						<dl>
-							<dt>
-								<b><%= plan.name.capitalize %></b>
-							</dt>
-						<dd>
-							<% if plan.price == 0.0 %>
-								Free,
-							<% else %>
-								$<%= plan.price/plan.time_period %> per month, 
-							<% end %>
-							<% if plan.no_of_tutors == 0 %>
-								Unlimited
-							<% else %>
-								<%= plan.no_of_tutors %> 
-							<% end %> tutors,
-							<% if plan.no_of_courses == 0 %>
-								Unlimited
-							<% else %> 
-								<%= plan.no_of_courses %> 
-							<% end %>Courses, 
-							<% if plan.no_of_students == 0 %>
-								Unlimited
-							<% else %>
-								<%=	plan.no_of_students %>  
-							<% end %>Students.
-						</dd>
-					</li>
-				<% end %>
-			</ul>
-	<% end %>
-</div>
-<div id = "content_right" >
 <div align = "center" >
 	<div id = "signup_container">            
 		<fieldset class = "signup" >
@@ -105,5 +67,4 @@
 			</h3>
 		</fieldset>
 	</div>              
-</div>
 </div>

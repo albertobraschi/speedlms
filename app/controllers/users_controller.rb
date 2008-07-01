@@ -21,6 +21,7 @@ class UsersController < ApplicationController
 	    	@current_user = @user
       	session[:user_id] = @current_user.id      
     	else
+    	#############needs save after successful tranaction.
     		@user.save
 	    	flash[:notice] = "You need to first pay for the selected plan..."
 	    	@current_user = @user
