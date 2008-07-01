@@ -4,46 +4,32 @@ class UsersController < ApplicationController
 	before_filter :current_user, :only => :index
   
   def new
-    @user = User.new()
-    @user.role = params[:role] if params[:role] 
-    
+    @user = User.new() 
+    render :layout => 'public'
   end
   
-  #need modification,when use in production mode.....(needs inclusion of a transaction complete method,when return from paypal)
   def create
     cookies.delete :auth_token 
     @user = User.new(params[:user])
-    if params[:role] == User::ROLE[:owner]
-    	@user.plan = params[:user][:plan] if params[:user][:plan]
-    	@price = SignupPlan.find_by_id(@user.plan).price
-    	if @price == 0.0
-	    	@user.save
-	    	flash[:notice] = "Thanks for sign up!"
-	    	@current_user = @user
-      	session[:user_id] = @current_user.id      
-    	else
-    	#############needs save after successful tranaction.
-    		@user.save
-	    	flash[:notice] = "You need to first pay for the selected plan..."
-	    	@current_user = @user
-      	session[:user_id] = @current_user.id      
-    	end
+    @user.role = User::ROLE[:owner]
+    @user.plan = params[:user][:plan] if params[:user][:plan]
+    @price = SignupPlan.find_by_id(@user.plan).price
+    if @price == 0.0
+    	successful_signup
     else
-    	@user.save
-	    flash[:notice] = "Thanks for sign up!"
-	    @current_user = @user
-      session[:user_id] = @current_user.id
-    end
-       
-    if @user.errors.empty?            
-      render :action => "#{@current_user.role.downcase}_index" if @current_user.role
-    else
-      render :action => 'new'
-    end     
+   		redirect_to :action => "payment",:id => @user.plan
+   	end
+  end
+     
+  def index
+  	render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end
   
-  def index
-    render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+  def payment
+  	@plan = SignupPlan.find_by_id(params[:id])
+  	render :layout => 'public'
+  	#call "successful_signup" here.....to save user after return from paypal.
+  	#successful_signup
   end
 
   def forgot
@@ -79,5 +65,19 @@ class UsersController < ApplicationController
        end
      end
   end
+  
+  private
+  
+  def successful_signup 
+    @user.save
+	  flash[:notice] = "Thanks for sign up!"
+	  @current_user = @user
+    session[:user_id] = @current_user.id
+    if @user.errors.empty?            
+      render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+    else
+      render :action => 'new'
+    end 
+  end 
    
 end

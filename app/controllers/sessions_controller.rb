@@ -7,9 +7,7 @@ class SessionsController < ApplicationController
 
   #creates new instance of Session.
 	def new
-	  if params[:role]
-		  @role = params[:role]
-		end
+		render :layout => 'public'
 	end
   
 	def create
