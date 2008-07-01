@@ -1,10 +1,10 @@
   <%= error_messages_for :user %>
-   
+  <div class = "resetPwd">
   <% form_for :user do |f| -%>
   <table id="newedit">
       <thead>
           <tr>
-              <th colspan="2" >Pick a new password for <%= @user.email %></th>
+              <th colspan="2" >Pick a new password </th>
           </tr>
       </thead>
      <tbody>
@@ -25,4 +25,4 @@
      </tbody>
  </table>
  <% end -%>
-
+</div>

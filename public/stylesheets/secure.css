@@ -277,6 +277,14 @@ input.first {
   line-height:1.1em;
   }
 
+<<<<<<< HEAD:public/stylesheets/secure.css
 a {
 	text-decoration: none;
 	}
+=======
+.resetPwd{
+	text-align: right;
+	margin: 2pt 200pt;
+}
+
+>>>>>>> f0d082fb7e4dc1fb41571ab126b14e159689197d:public/stylesheets/secure.css

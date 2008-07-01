@@ -31,7 +31,12 @@ class UsersController < ApplicationController
   	#call "successful_signup" here.....to save user after return from paypal.
   	#successful_signup
   end
-
+  
+  def my_info
+    @user = @current_user
+    @id = @current_user.id
+  end  
+  
   def forgot
       if request.post?
         user = User.find_by_email(params[:user][:email])
@@ -53,16 +58,15 @@ class UsersController < ApplicationController
   
   def reset
     @user = User.find_by_pcode(params[:pcode]) unless params[:pcode].nil?
-     if request.post?
-       if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
-         self.current_user = @user
-         @user.delete_pcode
-         flash[:notice] = "Password reset successfully for #{@user.email}"
-         redirect_back_or_default('/')
-       else 
-         flash[:notice] = "Please enter a password"
-         render :action => :reset
-       end
+    if @user.nil?
+      flash[:notice] = "Sorry this link has expired"
+      redirect_back_or_default('/')
+      elsif request.post?
+        if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
+          @user.delete_pcode
+          flash[:notice] = "Password reset successfully for #{@user.email}"
+          redirect_back_or_default('/')
+        end  
      end
   end
   
