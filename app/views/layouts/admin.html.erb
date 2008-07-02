@@ -3,6 +3,7 @@
     <title>
       SpeedLMS
     </title>
+    <%= stylesheet_link_tag "secure.css" , :media => "all" %>
     <% # Include TinyMCE before other JS to avoid problems -%>
 		<%= javascript_include_tiny_mce_if_used %>
 		<%= tiny_mce if using_tiny_mce? %>
@@ -21,7 +22,10 @@
 						<%= link_to 'Sign out', destroy_session_path, :method => :delete %>
 					<% end %> 
         </span>
-      </h3>     
+      </h3>
+      <h1>
+      	Welcome to SpeedLMS
+      </h1>     
     </div>
     <div id="main">            
       <div id="main_top">                       
