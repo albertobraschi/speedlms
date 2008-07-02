@@ -2,7 +2,7 @@
 	<div id = "signup_container">            
 		<fieldset class = "signup" >
 			<h3>
-				<%= @user.role %> Sign Up
+				Owner Sign Up
 			</h3>
 			<% unless error_messages_for('user').empty? %>                             
 				<%= error_messages_for :user %>
@@ -28,14 +28,12 @@
 						<label for="password_confirmation">
 							Confirm Password:
 						</label>
-					</div>
-					<% if @user.role == User::ROLE[:owner] %>
+					</div>					
 						<div class = "normal" >
 							<label for="plan">
 								Select a Plan
 							</label>
-						</div>
-					<% end %>
+						</div>					
 				</div>
 				<div id = "signup" class = "fieldset_right"> 
 					<div class = "normal" >
@@ -50,10 +48,8 @@
 					<div class = "normal" >
 						<%= f.password_field :password_confirmation, :size => 15, :class => 'first' %>
 					</div>
-					<%= f.hidden_field :role %>
-					<% if @user.role == User::ROLE[:owner] %>
+					<%= f.hidden_field :role %>					
 							<%= f.select :plan, SignupPlan.find(:all).collect{|p| [p.name, p.id]}, {:include_blank => true} %>
-					<% end %>
 				</div>
 				
 				<p>
