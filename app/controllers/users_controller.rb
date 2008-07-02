@@ -82,7 +82,6 @@ class UsersController < ApplicationController
   end
   
   private
-  
   def successful_signup 
     @user.save
 	  flash[:notice] = "Thanks for sign up!"
