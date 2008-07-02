@@ -22,7 +22,11 @@ class UsersController < ApplicationController
   end
      
   def index
-  	render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+    render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+  end  
+  
+  def edit 
+    @user = User.find(params[:id])
   end
   
   def payment
@@ -32,9 +36,16 @@ class UsersController < ApplicationController
   	#successful_signup
   end
   
-  def my_info
-    @user = @current_user
-    @id = @current_user.id
+  def update
+    @user = User.find(params[:id])
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        flash[:notice] = "User was sucessfully updated"
+        format.html { redirect_to users_url}
+      else  
+        format.html {render :action => "edit"}
+      end
+    end    
   end  
   
   def forgot
@@ -71,7 +82,6 @@ class UsersController < ApplicationController
   end
   
   private
-  
   def successful_signup 
     @user.save
 	  flash[:notice] = "Thanks for sign up!"

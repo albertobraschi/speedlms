@@ -17,6 +17,7 @@
 						<% end %>        
 					<% end %>
     			<% if @current_user %>
+						<%= link_to 'my_info', edit_user_path(@current_user.id) %>
 						<%= link_to 'Logout', destroy_session_path, :method => :delete %>
 					<% end %> 
         </span>
