@@ -1,5 +1,5 @@
-<h4>Please pay for the plan.</h4>
-<% if @plan.name == "Small Biz Plan" %>
+<h4>Please pay for the Signup Plan.</h4>
+<% if @SignupPlan_id.name == "Small Biz Plan" %>
 <b>Small Biz Plan($29)</b>
 <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -10,7 +10,7 @@
 </form>
 <% end %>
 
-<% if @plan.name == "Training Plan" %>
+<% if @SignupPlan_id.name == "Training Plan" %>
 <b>Training Plan($119)</b>
 <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -21,7 +21,7 @@
 </form>
 <% end %>
 
-<% if @plan.name == "School Plan" %>
+<% if @SignupPlan_id.name == "School Plan" %>
 <b>School Plan($359)</b>
 <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -32,7 +32,7 @@
 </form>
 <% end %>
 
-<% if @plan.name == "University Plan" %>
+<% if @SignupPlan_id.name == "University Plan" %>
 <b>University Plan($1459)</b>
 <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">

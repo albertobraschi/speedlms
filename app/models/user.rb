@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   attr_accessor :password
 
   validates_presence_of     :login, :email, :if => :not_openid?
-  validates_presence_of     :plan , :if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
+  validates_presence_of     :SignupPlan , :if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
   validates_presence_of     :password,                   :if => :password_required?
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?

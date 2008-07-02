@@ -7,6 +7,10 @@ class SessionsController < ApplicationController
 
   #creates new instance of Session.
 	def new
+		if current_user 
+     flash[:notice] = "You are already logged in"
+     redirect_to users_path and return 
+    end
 		render :layout => 'public'
 	end
   

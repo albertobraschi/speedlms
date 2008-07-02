@@ -30,7 +30,7 @@
 						</label>
 					</div>					
 						<div class = "normal" >
-							<label for="plan">
+							<label for="SignupPlan_id">
 								Select a Plan
 							</label>
 						</div>					
@@ -49,7 +49,7 @@
 						<%= f.password_field :password_confirmation, :size => 15, :class => 'first' %>
 					</div>
 					<%= f.hidden_field :role %>					
-							<%= f.select :plan, SignupPlan.find(:all).collect{|p| [p.name, p.id]}, {:include_blank => true} %>
+							<%= f.select :SignupPlan_id, SignupPlan.find(:all).collect{|p| [p.name, p.id]}, {:include_blank => true} %>
 				</div>
 				
 				<p>
