@@ -17,7 +17,7 @@
   	      		<%= link_to "#{@role} Signup",new_user_path(:role => @role) %>        		
         		<% end %>
 					<% else %>
-						<%= link_to 'my_info', :controller => "users", :action => "my_info" %>
+						<%= link_to 'my_info', edit_user_path(@current_user.id) %>
 						<%= link_to 'Sign out', destroy_session_path, :method => :delete %>
 					<% end %> 
         </span>
