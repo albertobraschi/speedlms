@@ -24,6 +24,7 @@
 				  		<%= link_to page.title, view_pages_session_path(:id => page.id) %>
 						<% end %>        
 					<% end %>
+					<% end %>
     			<% if @current_user %>
 						<%= link_to 'Logout', destroy_session_path, :method => :delete %>
 					<% end %> 
