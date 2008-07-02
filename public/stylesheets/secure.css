@@ -286,5 +286,13 @@ a {
 	text-align: right;
 	margin: 2pt 200pt;
 }
+#table_head{
+	background: white;
+}
+#table_body{
+	background: #D8D8D8 ;
+}
+
+
 
 
