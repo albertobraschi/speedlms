@@ -12,12 +12,12 @@ class UsersController < ApplicationController
     cookies.delete :auth_token 
     @user = User.new(params[:user])
     @user.role = User::ROLE[:owner]
-    @user.plan = params[:user][:plan] if params[:user][:plan]
-    @price = SignupPlan.find_by_id(@user.plan).price
+    @user.SignupPlan_id = params[:user][:SignupPlan_id] if params[:user][:SignupPlan_id]
+    @price = SignupPlan.find_by_id(@user.SignupPlan_id).price
     if @price == 0.0
     	successful_signup
     else
-   		redirect_to :action => "payment",:id => @user.plan
+   		redirect_to :action => "payment",:id => @user.SignupPlan_id
    	end
   end
      
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   end
   
   def payment
-  	@plan = SignupPlan.find_by_id(params[:id])
+  	@SignupPlan_id = SignupPlan.find_by_id(params[:id])
   	render :layout => 'public'
   	#call "successful_signup" here.....to save user after return from paypal.
   	#successful_signup
