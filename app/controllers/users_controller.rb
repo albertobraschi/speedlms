@@ -2,11 +2,10 @@ class UsersController < ApplicationController
 	include AuthenticatedSystem
 	before_filter :authorize,:only => :index
 	before_filter :current_user, :only => :index
-	layout 'public', :only => [:new,:create, :payment]
-  
+	
   def new
     @user = User.new() 
-    
+    render :layout => 'public'
   end
   
   def create
@@ -21,9 +20,8 @@ class UsersController < ApplicationController
    			redirect_to :action => "payment",:id => @user.signup_plan_id
    		end
    	else
-   		render :action => 'new'
+   		render :action => 'new',:layout => 'public'
    	end
-   	
   end
      
   def index
