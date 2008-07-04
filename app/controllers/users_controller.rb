@@ -77,9 +77,14 @@ class UsersController < ApplicationController
           @user.delete_pcode
           flash[:notice] = "Password reset successfully for #{@user.email}"
           redirect_back_or_default('/')
-        end  
+        end
      end
   end
+  
+  def add_tutors
+    @user = User.new(params[:user])
+    @user.role = User::ROLE[:tutor]
+  end  
   
   private
   def successful_signup 
