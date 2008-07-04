@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 	include AuthenticatedSystem
 	before_filter :authorize,:only => :index
 	before_filter :current_user, :only => :index
-  
+	
   def new
     @user = User.new() 
     render :layout => 'public'
@@ -12,12 +12,15 @@ class UsersController < ApplicationController
     cookies.delete :auth_token 
     @user = User.new(params[:user])
     @user.role = User::ROLE[:owner]
-    @user.SignupPlan_id = params[:user][:SignupPlan_id] if params[:user][:SignupPlan_id]
-    @price = SignupPlan.find_by_id(@user.SignupPlan_id).price
-    if @price == 0.0
-    	successful_signup
-    else
-   		redirect_to :action => "payment",:id => @user.SignupPlan_id
+    @price = SignupPlan.find_by_id(@user.signup_plan_id).price if @user.signup_plan_id
+    if @user.valid?
+    	if @price == 0.0
+    		successful_signup
+    	else
+   			redirect_to :action => "payment",:id => @user.signup_plan_id
+   		end
+   	else
+   		render :action => 'new',:layout => 'public'
    	end
   end
      
@@ -30,7 +33,7 @@ class UsersController < ApplicationController
   end
   
   def payment
-  	@SignupPlan_id = SignupPlan.find_by_id(params[:id])
+  	@signup_plan = SignupPlan.find_by_id(params[:id])
   	render :layout => 'public'
   	#call "successful_signup" here.....to save user after return from paypal.
   	#successful_signup
@@ -88,15 +91,11 @@ class UsersController < ApplicationController
   
   private
   def successful_signup 
-    @user.save
-	  flash[:notice] = "Thanks for sign up!"
-	  @current_user = @user
-    session[:user_id] = @current_user.id
-    if @user.errors.empty?            
-      render :action => "#{@current_user.role.downcase}_index" if @current_user.role
-    else
-      render :action => 'new'
-    end 
+      @user.save
+	  	flash[:notice] = "Thanks for sign up!"
+	  	@current_user = @user
+    	session[:user_id] = @current_user.id
+    	render :action => "owner_index"
   end 
    
 end
