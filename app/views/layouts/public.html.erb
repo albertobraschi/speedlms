@@ -3,20 +3,24 @@
     <title>
       Welcome to SpeedLMS
     </title>
-		<%= stylesheet_link_tag "secure.css" , :media => "all" %>
+		<%= stylesheet_link_tag "unsecure.css" , :media => "all" %>
 		<%= javascript_include_tag :defaults %>
   </head>
   <body> 
     <div id = "header">
       <h3>
         <span id = "top_right" >
-				<%= link_to 'Owner',new_session_path(:role => User::ROLE[:owner]) %>
-				<%= link_to 'Student',new_session_path(:role => User::ROLE[:student]) %>
-				<% if Page.find_viewable_pages %>
-					<% for page in Page.find_viewable_pages %>
-				  	<%= link_to page.title, view_pages_session_path(:id => page.id) %>
-					<% end %>        
-				<% end %>
+        	<%= link_to 'Home',root_path %>
+        	<%= link_to 'Login',new_session_path %>
+					<%= link_to 'Owner-SignUp',new_user_path %>
+					<% if Page.find_viewable_pages %>
+						<% for page in Page.find_viewable_pages %>
+				  		<%= link_to page.title, view_pages_session_path(:id => page.id) %>
+						<% end %>        
+					<% end %>
+					<% if @current_user %>
+						<%= link_to 'Logout', destroy_session_path, :method => :delete %>
+					<% end %>
         </span>
       </h3>
       <h1>Welcome to SpeedLMS</h1>

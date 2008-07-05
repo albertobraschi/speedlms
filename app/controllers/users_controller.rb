@@ -2,34 +2,55 @@ class UsersController < ApplicationController
 	include AuthenticatedSystem
 	before_filter :authorize,:only => :index
 	before_filter :current_user, :only => :index
-  
+	
   def new
-    @user = User.new()
-    @user.role = params[:role] if params[:role]
-    if params[:role] == User::ROLE[:owner]
-    	@user.plan = params[:plan]
-    end
+    @user = User.new() 
+    render :layout => 'public'
   end
-
+  
   def create
     cookies.delete :auth_token 
     @user = User.new(params[:user])
-    @user.save
-    @current_user = @user
-      session[:user_id] = @current_user.id 
-    if @user.errors.empty?
-      
-      flash[:notice] = "Thanks for signing up!"
-      render :action => "#{@current_user.role.downcase}_index" if @current_user.role
-    else
-      render :action => 'new'
-    end
+    @user.role = User::ROLE[:owner]
+    @price = SignupPlan.find_by_id(@user.signup_plan_id).price if @user.signup_plan_id
+    if @user.valid?
+    	if @price == 0.0
+    		successful_signup
+    	else
+   			redirect_to :action => "payment",:id => @user.signup_plan_id
+   		end
+   	else
+   		render :action => 'new',:layout => 'public'
+   	end
   end
-  
+     
   def index
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+  end  
+  
+  def edit 
+    @current_user = User.find(params[:id])
   end
-
+  
+  def payment
+  	@signup_plan = SignupPlan.find_by_id(params[:id])
+  	render :layout => 'public'
+  	#call "successful_signup" here.....to save user after return from paypal.
+  	#successful_signup
+  end
+  
+  def update
+    @user = User.find(params[:id])
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        flash[:notice] = "User was sucessfully updated"
+        format.html { redirect_to users_url}
+      else  
+        format.html {render :action => "edit"}
+      end
+    end    
+  end  
+  
   def forgot
       if request.post?
         user = User.find_by_email(params[:user][:email])
@@ -51,17 +72,25 @@ class UsersController < ApplicationController
   
   def reset
     @user = User.find_by_pcode(params[:pcode]) unless params[:pcode].nil?
-     if request.post?
-       if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
-         self.current_user = @user
-         @user.delete_pcode
-         flash[:notice] = "Password reset successfully for #{@user.email}"
-         redirect_back_or_default('/')
-       else 
-         flash[:notice] = "Please enter a password"
-         render :action => :reset
-       end
+    if @user.nil?
+      flash[:notice] = "Sorry this link has expired"
+      redirect_back_or_default('/')
+      elsif request.post?
+        if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
+          @user.delete_pcode
+          flash[:notice] = "Password reset successfully for #{@user.email}"
+          redirect_back_or_default('/')
+        end  
      end
   end
+  
+  private
+  def successful_signup 
+      @user.save
+	  	flash[:notice] = "Thanks for sign up!"
+	  	@current_user = @user
+    	session[:user_id] = @current_user.id
+    	render :action => "owner_index"
+  end 
    
 end

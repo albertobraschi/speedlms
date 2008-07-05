@@ -33,14 +33,12 @@ padding: 0px;
   margin: 2px;
   text-align: left;
   padding: 0px;
-  border-bottom: 3px solid #999999;
-  border-right: 3px solid #999999;
 }
 
 #content_right {
   margin: 0 2px 4px 4px; 
   float: left;
-  width: 345px; 
+  width: 350px; 
   padding: 0 1px 4px 0px;
   text-align: center;
 }
@@ -49,7 +47,7 @@ padding: 0px;
   margin: 2px 5px 2px 8px;
   padding: 4px 0px 4px 10px; 
   float: left;
-  width: 800px;
+  width: 600px;
   border-bottom: 3px solid #999999;
   border-right: 3px solid #999999;
   background: #FFFFFF;  
@@ -145,7 +143,7 @@ h2 {
   padding:0pt;
 } 
 
-h3 {all.css (line 7247)
+h3 {
 color:#000000;
 font-size:12px;
 margin:0pt 0pt 3px;
@@ -175,6 +173,13 @@ fieldset.signup {
 
 .normal {
   color:#222222;
+  font-size:15px;
+  line-height:1.3em;
+  padding: 4px;
+}
+
+.signup_normal {
+	color:#222222;
   font-size:14px;
   line-height:1.3em;
   padding: 4px;
@@ -211,19 +216,19 @@ text-align:center;
 }
 
 #signup_container {
-  width: 400px;
-  margin: 20px 40px;
-  padding: 8px 16px;
+  width: 550px;
+  margin: 0px;
+  padding: 0px;
 }
 
 div#signup .fieldset_left {
-  width: 150px;
+  width: 180px;
   float: left;
   text-align: right;  
 }
 
 div#signup .fieldset_right {
-  width: 160px;
+  width: 335px;
   float: right;
   margin-left: 0px;
 }
@@ -241,10 +246,10 @@ input.first {
   	color: #000;
   	width: 350px;
   	overflow: hidden;
-        margin: 2px;
-        border :1px solid #ff0000;
-        background: #FDF8EB;
-        padding: 0px;
+    margin: 2px;
+    border :1px solid #ff0000;
+    background: #FDF8EB;
+    padding: 0px;
 }
 
 #errorExplanation h2 {
@@ -253,13 +258,14 @@ input.first {
   	padding: 5px;
   	font-size: 14px;
   	border-bottom:1px solid #bbb;
-        color:#fff;
+    color:#fff;
 }
 
 #errorExplanation p {
   	margin-top:10px;
   	padding: 5px;
-  	font-size: 14px;}
+  	font-size: 14px;
+}
 
 #errorExplanation ul li {
   	font-size: 12px;
@@ -279,3 +285,7 @@ input.first {
   line-height:1.1em;
   }
 
+a {
+	text-decoration: none;
+	}
+	
