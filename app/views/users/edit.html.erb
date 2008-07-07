@@ -1,12 +1,13 @@
 <%= error_messages_for 'user' %>
-<% form_for @user do |f| -%>
+<% form_for @current_user do |f| -%>
 	<table>
 		<thead>
 			<tr>
-				<th>Edit <%= @user.login %></th>
-			 </tr>
+			<div id = "table_head"><fieldset style="text-align:left"><b>Edit <%= @current_user.login %></b></div>
+			</tr>
 			</thead>
 			<tbody>
+				<div id="table_body">	
 					<tr>	
 					  <td><label>Login:</label></td>
 						<td><%= f.text_field :login %></td>
@@ -22,9 +23,15 @@
 					<tr>
 					 	<td><label>Confirm Password:</label></td>
 						<td><%= f.password_field :password_confirmation %></td>
+					</tr> 
+					<tr>
+						<td><%= submit_tag "Submit" %></td>
 					</tr>
-						<tr>
-							<td><%= submit_tag "Submit" %></td>
+			</div>					
 			</tbody>
+			
 		</table>		
+		</fieldset>
 <% end -%>		
+
+<p> </p>

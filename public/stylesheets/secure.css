@@ -11,9 +11,13 @@ padding: 0px;
 }
 
 #header {
-  background:#003366 none repeat scroll 0%;
+  background-color:#003366;
   padding:0px;
   border-bottom: 3px solid #999999;
+}
+
+#header .admin{
+	background-color:#009900;
 } 
 
 #main {
@@ -38,7 +42,7 @@ padding: 0px;
 #content_right {
   margin: 0 2px 4px 4px; 
   float: left;
-  width: 300px; 
+  width: 350px; 
   padding: 0 1px 4px 0px;
   text-align: center;
 }
@@ -142,7 +146,7 @@ h2 {
   padding:0pt;
 } 
 
-h3 {all.css (line 7247)
+h3 {
 color:#000000;
 font-size:12px;
 margin:0pt 0pt 3px;
@@ -277,7 +281,6 @@ input.first {
   line-height:1.1em;
   }
 
-
 a {
 	text-decoration: none;
 	}
@@ -286,5 +289,10 @@ a {
 	text-align: right;
 	margin: 2pt 200pt;
 }
-
+#table_head{
+	background: white;
+}
+#table_body{
+	background: #D8D8D8 ;
+}
 

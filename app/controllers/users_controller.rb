@@ -2,8 +2,10 @@ class UsersController < ApplicationController
 	include AuthenticatedSystem
 	include ActiveMerchant::Billing
 	before_filter :authorize,:only => :index
+
 	before_filter :current_user, :except=>[:new, :create]
     skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
+
   def new
     @user = User.new() 
     render :layout => 'public'
@@ -13,12 +15,15 @@ class UsersController < ApplicationController
     cookies.delete :auth_token 
     @user = User.new(params[:user])
     @user.role = User::ROLE[:owner]
-    @user.plan = params[:user][:plan] if params[:user][:plan]
-    @price = SignupPlan.find_by_id(@user.plan).price
-    if @price == 0.0
-    	successful_signup
-    else
-   		redirect_to :action => "payment",:id => @user.plan
+    @price = SignupPlan.find_by_id(@user.signup_plan_id).price if @user.signup_plan_id
+    if @user.valid?
+    	if @price == 0.0
+    		successful_signup
+    	else
+   			redirect_to :action => "payment",:id => @user.signup_plan_id
+   		end
+   	else
+   		render :action => 'new',:layout => 'public'
    	end
   end
      
@@ -27,7 +32,7 @@ class UsersController < ApplicationController
   end  
   
   def edit 
-    @user = User.find(params[:id])
+    @current_user = User.find(params[:id])
   end
   
   def payment
@@ -64,6 +69,7 @@ class UsersController < ApplicationController
       end
     end
     render :nothing => true
+
   end
   
   def confirm
@@ -122,17 +128,12 @@ class UsersController < ApplicationController
   end
   
   private
-  
   def successful_signup 
-    @user.save
-	  flash[:notice] = "Thanks for sign up!"
-	  @current_user = @user
-    session[:user_id] = @current_user.id
-    if @user.errors.empty?            
-      render :action => "#{@current_user.role.downcase}_index" if @current_user.role
-    else
-      render :action => 'new'
-    end 
+      @user.save
+	  	flash[:notice] = "Thanks for sign up!"
+	  	@current_user = @user
+    	session[:user_id] = @current_user.id
+    	redirect_to @current_user.speedlms_url
   end 
    
 end

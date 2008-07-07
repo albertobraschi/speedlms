@@ -1,17 +1,28 @@
 <div align = "center" >
 	<div id = "signup_container">            
 		<fieldset class = "signup" >
-			<h3>
+			<h2>
 				Owner Sign Up
-			</h3>
+			</h2>
 			<% unless error_messages_for('user').empty? %>                             
 				<%= error_messages_for :user %>
 			<% end %>
 			<% form_for :user, :url => users_path do |f| %>
-				<div id = "signup" class = "fieldset_left">
+				<div id = "signup">
+				<div class = "fieldset_left">
+					<div class = "normal" >
+						<label for="firstname">
+							First Name:
+						</label>
+					</div>
+					<div class = "normal" >
+						<label for="lastname">
+							Last Name:
+						</label>
+					</div>
 					<div class = "normal" >
 						<label for="login">
-							Login:
+							Username:
 						</label>
 					</div>
 					<div class = "normal" >
@@ -28,30 +39,70 @@
 						<label for="password_confirmation">
 							Confirm Password:
 						</label>
+					</div>
+					<div class = "normal" >
+						<label for="speedlms_subdomain">
+							SpeedLMS Subdomain:
+						</label>
+					</div>		
+					<div class = "normal" >
+						<label for="organisation">
+							Organisation:
+						</label>
+					</div>	
+					<div class = "normal" >
+						<label for="logo">
+							Logo:
+						</label>
+					</div>
+					<div class = "normal" >
+						<label for="timezone">
+							Time Zone:
+						</label>
+					</div>										
+					<div class = "normal" >
+						<label for="signup_plan_id">
+							Select a Plan
+						</label>
 					</div>					
-						<div class = "normal" >
-							<label for="plan">
-								Select a Plan
-							</label>
-						</div>					
 				</div>
-				<div id = "signup" class = "fieldset_right"> 
+				</div>
+				<div id = "signup">
+				<div class = "fieldset_right">
 					<div class = "normal" >
-						<%= f.text_field :login, :size => 15, :class => 'first' %>
+						<%= f.text_field :firstname, :size => 20, :class => 'first' %>
 					</div>
 					<div class = "normal" >
-						<%= f.text_field :email, :size => 15, :class => 'first' %>
+						<%= f.text_field :lastname, :size => 20, :class => 'first' %>
+					</div> 
+					<div class = "normal" >
+						<%= f.text_field :login, :size => 20, :class => 'first' %>
 					</div>
 					<div class = "normal" >
-						<%= f.password_field :password, :size => 15, :class => 'first' %>
+						<%= f.text_field :email, :size => 20, :class => 'first' %>
 					</div>
 					<div class = "normal" >
-						<%= f.password_field :password_confirmation, :size => 15, :class => 'first' %>
+						<%= f.password_field :password, :size => 20, :class => 'first' %>
 					</div>
+					<div class = "normal" >
+						<%= f.password_field :password_confirmation, :size => 20, :class => 'first' %>
+					</div>
+					<div class = "normal" >
+						<%= f.text_field :speedlms_subdomain, :size => 20, :class => 'first' %>
+					</div>
+					<div class = "normal" >
+						<%= f.text_field :organisation, :size => 20, :class => 'first' %>
+					</div>
+					<div class = "normal" >
+						<%= f.file_field :logo, :size => 20, :class => 'first' %>
+					</div>
+					<div class = "normal" >
+						<%= f.time_zone_select :timezone %>
+					</div>					
 					<%= f.hidden_field :role %>					
-							<%= f.select :plan, SignupPlan.find(:all).collect{|p| [p.name, p.id]}, {:include_blank => true} %>
+							<%= f.select :signup_plan_id, SignupPlan.find(:all).collect{|p| [p.name, p.id]}, {:include_blank => true} %>
 				</div>
-				
+				</div>
 				<p>
 					<%= submit_tag 'Sign up' %>
 				</p>  

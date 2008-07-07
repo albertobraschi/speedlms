@@ -7,6 +7,14 @@ class SessionsController < ApplicationController
 
   #creates new instance of Session.
 	def new
+		if current_user
+			flash[:notice] = "You are already logged in"
+			if current_user.is_admin?      		
+     		redirect_to admin_users_path and return 
+     	else     		
+     		redirect_to users_path and return
+     	end
+    end
 		render :layout => 'public'
 	end
   
@@ -79,10 +87,7 @@ class SessionsController < ApplicationController
 					format.js
 				end					
 			else
-			  respond_to do |format|
-					format.html {redirect_to users_path}
-					format.js
-				end
+			  redirect_to @current_user.speedlms_url
 			end    
 		else
 			render :action => 'new'
