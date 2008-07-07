@@ -64,6 +64,60 @@ Rails::Initializer.run do |config|
   config.load_paths += Dir["#{RAILS_ROOT}/vendor/gems/**"].map do |dir| 
     File.directory?(lib = "#{dir}/lib") ? lib : dir
   end
+
 end
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.default_content_type = "text/html"
+
+
+# CONFIGURING THE WEB SERVER TO ACCEPT CUSTOMIZED SUBDOMAINS FOR TESTING PURPOSE
+# Step1
+# go to the httpd.conf file in the etc/apache directory and add the following code there
+
+#<VirtualHost *>
+      #  ServerName speedlms.dev
+      #  ServerAlias *.speedlms.dev
+
+      #  DocumentRoot /Users/vibha/work/speedlms/public
+
+     # <Directory "/Users/vibha/work/speedlms/public">
+     #         Options FollowSymLinks
+     #         AllowOverride None
+     #         Order allow,deny
+     #         Allow from all
+     # </Directory>
+
+     # RewriteEngine On
+
+     #  RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+     #  RewriteRule . /system/maintenance.html [L]
+
+     #  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f
+     #  RewriteRule (.*) $1 [L]
+
+     #  ProxyRequests Off
+
+     #  <Proxy *>
+             #  Order deny,allow
+             #  Allow from all
+     # </Proxy>
+
+     # ProxyPass / http://127.0.0.1:3000/
+     # ProxyPassReverse / http://127.0.0.1:3000/
+
+#</VirtualHost>
+
+# step2
+
+#  sudo vi etc/hosts and add this code at the end 
+#   127.0.0.1       speedlms.dev
+#   127.0.0.1       yoursubdomain.speedlms.dev
+
+
+unless RAILS_ENV == 'production'
+  PAYPAL_ACCOUNT = 'sandboxaccount@example.com'
+  ActiveMerchant::Billing::Base.mode = :test
+else
+  PAYPAL_ACCOUNT = 'paypalaccount@example.com'
+end
+

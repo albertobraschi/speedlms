@@ -84,6 +84,7 @@ class User < ActiveRecord::Base
 		speedlms_url = "http://#{self.speedlms_subdomain}.localhost:3000/"
 	end
 	
+
   # Returns true if the user has just been activated.
   def recently_activated?
     @activated
@@ -106,7 +107,8 @@ class User < ActiveRecord::Base
     # before filter 
     def encrypt_password
       return if password.blank?
-      self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
+      self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}}--") if new_record?
+      debugger
       self.crypted_password = encrypt(password)
     end
       
@@ -119,3 +121,4 @@ class User < ActiveRecord::Base
     end
     
 end
+
