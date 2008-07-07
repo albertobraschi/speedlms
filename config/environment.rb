@@ -64,9 +64,11 @@ Rails::Initializer.run do |config|
   config.load_paths += Dir["#{RAILS_ROOT}/vendor/gems/**"].map do |dir| 
     File.directory?(lib = "#{dir}/lib") ? lib : dir
   end
+
 end
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.default_content_type = "text/html"
+
 
 # CONFIGURING THE WEB SERVER TO ACCEPT CUSTOMIZED SUBDOMAINS FOR TESTING PURPOSE
 # Step1
@@ -110,4 +112,12 @@ ActionMailer::Base.default_content_type = "text/html"
 #  sudo vi etc/hosts and add this code at the end 
 #   127.0.0.1       speedlms.dev
 #   127.0.0.1       yoursubdomain.speedlms.dev
+
+
+unless RAILS_ENV == 'production'
+  PAYPAL_ACCOUNT = 'sandboxaccount@example.com'
+  ActiveMerchant::Billing::Base.mode = :test
+else
+  PAYPAL_ACCOUNT = 'paypalaccount@example.com'
+end
 
