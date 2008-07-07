@@ -80,6 +80,7 @@ class User < ActiveRecord::Base
 		speedlms_url = "http://#{self.speedlms_subdomain}.localhost:3000/"
 	end
 	
+
   # Returns true if the user has just been activated.
   def recently_activated?
     @activated
