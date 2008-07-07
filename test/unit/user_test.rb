@@ -5,13 +5,116 @@ class UserTest < Test::Unit::TestCase
   # Then, you can remove it from this and the functional test.
   include AuthenticatedTestHelper
   fixtures :users
-
-  def test_should_create_user
-    assert_difference 'User.count' do
-      user = create_user
-      assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
-    end
+  
+  def test_invalid_without_first_and_last_name
+  	user = User.new
+  	assert !user.valid?
+  	assert_equal "can't be blank", user.errors.on(:firstname)
+  	assert_equal "can't be blank", user.errors.on(:lastname)
   end
+
+	def test_invalid_without_login_and_email_if_not_openid
+		user = User.new(:firstname => 'jitendra', :lastname => 'rai', :identity_url => nil)
+		assert !user.valid?
+		assert_equal "can't be blank", user.errors.on(:login)
+		assert_equal "can't be blank", user.errors.on(:email)
+	end
+
+  def test_invalid_with_empty_attributes_for_owner
+  	user = User.new(:firstname => 'jitendra', :lastname => 'rai', :login => 'jitendrarai', :email => 'jitendra@gmail.com', :role => 'Owner')
+  	assert !user.valid?
+  	assert user.errors.invalid?(:signup_plan)
+  	assert user.errors.invalid?(:logo)
+  	assert user.errors.invalid?(:organisation)
+  	assert user.errors.invalid?(:speedlms_subdomain)
+  	assert user.errors.invalid?(:timezone)
+  end
+  
+  def test_login_length
+  	user = User.new(:firstname => 'jitendra', :lastname => 'rai', :email => 'jitendra@gmail.com')
+  	#login should be at least 3 characters long.
+  	user.login = 'ab'
+  	assert !user.valid?
+		assert_equal "is too short (minimum is 3 characters)" , user.errors.on(:login)
+		
+		user.login = 'abc'
+  	assert !user.valid?
+  	
+  	#login should not exceed 40 characters.
+  	user.login = 'aaaaabbbbbcccccdddddeeeeefffffggggghhhhhiiiiijjjjjkkkkk'
+  	assert !user.valid?
+		assert_equal "is too long (maximum is 40 characters)" , user.errors.on(:login)
+  end
+  
+  def test_password_length
+  	user = User.new(:firstname => 'jitendra', :lastname => 'rai', :email => 'jitendra@gmail.com', :login => 'jitendrarai')
+  	
+  	#password should be at least 3 characters long.
+  	user.password = 'aaa'
+  	assert !user.valid?
+		assert_equal "is too short (minimum is 4 characters)" , user.errors.on(:password)
+		
+		user.login = 'aaaa'
+  	assert !user.valid?
+  	
+  	#password should not exceed 40 characters.
+  	user.password = 'aaaaabbbbbcccccdddddeeeeefffffggggghhhhhiiiiijjjjjkkkkk'
+  	assert !user.valid?
+		assert_equal "is too long (maximum is 40 characters)" , user.errors.on(:password)
+		
+  end
+
+	def test_email_format
+  	user = User.new(:firstname => 'jitendra', :lastname => 'rai', 
+  									:login => 'jitendrarai', :password => 'magadh', 
+  									:password_confirmation => 'magadh',:speedlms_subdomain => 'jitendra', 
+  									:identity_url => nil)
+  	
+  	user.email = 'jitendra'
+  	assert !user.valid?
+		
+		user.email = 'jitendra@gmail'
+  	assert !user.valid?
+  	
+  	user.email = 'jitendra@gmail.com.in.uk'
+  	assert user.valid?
+  	
+  	user.email = 'jitendra.vinsol@gmail.com'
+  	assert user.valid?
+  	
+  end
+	
+	def test_logo_format
+  	ok = %w{ fred.gif fred.jpg fred.png FRED.JPG FRED.Jpg
+           http://a.b.c/x/y/z/fred.gif }
+  	bad = %w{ fred.doc fred.gif/more fred.gif.more }
+  	
+  	ok.each do |name|                                       
+    user = User.new(:firstname => "jitendra", :lastname => 'rai', 
+    								:login => "jitendrarai", :email => "jitendra@gmail.com",
+    								:password => 'magadh', :password_confirmation => 'magadh', 
+    								:role => 'Owner',:identity_url => nil,
+    								:organisation => 'vinsol', :timezone => '(UTC + 5:30) New Delhi', 
+    								:speedlms_subdomain => 'jitendra', :logo => name)
+    								
+    plan = SignupPlan.new(:name => 'Free')
+    user.signup_plan = plan
+    assert user.valid?, user.errors.full_messages
+  	end
+  	
+  	bad.each do |name|
+    user = User.new(:firstname => "jitendra", :lastname => 'rai', 
+    								:login => "jitendrarai", :email => "jitendra@gmail.com",
+    								:password => 'magadh', :password_confirmation => 'magadh', 
+    								:role => 'Owner', :identity_url => nil,
+    								:organisation => 'vinsol', :timezone => '(UTC + 5:30) New Delhi', 
+    								:speedlms_subdomain => 'jitendra', :logo => name)
+    								
+    plan = SignupPlan.new(:name => 'Free')
+    user.signup_plan = plan
+    assert !user.valid?
+  	end
+	end
 
   def test_should_require_login
     assert_no_difference 'User.count' do
@@ -40,9 +143,31 @@ class UserTest < Test::Unit::TestCase
       assert u.errors.on(:email)
     end
   end
+  
+  def test_unique_login
+  	user = User.new(:login => users(:quentin).login, :firstname => 'jitendra', :lastname => 'rai', :email => 'jitendra@gmail.com')
+	  assert !user.save
+  	assert_equal ActiveRecord::Errors.default_error_messages[:taken],
+             user.errors.on(:login)
+
+	end
+
+	def test_unique_email
+  	user = User.new(:email => users(:quentin).email, :firstname => 'jitendra', :lastname => 'rai', :login => 'jitendra')
+	  assert !user.save
+  	assert_equal ActiveRecord::Errors.default_error_messages[:taken],
+             user.errors.on(:email)
+	end
+	
+	def test_unique_speedlms_subdomain
+  	user = User.new(:speedlms_subdomain => users(:quentin).speedlms_subdomain, :login => 'jitendra', :firstname => 'jitendra', 
+  									:lastname => 'rai', :email => 'jitendra@gmail.com')
+	  assert !user.save
+  	assert_equal "has already been taken" , user.errors.on(:speedlms_subdomain)
+	end
 
   def test_should_reset_password
-    users(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
+   	users(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
     assert_equal users(:quentin), User.authenticate('quentin', 'new password')
   end
 

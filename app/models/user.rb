@@ -4,22 +4,26 @@ class User < ActiveRecord::Base
   ROLE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
   attr_accessor :password
 	validates_presence_of     :firstname, :lastname
-  validates_presence_of     :login, :email, :if => :not_openid?
+  validates_presence_of     :login, :email, 
+  													:if => :not_openid?
   validates_presence_of     :signup_plan ,:speedlms_subdomain, :organisation, :logo, :timezone,
   													:if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
-  validates_presence_of     :password,                   :if => :password_required? 
-  validates_presence_of     :password_confirmation,      :if => :password_required?
-  validates_length_of       :password, :within => 4..40, :if => (:password_required? and Proc.new{|a| a.password.length > 0 if a.password})
-  validates_confirmation_of :password,                   :if => :password_required?
-  validates_length_of       :login,    :within => 3..40, :if => (:not_openid? and Proc.new{ |a| a.login.length > 0 if a.login})
-  validates_length_of       :email,    :within => 3..100, :if => (:not_openid? and Proc.new{|a| a.email.length > 0 if a.email})
-  validates_uniqueness_of   :login, :email, :salt, :speedlms_subdomain
+  validates_presence_of     :password, :password_confirmation, 
+  													:if => :password_required? 
+  validates_length_of       :password, :within => 4..40, 
+  													:if => (:password_required? and Proc.new{|a| a.password.length > 0 if a.password})
+  validates_confirmation_of :password,                   
+  													:if => :password_required?
+  validates_length_of       :login,    :within => 3..40, 
+  													:if => (:not_openid? and Proc.new{ |a| a.login.length > 0 if a.login})
+  validates_length_of       :email,    :within => 3..40, 
+  													:if => (:not_openid? and Proc.new{|a| a.email.length > 0 if a.email}) 
   validates_format_of 			:email, :with =>%r{^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$}, 
                       			:if => Proc.new{|a| a.email.length > 0 if a.email}
-  validates_format_of 			:logo, :with => /\b[a-z0-9_-]+\.(jpg|jpeg|gif|png|bmp|tiff)\b/i, 
+  validates_format_of 			:logo, :with => %r{\.(gif|jpg|png)$}i, 
                       			:if => Proc.new{|a| a.logo.length > 0 if a.logo}
-  #validates_format_of 			:speedlms_url, :with => /^[a-zA-Z0-9-]+\.speedlms\.com$/, 
-                      			#:if => Proc.new{|a| a.speedlms_url.length > 0 if a.speedlms_url}                      
+  validates_uniqueness_of   :login, :email, :speedlms_subdomain
+                      			                   
   before_save 							:encrypt_password
   
   # prevents a user from submitting a crafted form that bypasses activation
