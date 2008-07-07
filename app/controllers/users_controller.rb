@@ -97,7 +97,7 @@ class UsersController < ApplicationController
 	  	flash[:notice] = "Thanks for sign up!"
 	  	@current_user = @user
     	session[:user_id] = @current_user.id
-    	render :action => "owner_index"
-  end
+    	redirect_to @current_user.speedlms_url
+  end 
    
 end
