@@ -52,22 +52,22 @@ class UsersController < ApplicationController
   end  
   
   def forgot
-      if request.post?
-        user = User.find_by_email(params[:user][:email])
-         if user
-           user.pcode = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
-           user.save
-           url = reset_path(:pcode => user.pcode, :only_path => false)
-           email = ConfirmMailer.create_sent(user, url)
-           email.set_content_type("text/html")
-           ConfirmMailer.deliver(email)
-           flash[:notice] = "Notification sent to #{user.email}"
-           redirect_back_or_default('/')
-         else
-          flash[:notice] = "Please enter a valid email"
-          render :action => 'forgot'
-        end 
-     end
+   if request.post?
+     user = User.find_by_email(params[:user][:email])
+      if user
+        user.pcode = Digest::SHA1.hexdigest(Time.now.to_s.split(//).sort_by {rand}.join )
+        user.save
+        url = reset_path(:pcode => user.pcode, :only_path => false)
+        email = ConfirmMailer.create_sent(user, url)
+        email.set_content_type("text/html")
+        ConfirmMailer.deliver(email)
+        flash[:notice] = "Notification sent to #{user.email}"
+        redirect_back_or_default('/')
+       else
+        flash[:notice] = "Please enter a valid email"
+        render :action => 'forgot'
+      end 
+    end
   end
   
   def reset
@@ -87,7 +87,9 @@ class UsersController < ApplicationController
   def add_tutors
     @user = User.new(params[:user])
     @user.role = User::ROLE[:tutor]
-  end  
+    @user.save
+    flash[:notice] = "#{@user.login} is added as tutor"
+  end
   
   private
   def successful_signup 
@@ -96,6 +98,6 @@ class UsersController < ApplicationController
 	  	@current_user = @user
     	session[:user_id] = @current_user.id
     	render :action => "owner_index"
-  end 
+  end
    
 end
