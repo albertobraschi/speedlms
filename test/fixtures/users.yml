@@ -18,3 +18,34 @@ aaron:
  firstname: desmond
  lastname: hens
  
+abra:
+ firstname: abra
+ lastname: dabra
+ login: abrakadabra
+ salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+ crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+ created_at: <%= 1.days.ago.to_s :db %>
+ speedlms_subdomain: 123speed
+ email: 123@gmail.com
+ role: Owner
+ organisation: vinsol
+ timezone: (UTC + 5:30) New Delhi 
+ speedlms_subdomain: abra
+ logo: image.jpg
+ signup_plan_id: 1
+ 
+laloo:
+ firstname: laloo
+ lastname: prasad
+ login: lala
+ salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+ crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+ created_at: <%= 1.days.ago.to_s :db %>
+ speedlms_subdomain: lala
+ email: lala@gmail.com
+ role: Owner
+ organisation: vinsol
+ timezone: (UTC + 5:30) New Delhi 
+ speedlms_subdomain: lala
+ logo: image1.jpg
+ signup_plan_id: 1

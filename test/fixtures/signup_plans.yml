@@ -1,7 +1,17 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-# one:
-#   column: value
-#
-# two:
-#   column: value
+one:
+ id: 1
+ name: plan1
+ time_period: 1
+ no_of_tutors: 2
+ no_of_courses: 5
+ no_of_students: 10
+ price: 29
+ 
+two:
+ id: 2
+ name: plan2
+ time_period: 1
+ no_of_tutors: 5
+ no_of_courses: 15
+ no_of_students: 50
+ price: 119
