@@ -6,6 +6,19 @@ class UserTest < Test::Unit::TestCase
   include AuthenticatedTestHelper
   fixtures :users
   
+  def test_user_belongs_to_signup_plans
+  	plan = SignupPlan.new(:name => 'free')
+  	user = User.new(:firstname => 'jitendra', :lastname => 'rai', 
+  									:login => 'jitendrarai', :password => 'magadh', 
+  									:password_confirmation => 'magadh',:speedlms_subdomain => 'jitendra', 
+  									:identity_url => nil, :email => 'jitendra@gmail.com', :role => 'Owner',
+  									:organisation => 'vinsol', :timezone => '(UTC + 5:30) New Delhi', 
+    								:speedlms_subdomain => 'jitendra', :logo => 'image.jpg')
+  	user.signup_plan = plan
+  	assert user.valid?
+  	assert user.signup_plan, plan
+  end
+  
   def test_invalid_without_first_and_last_name
   	user = User.new
   	assert !user.valid?
