@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
   end
   
 	def	speedlms_url  
-		speedlms_url = "http://#{self.speedlms_subdomain}.localhost:3000/"
+		speedlms_url = "http://#{self.speedlms_subdomain}.speedlms.dev/"
 	end
 	
 
