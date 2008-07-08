@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<title>
+			Speedlms
+		</title>
+		<%= stylesheet_link_tag "secure.css" , :media => "all" %>
+		<%= javascript_include_tag :defaults %>
+	</head>
+	<body>
+		<div id = "header">
+			<h3>
+      	<span id = "top_right" >
+      		<% if @current_subdomain %>
+						<%= link_to 'tutors', add_tutors_users_path %>								
+					<% end %> 
+      	</span>
+    	</h3>
+			<h1>
+				Welcome <%= @current_subdomain %>
+			</h1>
+		</div>	
+	</body>	
+</html>

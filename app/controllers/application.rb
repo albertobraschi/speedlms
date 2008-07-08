@@ -10,11 +10,14 @@ class ApplicationController < ActionController::Base
   # stores the current_subdomain in a variable 
   def getSubdomainDetails
      @current_subdomain = self.request.subdomains[0]        
+     if @current_subdomain
+       render :layout => 'owner'
+    end 
   end
   
   private
-  
   def authorize
+    p "authorize"
     unless User.find_by_id(session[:user_id])
       flash[:notice]="Please login"
       redirect_to new_session_path and return
@@ -29,7 +32,6 @@ class ApplicationController < ActionController::Base
   end
 
   # It automatically logins user if he has checked remember_me option.
-
 
   def login_from_cookie
     return unless cookies[:auth_token] && session[:user_id].nil?

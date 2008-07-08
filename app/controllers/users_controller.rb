@@ -82,6 +82,7 @@ class UsersController < ApplicationController
     end
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end
+  
   def update
     @user = User.find(params[:id])
     respond_to do |format|
@@ -126,7 +127,7 @@ class UsersController < ApplicationController
         end
      end
   end
-  
+    
   def add_tutors
     @user = User.new(params[:user])
     @user.role = User::ROLE[:tutor]
