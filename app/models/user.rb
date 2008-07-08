@@ -108,7 +108,6 @@ class User < ActiveRecord::Base
     def encrypt_password
       return if password.blank?
       self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}}--") if new_record?
-      debugger
       self.crypted_password = encrypt(password)
     end
       
