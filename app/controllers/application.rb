@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
 
- before_filter :getSubdomainDetails
+ #before_filter :getSubdomainDetails
   
   helper :all # include all helpers, all the time
   # See ActionController::RequestForgeryProtection for details
@@ -9,15 +9,16 @@ class ApplicationController < ActionController::Base
   
   # stores the current_subdomain in a variable 
   def getSubdomainDetails
-     @current_subdomain = self.request.subdomains[0]        
-     if @current_subdomain
-       render :layout => 'owner'
+     @current_subdomain = self.request.subdomains[0]    
+     if @current_subdomain  
+       redirect_to :controller => "users", :action => "index"
+      else
+        redirect_to :controller =>"/" 
     end 
   end
   
   private
   def authorize
-    p "authorize"
     unless User.find_by_id(session[:user_id])
       flash[:notice]="Please login"
       redirect_to new_session_path and return

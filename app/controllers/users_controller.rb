@@ -1,10 +1,9 @@
 class UsersController < ApplicationController
 	include AuthenticatedSystem
 	include ActiveMerchant::Billing
-	before_filter :authorize,:only => :index
-
+	before_filter :authorize, :only => :index
 	before_filter :current_user, :except=>[:new, :create]
-    skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
+  skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
 
   def new
     @user = User.new() 
@@ -12,6 +11,7 @@ class UsersController < ApplicationController
   end
   
   def create
+    @current_subdomain = self.request.subdomains[0]
     cookies.delete :auth_token 
     @user = User.new(params[:user])
     @user.role = User::ROLE[:owner]
@@ -74,7 +74,6 @@ class UsersController < ApplicationController
       end
     end
     render :nothing => true
-
   end
   
   def confirm
@@ -134,11 +133,13 @@ class UsersController < ApplicationController
   end
     
   def add_tutors
-    @user = User.new(params[:user])
-    @user.role = User::ROLE[:tutor]
-    @user.save
-    flash[:notice] = "#{@user.login} is added as tutor"
-  end
+      @user = User.new(params[:user])
+      @user.role = User::ROLE[:tutor]
+     # debugger
+      if @user.save
+      flash[:notice] = "#{@user.login} is added as tutor"
+    end
+  end  
   
   private
   def successful_signup 
@@ -146,7 +147,8 @@ class UsersController < ApplicationController
 	  	flash[:notice] = "Thanks for sign up!"
 	  	@current_user = @user
     	session[:user_id] = @current_user.id
-    	redirect_to @current_user.speedlms_url
+    	redirect_to @current_user.speedlms_url + "users"
+    	debugger
   end 
    
 end
