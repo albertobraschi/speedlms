@@ -8,9 +8,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.open_id_complete 'session', :controller => "sessions", :action => "create", :requirements => { :method => :get }
   
-  map.root :controller => 'sessions'
+  map.root :controller => 'sessions', :action => 'view_pages'
   
-  map.resource :session, :collection => {:destroy => :delete}, :member => {:view_pages => :get}
+  map.resource :session, :collection => {:destroy => :delete, :index => :get}, :member => {:view_pages => :get}
   
   map.namespace :admin do |admin|
      admin.resources :users, :sessions, :pages, :signup_plans

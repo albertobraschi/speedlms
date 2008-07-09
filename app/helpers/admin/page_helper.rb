@@ -7,6 +7,10 @@ module Admin::PageHelper
 	def is_show_form_column(record,input_name)
 		check_box :record, :is_show, :name => input_name
 	end
+	
+	def is_index_form_column(record,input_name)
+		check_box :record, :is_index, :name => input_name
+	end
 
 	def body_column(record)
     sanitize(record.body)
