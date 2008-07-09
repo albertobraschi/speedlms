@@ -22,7 +22,8 @@ class User < ActiveRecord::Base
                       			:if => Proc.new{|a| a.email.length > 0 if a.email}
   validates_format_of 			:logo, :with => %r{\.(gif|jpg|png)$}i, 
                       			:if => Proc.new{|a| a.logo.length > 0 if a.logo}
-  validates_uniqueness_of   :login, :email, :speedlms_subdomain
+  validates_uniqueness_of   :login, :email, :if => :not_openid?
+  validates_uniqueness_of   :speedlms_subdomain, :if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
                       			                   
   before_save 							:encrypt_password
   
@@ -108,7 +109,6 @@ class User < ActiveRecord::Base
     def encrypt_password
       return if password.blank?
       self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}}--") if new_record?
-      debugger
       self.crypted_password = encrypt(password)
     end
       

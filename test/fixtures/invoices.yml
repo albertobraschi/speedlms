@@ -1,7 +1,15 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+ id: 1
+ description: this is invoice one
+ amount: 28.75
+ user_id: 1
+ signup_plan_id: 1
+ status: "Payment due"
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+two:
+ id: 2
+ description: this is invoice two
+ amount: 125
+ user_id: 2
+ signup_plan_id: 1
+ status: "Confirmed"

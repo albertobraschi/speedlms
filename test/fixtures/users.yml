@@ -1,4 +1,5 @@
 quentin:
+ id: 1
  login: quentin
  email: quentin@example.com
  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
@@ -9,6 +10,7 @@ quentin:
  lastname: crow
  
 aaron:
+ id: 2
  login: aaron
  email: aaron@example.com
  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
@@ -19,6 +21,7 @@ aaron:
  lastname: hens
  
 abra:
+ id: 3
  firstname: abra
  lastname: dabra
  login: abrakadabra
@@ -35,6 +38,7 @@ abra:
  signup_plan_id: 1
  
 laloo:
+ id: 4
  firstname: laloo
  lastname: prasad
  login: lala
