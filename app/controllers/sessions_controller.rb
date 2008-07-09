@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
 	include AuthenticatedSystem
-	
+	#skip_before_filter :getSubdomainDetails
 	# This filter looks for presence of remember_me.
 	before_filter :login_from_cookie, :only => [:new,:create] 
 	before_filter :current_user 

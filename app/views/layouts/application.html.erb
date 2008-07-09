@@ -20,6 +20,9 @@
 						<%= link_to 'My Info', edit_user_path(@current_user.id) %>
 						<%= link_to 'Logout', destroy_session_path, :method => :delete %>
 					<% end %> 
+					<% if @current_subdomain %>
+						<%= link_to 'Tutors' %>
+					<% end %>	
         </span>
       </h3>
       <h1>Welcome to SpeedLMS</h1>

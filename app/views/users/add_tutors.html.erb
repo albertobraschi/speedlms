@@ -1,40 +1,23 @@
-<%= error_messages_for 'user' %>
-	<div align= 'center' >
-		<div id = "add_tutor">
-			<h3>
-				Adding a new tutor
-			</h3>
-		<% form_for :user do |f| %>
-		<div id = "signup" class = "fieldset_left">
-			<div class = "normal">
-				<label for="Login">
-					Login:
-				</label>
-				<label for="Email">
-					Email:
-				</label>	
-				<label for="Password">
-					Password:
-				</label>
-				<label for="ConfirmPassword">
-					ConfirmPassword:
-				</label>
-				<label for="Url">
-					Url:
-				</label>
-			</div>
-		</div>
-		<div id = "signup" class = "fieldset_right">
-			<div class = "normal">
-				<p><%= f.text_field :login %></p>
-				<p><%= f.text_field :email %></p>
-				<p><%= f.password_field :password %></p>
-				<p><%= f.password_field :password_confirmation %></p>
-				<p><%= f.text_field :url %></p>
+
+<% form_for :user do |f|%>
+	<div class="tutor_form">
+	<div class="fields">
+		<p><label>Login: </label></p>
+		<p><label>Firstname: </label></p>
+		<p><label>Lastname: </label></p>
+		<p><label>Email: </label></p>
+		<p><label>Password: </label></p>
+		<p><label>Confirm password: </label></p>
+	</div>
+	<div class="containers">
+				<p><%= f.text_field :login, :size => 15 %></p>
+				<p><%= f.text_field :firstname, :size => 15 %></p>
+				<p><%= f.text_field :lastname, :size => 15 %></p>
+				<p><%= f.text_field :email, :size => 15 %></p>
+				<p><%= f.password_field :password, :size => 15 %></p>
+				<p><%= f.password_field :password_confirmation, :size => 15 %></p>
 				<p><%= f.hidden_field :role %></p>
-			<div>
 				<p><%= submit_tag 'submit' %></p>
 		</div>
 	 </div>
-	</div>		
 	<%end%>			
