@@ -35,11 +35,6 @@ class UsersController < ApplicationController
     @current_user = User.find(params[:id])
   end
   
-  #checks
-  def check_subdomain
-  	@users = User.find(:all)
-  end
-  
   def payment
   	@plan = SignupPlan.find_by_id(@current_user.plan)
   	@invoice = Invoice.new
