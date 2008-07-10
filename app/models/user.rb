@@ -99,6 +99,14 @@ class User < ActiveRecord::Base
   	end
   end
   
+  def is_owner?
+  	if self.role == ROLE[:owner]
+  		return true
+  	else
+  	  return false
+  	end
+  end
+  
   def delete_pcode
     self.pcode = nil
     self.save

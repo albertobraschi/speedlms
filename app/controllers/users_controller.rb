@@ -135,7 +135,6 @@ class UsersController < ApplicationController
   def add_tutors
       @user = User.new(params[:user])
       @user.role = User::ROLE[:tutor]
-     # debugger
       if @user.save
       flash[:notice] = "#{@user.login} is added as tutor"
     end
