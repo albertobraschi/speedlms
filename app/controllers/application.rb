@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
   
   private
   def authorize
+    debugger
     unless User.find_by_id(session[:user_id])
       flash[:notice]="Please login"
       redirect_to new_session_path and return

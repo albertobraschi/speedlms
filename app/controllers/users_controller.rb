@@ -35,6 +35,11 @@ class UsersController < ApplicationController
     @current_user = User.find(params[:id])
   end
   
+  #checks
+  def check_subdomain
+  	@users = User.find(:all)
+  end
+  
   def payment
   	@plan = SignupPlan.find_by_id(@current_user.plan)
   	@invoice = Invoice.new
@@ -142,7 +147,7 @@ class UsersController < ApplicationController
 	  	flash[:notice] = "Thanks for sign up!"
 	  	@current_user = @user
     	session[:user_id] = @current_user.id
-    	redirect_to @current_user.speedlms_url + "users"
+    	redirect_to @current_user.speedlms_url + users_path
   end 
    
 end
