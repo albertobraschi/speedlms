@@ -148,7 +148,6 @@ class UsersController < ApplicationController
 	  	@current_user = @user
     	session[:user_id] = @current_user.id
     	redirect_to @current_user.speedlms_url + "users"
-    	debugger
   end 
    
 end

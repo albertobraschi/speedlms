@@ -29,7 +29,6 @@ padding: 0px;
 }
  
 #main_content {
-	float: left;
   position: relative;  
   margin: 2px;
   text-align: left;
@@ -45,10 +44,10 @@ padding: 0px;
 }
 
 #content_left {
-  margin: 2px 20px 2px 22px;
+  margin: 2px 5px 2px 8px;
   padding: 4px 0px 4px 10px; 
   float: left;
-  width: 531px;
+  width: 600px;
   border-bottom: 3px solid #999999;
   border-right: 3px solid #999999;
   background: #FFFFFF;  
