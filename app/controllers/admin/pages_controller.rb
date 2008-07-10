@@ -30,5 +30,6 @@ class Admin::PagesController < ApplicationController
   config.create.columns = [:title,:description,:is_show, :is_index]
   list.columns.exclude [:description]
   list.sorting = {:title => 'DESC'}   
-  end  
+  end 
+  
 end
