@@ -20,14 +20,16 @@ class Admin::PagesController < ApplicationController
                            :theme_advanced_buttons3 => [],
                            :plugins => %w{contextmenu paste}},
               :only => [:new, :edit, :show, :index])	
+              
 	before_filter :current_user 
   before_filter :authorized_as_admin
+  
 	active_scaffold :page do |config|
   config.label = "Pages"
-  config.columns = [:title,:description,:is_show]
+  config.columns = [:title,:description,:is_show, :is_index]
+  config.create.columns = [:title,:description,:is_show, :is_index]
   list.columns.exclude [:description]
   list.sorting = {:title => 'DESC'}   
-#p columns[:title].body
-  end
-    
+  end 
+  
 end

@@ -89,6 +89,7 @@
 					</div>
 					<div class = "normal" >
 						<%= f.text_field :speedlms_subdomain, :size => 20, :class => 'first' %>
+						<%= link_to_remote 'Check Availibility', :url => {:action => 'check_subdomain_availibility'},:html => {:onclick => "javascript:subDomainValue()"} %>
 					</div>
 					<div class = "normal" >
 						<%= f.text_field :organisation, :size => 20, :class => 'first' %>
