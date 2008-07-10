@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   end
   
   private
+  #check authorization of a user with session
   def authorize
     unless User.find_by_id(session[:user_id])
       flash[:notice]="Please login"
@@ -25,6 +26,7 @@ class ApplicationController < ActionController::Base
     end       
   end
   
+  #checks whether an user is an admin or not!
   def authorized_as_admin
   	unless  @current_user and @current_user.is_admin?
   		flash[:notice]="Please login as Administrator"
@@ -32,8 +34,7 @@ class ApplicationController < ActionController::Base
   	end
   end
 
-  # It automatically logins user if he has checked remember_me option.
-
+  # It automatically login an user if he has checked remember_me option.
   def login_from_cookie
     return unless cookies[:auth_token] && session[:user_id].nil?
     user = User.find_by_remember_token(cookies[:auth_token]) 
