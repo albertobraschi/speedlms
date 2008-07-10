@@ -99,7 +99,7 @@ class SessionsController < ApplicationController
 					format.js
 				end					
 			else
-			  redirect_to @current_user.speedlms_url
+			  redirect_to @current_user.speedlms_url + "users"
 			end    
 		else
 			render :action => 'new'
