@@ -38,6 +38,8 @@ class SessionsController < ApplicationController
 	  	@page = Page.find_by_id(params[:id])
 	  else
 	  	@page = Page.find_index_page
+	  	if @page
+	  	end
 	  end
 	  	render :layout => 'public'
 	end

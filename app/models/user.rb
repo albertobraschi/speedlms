@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 	validates_presence_of     :firstname, :lastname
   validates_presence_of     :login, :email, 
   													:if => :not_openid?
-  validates_presence_of     :signup_plan ,:speedlms_subdomain, :organisation, :logo, :timezone,
+  validates_presence_of     :signup_plan ,:speedlms_subdomain, :organisation, :timezone,
   													:if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
   validates_presence_of     :password, :password_confirmation, 
   													:if => :password_required? 
