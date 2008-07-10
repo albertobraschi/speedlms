@@ -135,7 +135,6 @@ class UsersController < ApplicationController
   def add_tutors
       @user = User.new(params[:user])
       @user.role = User::ROLE[:tutor]
-     # debugger
       if @user.save
       flash[:notice] = "#{@user.login} is added as tutor"
     end
@@ -147,7 +146,7 @@ class UsersController < ApplicationController
 	  	flash[:notice] = "Thanks for sign up!"
 	  	@current_user = @user
     	session[:user_id] = @current_user.id
-    	redirect_to @current_user.speedlms_url + "users"
+    	redirect_to @current_user.speedlms_url + users_path
   end 
    
 end

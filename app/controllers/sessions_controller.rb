@@ -98,7 +98,7 @@ class SessionsController < ApplicationController
 					format.html {redirect_to admin_users_path and return}
 					format.js
 				end					
-			else
+			elsif @current_user.is_owner?
 			  redirect_to @current_user.speedlms_url + users_path
 			end    
 		else
