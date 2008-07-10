@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 	include AuthenticatedSystem
 	include ActiveMerchant::Billing
-	before_filter :authorize, :only => :index
+	before_filter :authorize, :only=>[:index]
 	before_filter :current_user, :except=>[:new, :create]
   skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
 
@@ -155,7 +155,7 @@ class UsersController < ApplicationController
 	  	flash[:notice] = "Thanks for sign up!"
 	  	@current_user = @user
     	session[:user_id] = @current_user.id
-    	redirect_to @current_user.speedlms_url + users_path, :sess => session[:user_id]
+    	redirect_to @current_user.speedlms_url + users_path(:sess => session[:user_id]) 
   end 
    
 end

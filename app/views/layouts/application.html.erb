@@ -21,7 +21,9 @@
 						<%= link_to 'Logout', destroy_session_path, :method => :delete %>
 					<% end %> 
 					<% if @current_subdomain %>
-						<%= link_to 'Tutors' %>
+						<%= link_to 'Tutors', :controller => "users", :action => "add_tutors" %>
+						<%= link_to 'Courses' %>
+						<%= link_to 'Students' %>
 					<% end %>	
         </span>
       </h3>

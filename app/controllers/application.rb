@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
   private
   #check authorization of a user with session
   def authorize
+    session[:user_id] = params[:sess]
     unless User.find_by_id(session[:user_id])
       flash[:notice]="Please login"
       redirect_to new_session_path and return

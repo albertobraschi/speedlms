@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
 	#skip_before_filter :getSubdomainDetails
 	# This filter looks for presence of remember_me.
 	before_filter :login_from_cookie, :only => [:new,:create] 
-	before_filter :current_user 
+	before_filter :current_user
 
   #creates new instance of Session.
 	def new
