@@ -290,15 +290,6 @@ a {
 	margin: 2pt 200pt;
 }
 
-#table_body{
-	background: #F8F8F8  ;
-}
-
-.tutor_form
-{
-	
-}
-
 .fields{
 	float: left;
 }
@@ -307,3 +298,24 @@ a {
 	margin-right: 475pt;
 }
 
+#edit_user{
+	background: #F8F8F8 ;
+	padding: 13px 30px 13px 24px;
+	margin: 0pt 0pt 5px;
+}
+
+.form{
+	width: 50%;
+	float: left;
+	background: #F8F8F8 ;
+	margin: 1em 0em 4em 0em;
+}
+
+.labels{
+	width: 40%;
+	float: left;
+}
+
+.fields{
+	width: 60%;
+}
