@@ -1,9 +1,9 @@
 class SessionsController < ApplicationController
 	include AuthenticatedSystem
-	
+	#skip_before_filter :getSubdomainDetails
 	# This filter looks for presence of remember_me.
 	before_filter :login_from_cookie, :only => [:new,:create] 
-	before_filter :current_user 
+	before_filter :current_user
 
   #creates new instance of Session.
 	def new
@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
 		render :layout => 'public'
 	end
   
+  #creates session for either openid or username/password login
 	def create
 		if using_open_id?
 			open_id_authentication
@@ -26,16 +27,24 @@ class SessionsController < ApplicationController
 		end
 	end
 	
+	
 	def index
-	  render :layout => 'public'
+		render :layout => 'public'
 	end
 	
+	#It finds the pages created by admin and index page
 	def view_pages
-	  @page = Page.find_by_id(params[:id])
-	  render :layout => 'public'
+		if params[:id]
+	  	@page = Page.find_by_id(params[:id])
+	  else
+	  	@page = Page.find_index_page
+	  	if @page
+	  	end
+	  end
+	  	render :layout => 'public'
 	end
 	
-      
+  #destroys session    
 	def destroy
 		@current_user.forget_me if logged_in?
 		cookies.delete :auth_token
@@ -49,6 +58,7 @@ class SessionsController < ApplicationController
                             
 	protected
 	
+    #checks authentication for username/password login	
 		def password_authentication(name, password)
 			if @current_user =User.authenticate(params[:name], params[:password])
 				successful_login
@@ -57,6 +67,7 @@ class SessionsController < ApplicationController
 			end
 		end
 
+    #checks authentication for openid login	
 		def open_id_authentication 
 			authenticate_with_open_id do |result, identity_url|
 			if result.successful?
@@ -73,6 +84,7 @@ class SessionsController < ApplicationController
         
 	private
 	
+	#checks for presence of remember me redirects users according to their role
 	def successful_login
 		session[:user_id] = @current_user.id
 		if logged_in?
@@ -86,14 +98,15 @@ class SessionsController < ApplicationController
 					format.html {redirect_to admin_users_path and return}
 					format.js
 				end					
-			else
-			  redirect_to @current_user.speedlms_url
+			elsif @current_user.is_owner?
+			  redirect_to @current_user.speedlms_url + users_path
 			end    
 		else
 			render :action => 'new'
 		end    
 	end
 
+	#redirect user to login page if current attempt fails
 	def failed_login(message)
 		flash[:error] = message
 		respond_to do |format|

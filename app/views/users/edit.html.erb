@@ -1,37 +1,52 @@
-<%= error_messages_for 'user' %>
 <% form_for @current_user do |f| -%>
-	<table>
-		<thead>
-			<tr>
-			<div id = "table_head"><fieldset style="text-align:left"><b>Edit <%= @current_user.login %></b></div>
-			</tr>
-			</thead>
-			<tbody>
-				<div id="table_body">	
-					<tr>	
-					  <td><label>Login:</label></td>
-						<td><%= f.text_field :login %></td>
-					</tr>
-					<tr>
-					 	<td><label>Email:</label></td>
-						<td><%= f.text_field :email %></td>
-					</tr>
-					<tr>
-					 	<td><label>Password:</label></td>
-						<td><%= f.password_field :password %></td>
-					</tr>
-					<tr>
-					 	<td><label>Confirm Password:</label></td>
-						<td><%= f.password_field :password_confirmation %></td>
-					</tr> 
-					<tr>
-						<td><%= submit_tag "Submit" %></td>
-					</tr>
-			</div>					
-			</tbody>
-			
-		</table>		
-		</fieldset>
+
+	<div id="edit_user" >Edit <%= @current_user.firstname %> <%= @current_user.lastname %> </div>
+	<div class="form">
+		<div class="labels">
+			<div class="normal">
+				<label for="firstname">First Name:</label>
+			</div>		
+			<div class="normal">
+			<label for="lastname">Last Name:</label>
+				</div>
+				<div class="normal">
+			<label for="email">Email:</label>
+				</div>
+				<div class="normal">
+			<label for="login">Username:</label>
+				</div>
+				<div class="normal">
+			<label for="password">Password:</label>
+				</div>
+				<div class="normal">
+			<label for="password_confirmation">Confirm Password:</label>	
+				</div>
+		</div>
+		<div class="fields">
+			<div class="normal">
+				<%= f.text_field :firstname %>
+			</div>
+			<div class="normal">	
+			  <%= f.text_field :lastname %>	
+			</div >		
+			<div class="normal">	
+				<%= f.text_field :email %>				
+			</div>
+			<div class="normal">	
+				<%= f.text_field :login %>			
+			</div>
+			<div class="normal">	
+				<%= f.password_field :password %>			
+			</div>
+			<div class="normal">	
+				<%= f.password_field :password_confirmation %>		
+			</div>	
+		</div>
+		<div class="normal">	
+		<%= submit_tag "Submit" %>	
+	</div>	
+	</div>
+	
 <% end -%>		
 
 

@@ -88,7 +88,14 @@
 						<%= f.password_field :password_confirmation, :size => 20, :class => 'first' %>
 					</div>
 					<div class = "normal" >
+						<span class = "bold">
+							http://
+						</span>
 						<%= f.text_field :speedlms_subdomain, :size => 20, :class => 'first' %>
+						<span class = "bold">
+							.speedlms.com
+						</span>
+						<%#= link_to_remote 'Check Availiability', :url => {:action => 'check_subdomain_availiability'},:html => {:onclick => "javascript:subDomainValue()"} %>
 					</div>
 					<div class = "normal" >
 						<%= f.text_field :organisation, :size => 20, :class => 'first' %>

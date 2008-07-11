@@ -27,9 +27,24 @@
       </div>     
     </div>
     <div id="main">            
-      <div id="main_top">                       
+      <div id="main_top"> 
+      	<% if flash[:notice] %>
+          <div id="notice">
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
+        <% if flash[:error] %>
+          <div id="error">
+            <%= flash[:error] %>
+          </div>
+        <% end %>
+        <% if flash[:message] %>
+          <div id="message">
+            <%= flash[:message] %>
+          </div>
+        <% end %>                      
       </div>
-        <div id="main_content">        
+      <div id="main_content">        
           <%= yield %>               
       </div> 
       <div id="main_footer">

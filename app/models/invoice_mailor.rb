@@ -1,4 +1,7 @@
 class InvoiceMailor < ActionMailer::Base
+
+
+  #sends confirmation email to buyer for his invoice.
   def confirmation(invoice)
     @subject    = '[SpeedLMS] Confirmation of Payment'
     @recipients = [invoice.user.email, 'admin@speedlms.com']

@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 	validates_presence_of     :firstname, :lastname
   validates_presence_of     :login, :email, 
   													:if => :not_openid?
-  validates_presence_of     :signup_plan ,:speedlms_subdomain, :organisation, :logo, :timezone,
+  validates_presence_of     :signup_plan ,:speedlms_subdomain, :organisation, :timezone,
   													:if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
   validates_presence_of     :password, :password_confirmation, 
   													:if => :password_required? 
@@ -32,8 +32,7 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :password, :password_confirmation, :pcode, :role, :plan, :signup_plan_id, :timezone, :logo, :lastname, :firstname, 
   :organisation, :speedlms_subdomain
   
-  # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
-  
+  # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. 
   def self.authenticate(login, password)
     u = find_by_login(login) # need to get the salt
     u && u.authenticated?(password) ? u : nil
@@ -54,8 +53,7 @@ class User < ActiveRecord::Base
     crypted_password == encrypt(password)
   end
 
-  # ruby: no such file to load -- ubygems (LoadError)
-  
+  #sets remember_token expiry time.
   def remember_token?
     remember_token_expires_at && Time.now.utc < remember_token_expires_at 
   end
@@ -74,15 +72,17 @@ class User < ActiveRecord::Base
     self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
     save(false)
   end
-
+  
+  #destroys remember_token and its expiry time
   def forget_me
     self.remember_token_expires_at = nil
     self.remember_token            = nil
     save(false)
   end
   
+  #makes speedlms url for an owner after he signs up.
 	def	speedlms_url  
-		speedlms_url = "http://#{self.speedlms_subdomain}.speedlms.dev/"
+		speedlms_url = "http://#{self.speedlms_subdomain}.speedlms.dev"
 	end
 	
 
@@ -91,6 +91,7 @@ class User < ActiveRecord::Base
     @activated
   end
   
+  #checks if user is admin
   def is_admin?
   	if self.role == ROLE[:admin]
   		return true
@@ -99,23 +100,35 @@ class User < ActiveRecord::Base
   	end
   end
   
+  #checks if user is owner
+  def is_owner?
+  	if self.role == ROLE[:owner]
+  		return true
+  	else
+  	  return false
+  	end
+  end
+  
+  #deletes pcode generated when user has requested forgot password functionality.
   def delete_pcode
     self.pcode = nil
     self.save
   end
 
   protected
-    # before filter 
+    #Encrypts the user password with Digest/SHA1.
     def encrypt_password
       return if password.blank?
       self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}}--") if new_record?
       self.crypted_password = encrypt(password)
     end
       
+    #checks if password is required for validation
     def password_required?
       not_openid? && (crypted_password.blank? || !password.blank?)
     end
     
+    #checks for non-openid login
     def not_openid?
       identity_url.blank?
     end

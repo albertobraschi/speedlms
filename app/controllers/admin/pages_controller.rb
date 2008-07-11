@@ -1,5 +1,6 @@
 class Admin::PagesController < ApplicationController
 	layout 'admin'
+	before_filter :is_page_index?, :only => [:destroy]
 	uses_tiny_mce(:options => {:theme => 'advanced',
                            :browsers => %w{msie gecko},
                            :mode => "specific_textareas",
@@ -20,14 +21,27 @@ class Admin::PagesController < ApplicationController
                            :theme_advanced_buttons3 => [],
                            :plugins => %w{contextmenu paste}},
               :only => [:new, :edit, :show, :index])	
+              
 	before_filter :current_user 
   before_filter :authorized_as_admin
+  
 	active_scaffold :page do |config|
   config.label = "Pages"
-  config.columns = [:title,:description,:is_show]
+  config.columns = [:title,:description,:is_show, :is_index]
+  config.create.columns = [:title,:description,:is_show, :is_index]
   list.columns.exclude [:description]
   list.sorting = {:title => 'DESC'}   
-#p columns[:title].body
+  end 
+  
+  private
+  
+  def is_page_index?
+  	@page = Page.find(params[:id])
+  	if @page.is_index == true
+  		render :update do |page|
+  			page.redirect_to :controller => 'admin/pages'
+  			flash[:notice] = "You can not delete an index page." 		
+  		end
+  	end
   end
-    
 end
