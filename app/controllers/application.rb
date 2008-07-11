@@ -1,21 +1,9 @@
 class ApplicationController < ActionController::Base
-
- #before_filter :getSubdomainDetails
   
   helper :all # include all helpers, all the time
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '9a32d74aad8124005db44b1b832882bb'
-  
-  # stores the current_subdomain in a variable 
-  def getSubdomainDetails
-     @current_subdomain = self.request.subdomains[0]    
-     if @current_subdomain  
-       redirect_to :controller => "users", :action => "index"
-      else
-        redirect_to :controller =>"/" 
-    end 
-  end
   
   private
   #check authorization of a user with session

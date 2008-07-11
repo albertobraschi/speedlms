@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     @current_subdomain = self.request.subdomains[0]
   end
   
-   #Creates a new user.  
+  #Creates a new user.  
   def create
     cookies.delete :auth_token 
     @user = User.new(params[:user])
@@ -33,11 +33,13 @@ class UsersController < ApplicationController
    		render :action => 'new',:layout => 'public'
    	end
   end
-     
+  
+  #Displays the index page of the current user who loggs in   
   def index
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end  
   
+  #sets @current_user variable
   def edit 
     @current_user = User.find(params[:id])
   end
@@ -96,7 +98,7 @@ class UsersController < ApplicationController
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end
   
-  #Updates an user.
+  #Updates the fields of user
   def update
     @user = User.find(params[:id])
     respond_to do |format|
