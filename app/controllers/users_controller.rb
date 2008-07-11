@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 	before_filter :current_user, :except=>[:new, :create]
   skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
 
+	#Makes a new instance of user.
   def new
     @user = User.new() 
     render :layout => 'public'
@@ -15,7 +16,8 @@ class UsersController < ApplicationController
   def current_subdomain
     @current_subdomain = self.request.subdomains[0]
   end
-    
+  
+   #Creates a new user.  
   def create
     cookies.delete :auth_token 
     @user = User.new(params[:user])
@@ -40,11 +42,12 @@ class UsersController < ApplicationController
     @current_user = User.find(params[:id])
   end
   
-  #checks
+  #checks 
   def check_subdomain
   	@users = User.find(:all)
   end
   
+  #Creates invoice for a paid plan user.
   def payment
   	@plan = SignupPlan.find_by_id(@current_user.plan)
   	@invoice = Invoice.new
@@ -55,6 +58,7 @@ class UsersController < ApplicationController
   	@invoice.save!
   end
   
+  #Notifies the user after successful transaction on Paypal.
   def notify
     notify = Paypal::Notification.new(request.raw_post)
     plan = Plan.find(notify.item_id)
@@ -92,6 +96,7 @@ class UsersController < ApplicationController
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end
   
+  #Updates an user.
   def update
     @user = User.find(params[:id])
     respond_to do |format|
@@ -104,6 +109,7 @@ class UsersController < ApplicationController
     end    
   end  
   
+  #Used to sent confirm mail if user forgot password.
   def forgot
    if request.post?
      user = User.find_by_email(params[:user][:email])
@@ -123,6 +129,7 @@ class UsersController < ApplicationController
     end
   end
   
+  #Used to reset password if user forgot it.
   def reset
     @user = User.find_by_pcode(params[:pcode]) unless params[:pcode].nil?
     if @user.nil?
@@ -136,7 +143,8 @@ class UsersController < ApplicationController
         end
      end
   end
-    
+  
+  #Used to add tutors.
   def add_tutors
     if request.post?
       @user = User.new(params[:user])
@@ -148,6 +156,7 @@ class UsersController < ApplicationController
   end  
   
   private
+  #saves an user and makes him/her current user.
   def successful_signup 
       @user.save
 	  	flash[:notice] = "Thanks for sign up!"
