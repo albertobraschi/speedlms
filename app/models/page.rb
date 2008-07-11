@@ -27,14 +27,5 @@ class Page < ActiveRecord::Base
 			page.update_attributes(:is_index => 0) if page
 		end
 	end
-
-	#Callback which prevents an index page from being deleted.
-	def before_destroy
-		@page = Page.find_by_id(self.id)
-		if @page.is_index
-			flash[:notice] = "you can not delete an index page"
-			redirect_to admin_pages_path
-		end
-	end
 	
 end

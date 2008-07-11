@@ -1,5 +1,6 @@
 class Admin::PagesController < ApplicationController
 	layout 'admin'
+	before_filter :is_page_index?, :only => [:destroy]
 	uses_tiny_mce(:options => {:theme => 'advanced',
                            :browsers => %w{msie gecko},
                            :mode => "specific_textareas",
@@ -32,4 +33,15 @@ class Admin::PagesController < ApplicationController
   list.sorting = {:title => 'DESC'}   
   end 
   
+  private
+  
+  def is_page_index?
+  	@page = Page.find(params[:id])
+  	if @page.is_index == true
+  		render :update do |page|
+  			page.redirect_to :controller => 'admin/pages'
+  			flash[:notice] = "You can not delete an index page." 		
+  		end
+  	end
+  end
 end
