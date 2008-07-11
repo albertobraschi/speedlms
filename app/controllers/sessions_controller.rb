@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   #creates new instance of Session.
 	def new
 		if current_user
-			flash[:notice] = "You are already logged in"
+			flash[:notice] = "You are already logged in - YAHOO"
 			if current_user.is_admin?      		
      		redirect_to admin_users_path and return 
      	else     		

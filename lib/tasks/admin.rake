@@ -5,11 +5,11 @@ namespace :admin do
 	  if @user 
 	    puts "There can be only one Admin"	
 		else				         		 
-		 	@admin = User.create(:firstname => 'admin',:lastname => 'admin', :login => "admin",:email => "admin@speedlms.com",
+		 	@admin = User.create(:firstname => 'super',:lastname => 'super', :login => "super",:email => "admin@speedlms.com",
 			                  :password => "pass123",:password_confirmation => "pass123",:role => "Admin")                         			                  
 			puts "#{@admin.login}" if @admin		                             
 			if @admin.save
-			  puts "created admin"
+			  puts "created super admin"
 			end
 		end
 	end
