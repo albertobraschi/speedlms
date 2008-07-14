@@ -146,7 +146,47 @@ class UsersController < ApplicationController
       if @user.save
       flash[:notice] = "#{@user.login} is added as tutor"
     end
-  end  
+  end
+  
+  def check_username_availability
+  	@username = params[:user][:login]
+  	@users = User.find(:all)
+  	if !@username.blank?
+  		@users.each do |user|
+  			if @username == user.login 				
+  				@message = "Username not available"
+  				break
+  			else
+  				@message = "Username available."
+  			end
+  		end
+  	else
+  		@message = "Username should not be blank."
+  	end
+  	render :update do |page|
+  		page.replace_html 'username_availability_message',@message
+  	end
+  end
+  
+  def check_subdomain_availability
+  	@subdomain = params[:user][:speedlms_subdomain]
+  	@users = User.find(:all)
+  	if !@subdomain.blank?
+  		@users.each do |user|
+  			if @subdomain == user.login
+  				@message = "Subdomain not available"
+  				break
+  			else
+  				@message = "Subdomain available."
+  			end
+  		end
+  	else
+  		@message = "Subdomain should not be blank."
+  	end
+  	render :update do |page|
+  		page.replace_html "subdomain_availability_message",@message
+  	end
+  end
   
   private
   #saves an user and makes him/her current user.
