@@ -1,0 +1,3 @@
+LoginDetailsMailer#sent
+
+Find me in app/views/login_details_mailer/sent.erb

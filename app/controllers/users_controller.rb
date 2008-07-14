@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	include AuthenticatedSystem
 	include ActiveMerchant::Billing
+	
 	before_filter :authorize, :only=>[:index]
 	before_filter :current_user, :except=>[:new, :create]
   skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
@@ -11,9 +12,13 @@ class UsersController < ApplicationController
     render :layout => 'public'
   end
   
-  #Creates a new user.
-  def create
+  #Finds the subdomain if present in the url for a given request
+  def current_subdomain
     @current_subdomain = self.request.subdomains[0]
+  end
+  
+  #Creates a new user.  
+  def create
     cookies.delete :auth_token 
     @user = User.new(params[:user])
     @user.role = User::ROLE[:owner]
@@ -28,11 +33,13 @@ class UsersController < ApplicationController
    		render :action => 'new',:layout => 'public'
    	end
   end
-     
+  
+  #Displays the index page of the current user who loggs in   
   def index
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end  
   
+  #sets @current_user variable
   def edit 
     @current_user = User.find(params[:id])
   end
@@ -91,7 +98,7 @@ class UsersController < ApplicationController
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end
   
-  #Updates an user.
+  #Updates the fields of user
   def update
     @user = User.find(params[:id])
     respond_to do |format|
@@ -139,15 +146,23 @@ class UsersController < ApplicationController
      end
   end
   
-  #Used to add tutors.
+  #Used to add and invite tutors.
   def add_tutors
-      @user = User.new(params[:user])
-      @user.role = User::ROLE[:tutor]
+	@tutors = User.find(:all, :conditions => ["role = ? ",  "Tutor"])
+    if request.post?
+	  @user = User.new(params[:user])
+      @user.role = User::ROLE[:tutor] 
       if @user.save
-      flash[:notice] = "#{@user.login} is added as tutor"
-    end
-  end
-  
+      	email = LoginDetailsMailer.create_sent(@user)
+				email.set_content_type("text/html")
+				LoginDetailsMailer.deliver(email)
+        flash[:notice] = "#{@user.login} is added as a tutor"
+				@user = User.new
+      end 
+    end         
+  end  
+
+  #checks availability of username for owner  
   def check_username_availability
   	@username = params[:user][:login]
   	@users = User.find(:all)
@@ -168,6 +183,7 @@ class UsersController < ApplicationController
   	end
   end
   
+  #checks availability of speedlms subdomain for owner
   def check_subdomain_availability
   	@subdomain = params[:user][:speedlms_subdomain]
   	@users = User.find(:all)
@@ -188,6 +204,14 @@ class UsersController < ApplicationController
   	end
   end
   
+  #deletes the user from the list of all users
+  def destroy
+	@user = User.find(params[:id])
+	@user.destroy
+	redirect_to @current_user.speedlms_url + add_tutors_users_path
+	flash[:notice] = "User has been deleted"	
+  end
+  
   private
   #saves an user and makes him/her current user.
   def successful_signup 
@@ -195,7 +219,7 @@ class UsersController < ApplicationController
 	  	flash[:notice] = "Thanks for sign up!"
 	  	@current_user = @user
     	session[:user_id] = @current_user.id
-    	redirect_to @current_user.speedlms_url + users_path(:sess => session[:user_id]) 
+    	redirect_to @current_user.speedlms_url + users_path(:sess => session[:user_id])
   end 
    
 end

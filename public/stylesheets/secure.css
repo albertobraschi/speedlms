@@ -11,7 +11,7 @@ padding: 0px;
 }
 
 #header {
-  background-color:#003366;
+  background:#003366 none repeat scroll 0%;
   padding:0px;
   border-bottom: 3px solid #999999;
 }
@@ -102,7 +102,14 @@ padding: 0px;
   text-align:left;
 }   
 
+h2 {
+  color:#333333;
+  font-family:"Lucida Grande",arial,sans-serif;
+  font-size:18px;
+}
+
 #header h3 {
+  color:#ffffff;
   font-size:12px;
   font-weight:normal;
   margin:0pt;
@@ -123,12 +130,6 @@ padding: 0px;
 #header h3 a:hover {
   background: #0000ff;
   color: #FFFFFF;
-}
-
-h2 {
-  color:#333333;
-  font-family:"Lucida Grande",arial,sans-serif;
-  font-size:18px;
 }
 
 #content_left h2 {
@@ -177,8 +178,8 @@ fieldset.signup {
 .normal {
   color:#222222;
   font-size:14px;
-  line-height:1.3em;
-  padding: 4px;
+  line-height:1.6em;
+  padding: 4px;	
 }
 
 #notice {
@@ -292,6 +293,7 @@ a {
 
 .fields{
 	float: left;
+	width: 40%;
 }
 .containers{
 	float: right;
@@ -299,9 +301,10 @@ a {
 }
 
 #edit_user{
-	background: #F8F8F8 ;
+	background: #F8F8F8;
 	padding: 13px 30px 13px 24px;
-	margin: 0pt 0pt 5px;
+	margin: 0pt 441pt 5px 0px;
+	font-weight: bold;
 }
 
 .form{

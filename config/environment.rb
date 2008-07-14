@@ -2,7 +2,7 @@
 
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
-# ENV['RAILS_ENV'] ||= 'production'
+ENV['RAILS_ENV'] ||= 'development'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.0.2' unless defined? RAILS_GEM_VERSION
@@ -40,9 +40,9 @@ Rails::Initializer.run do |config|
     :session_key => '_proj_session',
     :secret      => '1e7e3f46984858be9afa42f0ea6f634c8a144e8ed3edf389db38452218a7d5491c6c95f740d325bde16493802413e36fb5a0cc204c4414fed20f7b4fe81d1cb0'
   }
-	config.after_initialize do
- 		ActiveMerchant::Billing::Base.mode = :test
-	end
+  config.after_initialize do
+    ActiveMerchant::Billing::Base.mode = :test
+  end
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
   # (create the session table with 'rake db:sessions:create')
@@ -60,7 +60,7 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   
 
-  # Adding the gems in apllication/vendor.
+  # Adding the gems in application/vendor.
   config.load_paths += Dir["#{RAILS_ROOT}/vendor/gems/**"].map do |dir| 
     File.directory?(lib = "#{dir}/lib") ? lib : dir
   end
@@ -112,6 +112,11 @@ ActionMailer::Base.default_content_type = "text/html"
 #  sudo vi etc/hosts and add this code at the end 
 #   127.0.0.1       speedlms.dev
 #   127.0.0.1       yoursubdomain.speedlms.dev
+
+#step 3
+
+# Restart your Apache server with the following command
+# sudo /usr/sbin/apachet l start
 
 
 unless RAILS_ENV == 'production'
