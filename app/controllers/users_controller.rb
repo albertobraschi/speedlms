@@ -148,17 +148,27 @@ class UsersController < ApplicationController
   
   #Used to add and invite tutors.
   def add_tutors
+	@tutors = User.find(:all, :conditions => ["role = ? ",  "Tutor"])
     if request.post?
-      @user = User.new(params[:user])
+	  @user = User.new(params[:user])
       @user.role = User::ROLE[:tutor] 
       if @user.save
 		email = LoginDetailsMailer.create_sent(@user)
 		email.set_content_type("text/html")
 		LoginDetailsMailer.deliver(email)
         flash[:notice] = "#{@user.login} is added as a tutor"
+		@user = User.new
       end 
     end         
   end  
+  
+  #deletes the user from the list of all users
+  def destroy
+	@user = User.find(params[:id])
+	@user.destroy
+	redirect_to @current_user.speedlms_url + add_tutors_users_path
+	flash[:notice] = "User has been deleted"	
+  end
   
   private
   #saves an user and makes him/her current user.
