@@ -113,6 +113,11 @@ ActionMailer::Base.default_content_type = "text/html"
 #   127.0.0.1       speedlms.dev
 #   127.0.0.1       yoursubdomain.speedlms.dev
 
+#step 3
+
+# Restart your Apache server with the following command
+# sudo /usr/sbin/apachet l start
+
 
 unless RAILS_ENV == 'production'
   PAYPAL_ACCOUNT = 'sandboxaccount@example.com'

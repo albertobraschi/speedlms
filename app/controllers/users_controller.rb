@@ -146,12 +146,15 @@ class UsersController < ApplicationController
      end
   end
   
-  #Used to add tutors.
+  #Used to add and invite tutors.
   def add_tutors
     if request.post?
       @user = User.new(params[:user])
       @user.role = User::ROLE[:tutor] 
       if @user.save
+		email = LoginDetailsMailer.create_sent(@user)
+		email.set_content_type("text/html")
+		LoginDetailsMailer.deliver(email)
         flash[:notice] = "#{@user.login} is added as a tutor"
       end 
     end         
