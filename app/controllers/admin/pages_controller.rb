@@ -1,6 +1,8 @@
 class Admin::PagesController < ApplicationController
 	layout 'admin'
-	before_filter :is_page_index?, :only => [:destroy]
+	before_filter :current_user 
+  before_filter :authorized_as_admin
+	before_filter :delete_index_page?, :only => [:destroy]
 	uses_tiny_mce(:options => {:theme => 'advanced',
                            :browsers => %w{msie gecko},
                            :mode => "specific_textareas",
@@ -21,10 +23,7 @@ class Admin::PagesController < ApplicationController
                            :theme_advanced_buttons3 => [],
                            :plugins => %w{contextmenu paste}},
               :only => [:new, :edit, :show, :index])	
-              
-	before_filter :current_user 
-  before_filter :authorized_as_admin
-  
+             
 	active_scaffold :page do |config|
   config.label = "Pages"
   config.columns = [:title,:description,:is_show, :is_index]
@@ -34,8 +33,8 @@ class Admin::PagesController < ApplicationController
   end 
   
   private
-  
-  def is_page_index?
+  #prevent the index page from being deleted?
+  def delete_index_page?
   	@page = Page.find(params[:id])
   	if @page.is_index == true
   		render :update do |page|
@@ -44,4 +43,5 @@ class Admin::PagesController < ApplicationController
   		end
   	end
   end
+  
 end

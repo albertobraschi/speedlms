@@ -153,14 +153,56 @@ class UsersController < ApplicationController
 	  @user = User.new(params[:user])
       @user.role = User::ROLE[:tutor] 
       if @user.save
-		email = LoginDetailsMailer.create_sent(@user)
-		email.set_content_type("text/html")
-		LoginDetailsMailer.deliver(email)
+      	email = LoginDetailsMailer.create_sent(@user)
+				email.set_content_type("text/html")
+				LoginDetailsMailer.deliver(email)
         flash[:notice] = "#{@user.login} is added as a tutor"
-		@user = User.new
+				@user = User.new
       end 
     end         
   end  
+
+  #checks availability of username for owner  
+  def check_username_availability
+  	@username = params[:user][:login]
+  	@users = User.find(:all)
+  	if !@username.blank?
+  		@users.each do |user|
+  			if @username == user.login 				
+  				@message = "Username not available"
+  				break
+  			else
+  				@message = "Username available."
+  			end
+  		end
+  	else
+  		@message = "Username should not be blank."
+  	end
+  	render :update do |page|
+  		page.replace_html 'username_availability_message',@message
+  	end
+  end
+  
+  #checks availability of speedlms subdomain for owner
+  def check_subdomain_availability
+  	@subdomain = params[:user][:speedlms_subdomain]
+  	@users = User.find(:all)
+  	if !@subdomain.blank?
+  		@users.each do |user|
+  			if @subdomain == user.speedlms_subdomain
+  				@message = "Subdomain not available"
+  				break
+  			else
+  				@message = "Subdomain available."
+  			end
+  		end
+  	else
+  		@message = "Subdomain should not be blank."
+  	end
+  	render :update do |page|
+  		page.replace_html "subdomain_availability_message",@message
+  	end
+  end
   
   #deletes the user from the list of all users
   def destroy
