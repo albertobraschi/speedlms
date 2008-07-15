@@ -220,7 +220,7 @@ text-align:center;
 }
 
 #signup_container {
-  width: 750px;
+  width: 800px;
   margin: 0px;
   padding: 0px;
 }
@@ -232,7 +232,7 @@ div#signup .fieldset_left {
 }
 
 div#signup .fieldset_right {
-  width: 500px;
+  width: 550px;
   float: right;
   margin-left: 0px;
 }

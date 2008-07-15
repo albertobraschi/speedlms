@@ -189,7 +189,7 @@ class UsersController < ApplicationController
   	@users = User.find(:all)
   	if !@subdomain.blank?
   		@users.each do |user|
-  			if @subdomain == user.login
+  			if @subdomain == user.speedlms_subdomain
   				@message = "Subdomain not available"
   				break
   			else
