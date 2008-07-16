@@ -11,8 +11,10 @@
       <h3>
         <span id = "top_right" >
         	<%= link_to 'Home',root_path %>
-        	<%= link_to 'Login',new_session_path %>
-		<%= link_to 'Owner-SignUp',new_user_path %>
+        	<% unless @current_user %>
+        		<%= link_to 'Login',new_session_path %>
+						<%= link_to 'Owner-SignUp',new_user_path %>
+					<% end %>
 		<% if Page.find_viewable_pages %>
                     <% for page in Page.find_viewable_pages %>
 			<%= link_to page.title, view_pages_session_path(:id => page.id) %>
