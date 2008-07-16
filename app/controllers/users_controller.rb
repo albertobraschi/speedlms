@@ -8,8 +8,16 @@ class UsersController < ApplicationController
   
 	#Makes a new instance of user.
   def new
-    @user = User.new() 
-    render :layout => 'public'
+  	if current_user
+    	flash[:notice] = "Firstly logout and then create new user"
+			if current_user.is_admin?      		
+     		redirect_to admin_users_path and return 
+     	else     		
+     		redirect_to users_path and return
+     	end
+    end
+	    @user = User.new() 
+  	  render :layout => 'public'
   end
   
   #Creates a new user.  
@@ -19,7 +27,8 @@ class UsersController < ApplicationController
     @user.role = User::ROLE[:owner]
     @price = SignupPlan.find_by_id(@user.signup_plan_id).price if @user.signup_plan_id
     if @user.valid?
-    	if @price == 0.0
+    	#FREE is a constant and equal to 0.0
+    	if @price == FREE
     		successful_signup
     	else
    			redirect_to :action => "payment",:id => @user.signup_plan_id
