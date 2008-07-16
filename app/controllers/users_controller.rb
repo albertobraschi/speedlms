@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 	#Makes a new instance of user.
   def new
   	if current_user
-    	flash[:notice] = "you need to sign out first."
+    	flash[:notice] = "Firstly logout and then create new user"
 			if current_user.is_admin?      		
      		redirect_to admin_users_path and return 
      	else     		
