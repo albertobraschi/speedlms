@@ -51,7 +51,7 @@ class SessionsController < ApplicationController
 		reset_session
 		flash[:message] = "You are successfully logged out."
 		respond_to do |format|
-			format.html {redirect_to root_path}
+			format.html {redirect_to "http://speedlms.dev"}
 			format.js
 		end
 	end

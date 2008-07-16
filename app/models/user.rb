@@ -109,6 +109,12 @@ class User < ActiveRecord::Base
   	end
   end
   
+  #generates pcode for a user when requested for forgot password functionality
+  def generate_pcode
+    self.pcode = Digest::SHA1.hexdigest(Time.now.to_s.split(//).sort_by {rand}.join )
+    self.save
+  end  
+  
   #deletes pcode generated when user has requested forgot password functionality.
   def delete_pcode
     self.pcode = nil
