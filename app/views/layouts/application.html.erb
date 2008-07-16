@@ -16,12 +16,12 @@
 				  		<%= link_to page.title, view_pages_session_path(:id => page.id) %>
 						<% end %>        
 					<% end %>
-					<% if @current_user.speedlms_subdomain %>
-						<%= link_to 'Tutors', add_tutors_users_path %>
-					<% end %>
     			<% if @current_user %>
 						<%= link_to 'My Info', edit_user_path(@current_user.id) %>
 						<%= link_to 'Logout', destroy_session_path, :method => :delete %>
+						<% if @current_user.speedlms_subdomain %>
+							<%= link_to 'Tutors', add_tutors_users_path %>
+						<% end %>
 					<% end %> 
         </span>
       </h3>

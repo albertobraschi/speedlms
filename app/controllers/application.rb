@@ -40,5 +40,11 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user = User.find_by_id(session[:user_id])  if session[:user_id]    
   end
-	 
+
+ # Not used currently	
+ # Finds the subdomain if present in the url for a given request
+  def current_subdomain
+    @current_subdomain = self.request.subdomains[0]
+  end
+  
 end

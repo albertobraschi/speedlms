@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
 	include AuthenticatedSystem
 	include ActiveMerchant::Billing
-	
+  
 	before_filter :authorize, :only=>[:index]
 	before_filter :current_user, :except=>[:new, :create]
   skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
-
+  
 	#Makes a new instance of user.
   def new
   	if current_user
@@ -18,11 +18,6 @@ class UsersController < ApplicationController
     end
 	    @user = User.new() 
   	  render :layout => 'public'
-  end
-  
-  #Finds the subdomain if present in the url for a given request
-  def current_subdomain
-    @current_subdomain = self.request.subdomains[0]
   end
   
   #Creates a new user.  
@@ -47,10 +42,15 @@ class UsersController < ApplicationController
   def index
     render :action => "#{@current_user.role.downcase}_index" if @current_user.role
   end  
-  
-  #sets @current_user variable
+    
+  #sets @user variable
   def edit 
-    @current_user = User.find(params[:id])
+    @id = User.find(params[:id]).id
+    if @current_user.id == @id 
+      @user = User.find(params[:id]) 
+    else
+      render :text => "Sorry you cannot edit this user"  
+    end  
   end
   
   #checks 
@@ -73,7 +73,6 @@ class UsersController < ApplicationController
   def notify
     notify = Paypal::Notification.new(request.raw_post)
     plan = Plan.find(notify.item_id)
-
     if notify.acknowledge
       @payment = Payment.find_by_confirmation(notify.transaction_id) ||
         invoice.payments.create(:amount => notify.amount,
@@ -112,10 +111,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash[:notice] = "User was sucessfully updated"
-        format.html { redirect_to users_url}
+       flash[:notice] = "User was sucessfully updated"
+       format.html { redirect_to users_url}
       else  
-        format.html {render :action => "edit"}
+       format.html {render :action => "edit"}
       end
     end    
   end  
@@ -125,8 +124,7 @@ class UsersController < ApplicationController
    if request.post?
      user = User.find_by_email(params[:user][:email])
       if user
-        user.pcode = Digest::SHA1.hexdigest(Time.now.to_s.split(//).sort_by {rand}.join )
-        user.save
+        user.generate_pcode
         url = reset_path(:pcode => user.pcode, :only_path => false)
         email = ConfirmMailer.create_sent(user, url)
         email.set_content_type("text/html")
@@ -142,7 +140,7 @@ class UsersController < ApplicationController
   
   #Used to reset password if user forgot it.
   def reset
-    @user = User.find_by_pcode(params[:pcode]) unless params[:pcode].nil?
+   @user = User.find_by_pcode(params[:pcode]) unless params[:pcode].nil?
     if @user.nil?
       flash[:notice] = "Sorry this link has expired"
       redirect_back_or_default('/')
@@ -157,18 +155,18 @@ class UsersController < ApplicationController
   
   #Used to add and invite tutors.
   def add_tutors
-	@tutors = User.find(:all, :conditions => ["role = ? ",  "Tutor"])
+	 @tutors = User.find(:all, :conditions => ["role = ? ",  "Tutor"])
     if request.post?
-	  @user = User.new(params[:user])
+	    @user = User.new(params[:user])
       @user.role = User::ROLE[:tutor] 
-      if @user.save
-      	email = LoginDetailsMailer.create_sent(@user)
-				email.set_content_type("text/html")
-				LoginDetailsMailer.deliver(email)
-        flash[:notice] = "#{@user.login} is added as a tutor"
-				@user = User.new
-      end 
-    end         
+       if @user.save
+         email = LoginDetailsMailer.create_sent(@user)
+		     email.set_content_type("text/html")
+		     LoginDetailsMailer.deliver(email)
+         flash[:notice] = "#{@user.login} is added as a tutor"
+		     @user = User.new
+       end 
+     end         
   end  
 
   #checks availability of username for owner  
@@ -215,20 +213,23 @@ class UsersController < ApplicationController
   
   #deletes the user from the list of all users
   def destroy
-	@user = User.find(params[:id])
-	@user.destroy
-	redirect_to @current_user.speedlms_url + add_tutors_users_path
-	flash[:notice] = "User has been deleted"	
+	  @user = User.find(params[:id])
+	  @user.destroy
+	  redirect_to @current_user.speedlms_url + add_tutors_users_path
+	  flash[:notice] = "User has been deleted"	
   end
   
   private
-  #saves an user and makes him/her current user.
+  #saves user and makes him/her current user.
   def successful_signup 
-      @user.save
-	  	flash[:notice] = "Thanks for sign up!"
-	  	@current_user = @user
-    	session[:user_id] = @current_user.id
-    	redirect_to @current_user.speedlms_url + users_path(:sess => session[:user_id])
+    @user.save
+	  email = OwnerWelcomeMail.create_sent(@user)
+	  email.set_content_type("text/html")
+	  OwnerWelcomeMail.deliver(email)
+	  flash[:notice] = "Thanks for sign up!"
+	  @current_user = @user
+    session[:user_id] = @current_user.id
+    redirect_to @current_user.speedlms_url + users_path(:sess => session[:user_id])
   end 
    
 end
