@@ -46,12 +46,17 @@ class SessionsController < ApplicationController
 	
   #destroys session    
 	def destroy
+		if @current_user.is_owner?
+			url = Owner.find(@current_user.resource_id).speedlms_url
+		elsif @current_user.is_admin?
+			url = "http://speedlms.dev"
+		end
 		@current_user.forget_me if logged_in?
 		cookies.delete :auth_token
 		reset_session
 		flash[:message] = "You are successfully logged out."
 		respond_to do |format|
-			format.html {redirect_to "http://speedlms.dev"}
+			format.html {redirect_to url}
 			format.js
 		end
 	end
@@ -60,7 +65,7 @@ class SessionsController < ApplicationController
 	
     #checks authentication for username/password login	
 		def password_authentication(name, password)
-			if @current_user =User.authenticate(params[:name], params[:password])
+			if @current_user = User.authenticate(params[:name], params[:password])
 				successful_login
 			else
 				failed_login "Sorry, Invaild login."
@@ -99,7 +104,9 @@ class SessionsController < ApplicationController
 					format.js
 				end					
 			elsif @current_user.is_owner?
-			  redirect_to @current_user.speedlms_url + users_path
+				@owner = Owner.find_by_id(@current_user.resource_id)
+    		url = @owner.speedlms_url + users_path
+			  redirect_to url
 			end    
 		else
 			render :action => 'new'

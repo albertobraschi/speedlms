@@ -297,14 +297,10 @@ a {
 	
 }
 
-#username_availability_message {
-	width: 300px;
-	background: #00ff00 none repeat scroll 0%;
-}
-
+#username_availability_message,
 #subdomain_availability_message {
 	width: 300px;
-	background: #00ff00 none repeat scroll 0%;
+	background: #ffcc00 none repeat scroll 0%;
 }
 
 th {

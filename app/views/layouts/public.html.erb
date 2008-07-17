@@ -12,9 +12,9 @@
         <span id = "top_right" >
         	<%= link_to 'Home',root_path %>
         	
-        	<% unless current_user %>
+        	<% unless @current_user %>
         		<%= link_to 'Login',new_session_path %>
-						<%= link_to 'Owner-SignUp',new_user_path %>
+						<%= link_to 'Owner-SignUp',new_owner_path %>
 					<% end %>
 					
 					<% if Page.find_viewable_pages %>

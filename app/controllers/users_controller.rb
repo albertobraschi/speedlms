@@ -5,42 +5,10 @@ class UsersController < ApplicationController
 	before_filter :authorize, :only=>[:index]
 	before_filter :current_user, :except=>[:new, :create]
   skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
-  
-	#Makes a new instance of user.
-  def new
-  	if current_user
-    	flash[:notice] = "Firstly logout and then create new user"
-			if current_user.is_admin?      		
-     		redirect_to admin_users_path and return 
-     	else     		
-     		redirect_to users_path and return
-     	end
-    end
-	    @user = User.new() 
-  	  render :layout => 'public'
-  end
-  
-  #Creates a new user.  
-  def create
-    cookies.delete :auth_token 
-    @user = User.new(params[:user])
-    @user.role = User::ROLE[:owner]
-    @price = SignupPlan.find_by_id(@user.signup_plan_id).price if @user.signup_plan_id
-    if @user.valid?
-    	#FREE is a constant and equal to 0.0
-    	if @price == FREE
-    		successful_signup
-    	else
-   			redirect_to :action => "payment",:id => @user.signup_plan_id
-   		end
-   	else
-   		render :action => 'new',:layout => 'public'
-   	end
-  end
-  
+    
   #Displays the index page of the current user who loggs in   
   def index
-    render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+    render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   end  
     
   #sets @user variable
@@ -168,49 +136,7 @@ class UsersController < ApplicationController
        end 
      end         
   end  
-
-  #checks availability of username for owner  
-  def check_username_availability
-  	@username = params[:user][:login]
-  	@users = User.find(:all)
-  	if !@username.blank?
-  		@users.each do |user|
-  			if @username == user.login 				
-  				@message = "Username not available"
-  				break
-  			else
-  				@message = "Username available."
-  			end
-  		end
-  	else
-  		@message = "Username should not be blank."
-  	end
-  	render :update do |page|
-  		page.replace_html 'username_availability_message',@message
-  	end
-  end
-  
-  #checks availability of speedlms subdomain for owner
-  def check_subdomain_availability
-  	@subdomain = params[:user][:speedlms_subdomain]
-  	@users = User.find(:all)
-  	if !@subdomain.blank?
-  		@users.each do |user|
-  			if @subdomain == user.speedlms_subdomain
-  				@message = "Subdomain not available"
-  				break
-  			else
-  				@message = "Subdomain available."
-  			end
-  		end
-  	else
-  		@message = "Subdomain should not be blank."
-  	end
-  	render :update do |page|
-  		page.replace_html "subdomain_availability_message",@message
-  	end
-  end
-  
+    
   #deletes the user from the list of all users
   def destroy
 	  @user = User.find(params[:id])
@@ -218,18 +144,5 @@ class UsersController < ApplicationController
 	  redirect_to @current_user.speedlms_url + add_tutors_users_path
 	  flash[:notice] = "User has been deleted"	
   end
-  
-  private
-  #saves user and makes him/her current user.
-  def successful_signup 
-    @user.save
-	  email = OwnerWelcomeMail.create_sent(@user)
-	  email.set_content_type("text/html")
-	  OwnerWelcomeMail.deliver(email)
-	  flash[:notice] = "Thanks for sign up!"
-	  @current_user = @user
-    session[:user_id] = @current_user.id
-    redirect_to @current_user.speedlms_url + users_path(:sess => session[:user_id])
-  end 
-   
+     
 end
