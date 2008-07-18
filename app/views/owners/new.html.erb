@@ -4,117 +4,12 @@
 			<h2>
 				Create your Owner account.
 			</h2>
-			<% unless error_messages_for('user').empty? %>                             
-				<%= error_messages_for 'user' %>
+			<% unless error_messages_for('user','owner').empty? %>                             
+				<%= error_messages_for 'user','owner' %>
 			<% end %>	
 		</fieldset>						
-			<% form_for :user,:url => {:action => 'create'} do |f| %>	
-			<fieldset class = "signup">	
-				<table>
-					<tr>
-						<th>
-							<div class = "normal" >
-								<label for="firstname">
-									First Name:
-								</label>
-							</div>
-						</th>
-						<td>
-							<div class = "normal" >
-								<%= f.text_field :firstname, :size => 20, :class => 'first' %>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<div class = "normal" >
-								<label for="lastname">
-									Last Name:
-								</label>
-							</div>
-						</th>
-						<td>
-							<div class = "normal" >
-								<%= f.text_field :lastname, :size => 20, :class => 'first' %>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<div class = "normal" >
-								<label for="email">
-									Email:
-								</label>
-							</div>
-						</th>
-						<td>
-							<div class = "normal" >
-								<%= f.text_field :email, :size => 20, :class => 'first' %>
-							</div>
-						</td>
-					</tr>
-					<div id = "username_openid">					
-					<tr>
-						<th>
-							<div class = "normal" >
-								<label for="login">
-									Username:
-								</label>
-							</div>
-						</th>
-						<td>
-							<div class = "normal" >
-								<%= f.text_field :login, :size => 20, :class => 'first' %>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<div id = "username_availability_message" >
-						
-						</div>
-					</tr>
-					<tr>
-						<td>
-							*(Check availability of username)
-						</td>
-						<td>
-							<%= submit_to_remote "check_username_available", "check availability", 
-								:url => {:action => 'check_username_availability'},:before => "Element.show('new_step_loading')", :complete => "Element.hide('new_step_loading')" %>
-								<span id = "new_step_loading" style ="display:none" class="spinner"><%=image_tag 'loading.gif' %></span>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<div class = "normal" >
-								<label for="password">
-									Password:
-								</label>
-							</div>
-						</th>
-						<td>
-							<div class = "normal" >
-								<%= f.password_field :password, :size => 20, :class => 'first' %>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<div class = "normal" >
-								<label for="password_confirmation">
-									Confirm Password:
-								</label>
-							</div>
-						</th>
-						<td>
-							<div class = "normal" >
-								<%= f.password_field :password_confirmation, :size => 20, :class => 'first' %>
-							</div>
-						</td>
-					</tr>
-				</div>
-			</table>
-		</fieldset>
-		<% fields_for 'owner' do |a| %>
+			<% form_for :owner,:url => {:action => 'create'} do |a| %>
+			<%= render :partial => '/users/user_form' %>
     <fieldset class = "signup" >
 			<p class = "small_text">
 				If you wanted your speedlms site to be at mysubdomain.speedlms.com you should enter 
@@ -224,10 +119,9 @@
 			</table>
 		</fieldset>
 		<% end %>
-		<% end %>	
 		<fieldset class = "signup">
 			<h3 class = "align_center">
-				<%= link_to 'Login',new_session_path(:role => @role) %>
+				<%= link_to 'Login',new_session_path %>
 			</h3>
 		</fieldset> 
 	</div>

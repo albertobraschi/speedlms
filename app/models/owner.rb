@@ -2,7 +2,7 @@ class Owner < ActiveRecord::Base
 	belongs_to :signup_plan
 	has_many :courses
 	has_many :tutors
-	has_many :users, :as => :resource
+	has_many :users, :as => :resource, :dependent=>:destroy 
 	validates_presence_of     :signup_plan ,:speedlms_subdomain, :organisation, :timezone,
   													:message => "is must for Owner"
 	validates_format_of 			:logo, 
@@ -12,6 +12,7 @@ class Owner < ActiveRecord::Base
   													:if => Proc.new{|a| a.speedlms_subdomain.length > 0 if a.speedlms_subdomain}, 
   													:message => "should be unique"
   
+
   attr_accessible :signup_plan_id, :timezone, :logo, :organisation, :speedlms_subdomain
 
  	#makes speedlms url for an owner after he signs up.

@@ -22,13 +22,12 @@ class User < ActiveRecord::Base
                       			:if => Proc.new{|a| a.email.length > 0 if a.email}
  
   validates_uniqueness_of   :login, :email, :if => :not_openid?
-  
-                      			                   
+	validates_associated 			:resource             			                   
   before_save 							:encrypt_password
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  #attr_accessible :login, :email, :password, :password_confirmation, :pcode, :resource_type, :resource_id, :lastname, :firstname
+  attr_accessible :login, :email, :password, :password_confirmation, :pcode, :resource_type, :resource_id, :lastname, :firstname
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. 
   def self.authenticate(login, password)

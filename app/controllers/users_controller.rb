@@ -71,7 +71,7 @@ class UsersController < ApplicationController
     else
       flash[:message] = "Not a valid URL."
     end
-    render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+    render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   end
   
   #Updates the fields of user
@@ -123,10 +123,10 @@ class UsersController < ApplicationController
   
   #Used to add and invite tutors.
   def add_tutors
-	 @tutors = User.find(:all, :conditions => ["role = ? ",  "Tutor"])
+	 @tutors = User.find(:all, :conditions => ["resource_type = ? ",  "Tutor"])
     if request.post?
 	    @user = User.new(params[:user])
-      @user.role = User::ROLE[:tutor] 
+      @user.resource_type = User::RESOURCE_TYPE[:tutor] 
        if @user.save
          email = LoginDetailsMailer.create_sent(@user)
 		     email.set_content_type("text/html")

@@ -51,7 +51,7 @@ class OwnersController < ApplicationController
 	
 	#checks availability of username for owner  
   def check_username_availability
-  	@username = params[:owner][:login]
+  	@username = params[:user][:login]
   	@users = User.find(:all)
   	if !@username.blank?
   		@users.each do |user|
@@ -94,7 +94,7 @@ class OwnersController < ApplicationController
 
  private
   #saves user and makes him/her current user.
-  def successful_signup 
+  def successful_signup
     @user.save
 	  #email = OwnerWelcomeMail.create_sent(@owner)
 	  #email.set_content_type("text/html")
