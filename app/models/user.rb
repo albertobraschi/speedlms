@@ -3,7 +3,6 @@ class User < ActiveRecord::Base
 	
 	belongs_to :resource, :polymorphic => true
 
-  RESOURCE_TYPE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
   attr_accessor :password
 	validates_presence_of     :firstname, :lastname
   validates_presence_of     :login, :email, 

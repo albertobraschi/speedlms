@@ -48,35 +48,14 @@ class OwnersController < ApplicationController
 	def destroy
 		
 	end
-	
-	#checks availability of username for owner  
-  def check_username_availability
-  	@username = params[:user][:login]
-  	@users = User.find(:all)
-  	if !@username.blank?
-  		@users.each do |user|
-  			if @username == user.login 				
-  				@message = "Username not available"
-  				break
-  			else
-  				@message = "Username available."
-  			end
-  		end
-  	else
-  		@message = "Username should not be blank."
-  	end
-  	render :update do |page|
-  		page.replace_html 'username_availability_message',@message
-  	end
-  end
   
   #checks availability of speedlms subdomain for owner
   def check_subdomain_availability
   	@subdomain = params[:owner][:speedlms_subdomain]
-  	@users = User.find(:all)
+  	@users = User.find(:all, :conditions => ["resource_type = ? or resource_type = ?",'Owner','Tutor'])
   	if !@subdomain.blank?
   		@users.each do |user|
-  			if @subdomain == user.speedlms_subdomain
+  			if @subdomain == user.resource.speedlms_subdomain
   				@message = "Subdomain not available"
   				break
   			else
@@ -96,7 +75,6 @@ class OwnersController < ApplicationController
   #saves user and makes him/her current user.
   def successful_signup
     @user.save
-    #@owner = @user.resource
 	  email = OwnerWelcomeMail.create_sent(@user)
 	  email.set_content_type("text/html")
 	  OwnerWelcomeMail.deliver(email)

@@ -144,5 +144,26 @@ class UsersController < ApplicationController
 	  redirect_to @current_user.speedlms_url + add_tutors_users_path
 	  flash[:notice] = "User has been deleted"	
   end
+  
+  #checks availability of username  
+  def check_username_availability
+  	@username = params[:user][:login]
+  	@users = User.find(:all)
+  	if !@username.blank?
+  		@users.each do |user|
+  			if @username == user.login				
+  				@message = "Username not available"
+  				break
+  			else
+  				@message = "Username available."
+  			end
+  		end
+  	else
+  		@message = "Username should not be blank."
+  	end
+  	render :update do |page|
+  		page.replace_html 'username_availability_message',@message
+  	end
+  end
      
 end

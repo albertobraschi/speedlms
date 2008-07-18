@@ -1,5 +1,6 @@
 # Be sure to restart your server when you modify this file
 FREE = 0.0
+RESOURCE_TYPE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
 # Uncomment below to force Rails into production mode when
 # you don't control web/app server and can't set it the proper way
 ENV['RAILS_ENV'] ||= 'development'

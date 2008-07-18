@@ -11,8 +11,7 @@ class Owner < ActiveRecord::Base
   validates_uniqueness_of   :speedlms_subdomain,
   													:if => Proc.new{|a| a.speedlms_subdomain.length > 0 if a.speedlms_subdomain}, 
   													:message => "should be unique"
-  
-
+ 
   attr_accessible :signup_plan_id, :timezone, :logo, :organisation, :speedlms_subdomain
 
  	#makes speedlms url for an owner after he signs up.

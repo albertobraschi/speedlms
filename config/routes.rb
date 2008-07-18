@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :users, :collection => {:payment => :get, :confirm=>:post, :add_tutors => :get}, :member=>{:notify => :get}
+  map.resources :users, :collection => {:payment => :get, :confirm => :post, :add_tutors => :get}, :member=>{:notify => :get, :check_username_availability => :post}
   map.resources :owners
   map.resources :tutors
   map.resources :students
