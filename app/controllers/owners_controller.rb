@@ -96,9 +96,10 @@ class OwnersController < ApplicationController
   #saves user and makes him/her current user.
   def successful_signup
     @user.save
-	  #email = OwnerWelcomeMail.create_sent(@owner)
-	  #email.set_content_type("text/html")
-	  #OwnerWelcomeMail.deliver(email)
+    #@owner = @user.resource
+	  email = OwnerWelcomeMail.create_sent(@user)
+	  email.set_content_type("text/html")
+	  OwnerWelcomeMail.deliver(email)
 	  flash[:notice] = "Thanks for sign up!"
 	  @current_user = @user
     session[:user_id] = @current_user.id
