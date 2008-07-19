@@ -1,24 +1,25 @@
 class SessionsController < ApplicationController
 	include AuthenticatedSystem
-	#skip_before_filter :getSubdomainDetails
+	# skip_before_filter :getSubdomainDetails
 	# This filter looks for presence of remember_me.
 	before_filter :login_from_cookie, :only => [:new,:create] 
 	before_filter :current_user
 
-  #creates new instance of Session.
+  	# Creates new instance of Session.
 	def new
 		if current_user
 			flash[:notice] = "You are already logged in - YAHOO"
 			if current_user.is_admin?      		
-     		redirect_to admin_users_path and return 
-     	else     		
-     		redirect_to users_path and return
-     	end
-    end
-		render :layout => 'public'
+     			redirect_to admin_users_path and return 
+     		else     		
+     			redirect_to users_path and return
+     		end
+    	end
+		# Display the Public Pages
+    	render :layout => 'public'
 	end
-  
-  #creates session for either openid or username/password login
+  	
+	# Creates session for either openid or username/password login
 	def create
 		if using_open_id?
 			open_id_authentication
@@ -27,24 +28,24 @@ class SessionsController < ApplicationController
 		end
 	end
 	
-	
+	# Display the MAIN index Page	
 	def index
 		render :layout => 'public'
 	end
 	
-	#It finds the pages created by admin and index page
+	# View Pages for Public display that created by Admin user
 	def view_pages
 		if params[:id]
-	  	@page = Page.find_by_id(params[:id])
-	  else
-	  	@page = Page.find_index_page
-	  	if @page
+	  		@page = Page.find_by_id(params[:id])
+	  	else
+	  		@page = Page.find_index_page
+	  		if @page
+	  		end
 	  	end
-	  end
 	  	render :layout => 'public'
 	end
-	
-  #destroys session    
+  	
+	# Destroys session    
 	def destroy
 		@current_user.forget_me if logged_in?
 		cookies.delete :auth_token
@@ -56,20 +57,19 @@ class SessionsController < ApplicationController
 		end
 	end
                             
-	protected
-	
-    #checks authentication for username/password login	
-		def password_authentication(name, password)
-			if @current_user =User.authenticate(params[:name], params[:password])
-				successful_login
-			else
-				failed_login "Sorry, Invaild login."
-			end
+protected
+    # Checks authentication for username/password login	
+	def password_authentication(name, password)
+		if @current_user =User.authenticate(params[:name], params[:password])
+			successful_login
+		else
+			failed_login "Sorry, Invaild login."
 		end
+	end
 
-    #checks authentication for openid login	
-		def open_id_authentication 
-			authenticate_with_open_id do |result, identity_url|
+    # Checks authentication for openid login	
+	def open_id_authentication 
+		authenticate_with_open_id do |result, identity_url|
 			if result.successful?
 				if @current_user = User.find_or_create_by_identity_url(identity_url)
 					successful_login
@@ -82,9 +82,8 @@ class SessionsController < ApplicationController
 		end
 	end
         
-	private
-	
-	#checks for presence of remember me redirects users according to their role
+private
+	# Checks for presence of remember me redirects users according to their role
 	def successful_login
 		session[:user_id] = @current_user.id
 		if logged_in?
@@ -106,7 +105,7 @@ class SessionsController < ApplicationController
 		end    
 	end
 
-	#redirect user to login page if current attempt fails
+	# Redirect user to login page if current attempt fails
 	def failed_login(message)
 		flash[:error] = message
 		respond_to do |format|
@@ -114,5 +113,4 @@ class SessionsController < ApplicationController
 			format.js
 		end
 	end
-	
 end
