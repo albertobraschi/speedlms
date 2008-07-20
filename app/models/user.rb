@@ -1,13 +1,12 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
-	belongs_to :signup_plan
-  ROLE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
+	
+	belongs_to :resource, :polymorphic => true
+
   attr_accessor :password
 	validates_presence_of     :firstname, :lastname
   validates_presence_of     :login, :email, 
   													:if => :not_openid?
-  validates_presence_of     :signup_plan ,:speedlms_subdomain, :organisation, :timezone,
-  													:if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
   validates_presence_of     :password, :password_confirmation, 
   													:if => :password_required? 
   validates_length_of       :password, :within => 4..40, 
@@ -20,17 +19,14 @@ class User < ActiveRecord::Base
   													:if => (:not_openid? and Proc.new{|a| a.email.length > 0 if a.email}) 
   validates_format_of 			:email, :with =>%r{^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$}, 
                       			:if => Proc.new{|a| a.email.length > 0 if a.email}
-  validates_format_of 			:logo, :with => %r{\.(gif|jpg|png)$}i, 
-                      			:if => Proc.new{|a| a.logo.length > 0 if a.logo}
+ 
   validates_uniqueness_of   :login, :email, :if => :not_openid?
-  validates_uniqueness_of   :speedlms_subdomain, :if => Proc.new{ |a| a.role == ROLE[:owner] }, :message => "is must for Owner"
-                      			                   
+	validates_associated 			:resource             			                   
   before_save 							:encrypt_password
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation, :pcode, :role, :plan, :signup_plan_id, :timezone, :logo, :lastname, :firstname, 
-  :organisation, :speedlms_subdomain
+  attr_accessible :login, :email, :password, :password_confirmation, :pcode, :resource_type, :resource_id, :lastname, :firstname
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. 
   def self.authenticate(login, password)
@@ -80,12 +76,6 @@ class User < ActiveRecord::Base
     save(false)
   end
   
-  #makes speedlms url for an owner after he signs up.
-	def	speedlms_url  
-		speedlms_url = "http://#{self.speedlms_subdomain}.speedlms.dev"
-	end
-	
-
   # Returns true if the user has just been activated.
   def recently_activated?
     @activated
@@ -93,7 +83,7 @@ class User < ActiveRecord::Base
   
   #checks if user is admin
   def is_admin?
-  	if self.role == ROLE[:admin]
+  	if self.resource_type == RESOURCE_TYPE[:admin]
   		return true
   	else
   	  return false
@@ -102,12 +92,13 @@ class User < ActiveRecord::Base
   
   #checks if user is owner
   def is_owner?
-  	if self.role == ROLE[:owner]
+  	if self.resource_type == RESOURCE_TYPE[:owner]
   		return true
   	else
   	  return false
   	end
   end
+  
   
   #generates pcode for a user when requested for forgot password functionality
   def generate_pcode

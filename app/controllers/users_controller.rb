@@ -4,9 +4,9 @@ class UsersController < ApplicationController
   
 	before_filter :authorize, :only=>[:index]
 	before_filter :current_user, :except=>[:new, :create]
-  skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
+    skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
   
-	#Makes a new instance of user.
+	# Makes a new instance of user.
   	def new
   		if current_user
     		flash[:notice] = "Firstly logout and then create new user"
@@ -29,9 +29,9 @@ class UsersController < ApplicationController
     	if @user.valid?
     		#FREE is a constant and equal to 0.0
     		if @price == FREE
-    			successful_signup
+    			successful_signup()
     		else
-   				redirect_to :action => "payment",:id => @user.signup_plan_id
+   				redirect_to(:action => "payment",:id => @user.signup_plan_id)
    			end
    		else
    			render :action => 'new',:layout => 'public'
@@ -40,9 +40,9 @@ class UsersController < ApplicationController
   
   	# Displays the index page of the current user who loggs in   
   	def index
-    	render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+    	render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   	end  
-    
+
   	# Sets @user variable
   	def edit 
     	@id = User.find(params[:id]).id
@@ -104,7 +104,7 @@ class UsersController < ApplicationController
     	else
       		flash[:message] = "Not a valid URL."
     	end
-    	render :action => "#{@current_user.role.downcase}_index" if @current_user.role
+    	render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   	end
   
   	# Updates the fields of user
@@ -154,12 +154,13 @@ class UsersController < ApplicationController
      	end
   	end
   
+
   	# Used to add and invite tutors.
   	def add_tutors
-	 	@tutors = User.find(:all, :conditions => ["role = ? ",  "Tutor"])
+	 	@tutors = User.find(:all, :conditions => ["resource_type = ? ",  "Tutor"])
     	if request.post?
 	    	@user = User.new(params[:user])
-      		@user.role = User::ROLE[:tutor] 
+      		@user.resource_type = User::RESOURCE_TYPE[:tutor] 
        		if @user.save
          		email = LoginDetailsMailer.create_sent(@user)
 		     	email.set_content_type("text/html")
@@ -169,28 +170,36 @@ class UsersController < ApplicationController
        		end 
      	end         
   	end  
-
-  	# Checks availability of username for owner  
+    
+  	# Deletes the user from the list of all users
+  	def destroy
+	  	@user = User.find(params[:id])
+	  	@user.destroy
+	  	redirect_to @current_user.speedlms_url + add_tutors_users_path
+	  	flash[:notice] = "User has been deleted"	
+  	end
+  
+  	# Checks availability of username  
   	def check_username_availability
   		@username = params[:user][:login]
   		@users = User.find(:all)
   		if !@username.blank?
   			@users.each do |user|
-  				if @username == user.login 				
+  				if @username == user.login				
   					@message = "Username not available"
   					break
   				else
   					@message = "Username available."
   				end
+  			else
+  				@message = "Username should not be blank."
   			end
-  		else
-  			@message = "Username should not be blank."
+  			render :update do |page|
+  				page.replace_html 'username_availability_message',@message
+  			end
   		end
-  		render :update do |page|
-  			page.replace_html 'username_availability_message',@message
-  		end
-  	end
-  
+	end
+	  
   	# Checks availability of speedlms subdomain for owner
   	def check_subdomain_availability
   		@subdomain = params[:user][:speedlms_subdomain]
@@ -212,15 +221,7 @@ class UsersController < ApplicationController
   		end
   	end
   
-  	# Deletes the user from the list of all users
-  	def destroy
-	  	@user = User.find(params[:id])
-	  	@user.destroy
-	  	redirect_to @current_user.speedlms_url + add_tutors_users_path
-	 	flash[:notice] = "User has been deleted"	
-  	end
-  
- private
+private
   	# Saves user and makes him/her current user.
   	def successful_signup 
     	@user.save
