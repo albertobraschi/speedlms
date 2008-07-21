@@ -21,7 +21,8 @@ class User < ActiveRecord::Base
   validates_format_of 			:email, :with =>%r{^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$}, 
                       			:if => Proc.new{|a| a.email.length > 0 if a.email}
  
-  validates_uniqueness_of   :login, :email, :if => :not_openid?
+  validates_uniqueness_of   :login, :email, :if => (:not_openid? and Proc.new{|a| a.resource_type != RESOURCE_TYPE[:tutor]})
+  #validates_uniqueness_of   :login, :scope => Proc.new{|a| a.resource.owner_id}, :if => Proc.new{ |a| a.resource_type == RESOURCE_TYPE  [:tutor]}
 	validates_associated 			:resource             			                   
   before_save 							:encrypt_password
   

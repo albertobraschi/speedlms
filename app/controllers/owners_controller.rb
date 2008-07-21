@@ -2,13 +2,18 @@ class OwnersController < ApplicationController
 	before_filter :current_user, :except=>[:new, :create]
 	before_filter :authorize, :only=>[:index]
 	before_filter :authorize_owner, :only => [:edit, :update, :destroy]
+	before_filter :pages
 	def new
 		if current_user
     	flash[:notice] = "Firstly logout and then create new owner"
 			if current_user.is_admin?      		
      		redirect_to admin_users_path and return 
-     	else     		
-     		redirect_to users_path and return
+     	elsif current_user.is_owner?     		
+     		redirect_to owners_path and return
+     	elsif current_user.is_tutor?     		
+     		redirect_to tutors_path and return
+     	elsif current_user.is_student?     		
+     		redirect_to students_path and return
      	end
     end
     	@user = User.new()
@@ -47,9 +52,9 @@ class OwnersController < ApplicationController
   #Updates user's information
   def update
   	@user = @current_user
-    @owner = @user.resource
+    @owner = Owner.find_by_id(params[:id])
     respond_to do |format|
-      if @user.update_attributes(params[:user]) and @owner.update_attribute(params[:owner])
+      if @user.update_attributes(params[:user]) and @owner.update_attributes(params[:owner])
         flash[:notice] = "User was sucessfully updated"
         format.html { redirect_to owners_url}
       else  
@@ -118,8 +123,8 @@ class OwnersController < ApplicationController
     redirect_to url
   end 
   
-  def authorize_owner 
-  	owner = Owner.find_by_id(params[:id])
+  def authorize_owner
+  owner = Owner.find_by_id(params[:id])
   	unless current_user.resource == owner
   		flash[:notice] = "You are not authorize to edit this user."
   		redirect_to root_path	

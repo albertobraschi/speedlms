@@ -3,20 +3,20 @@ class SessionsController < ApplicationController
 	# skip_before_filter :getSubdomainDetails
 	# This filter looks for presence of remember_me.
 	before_filter :login_from_cookie, :only => [:new,:create] 
-	before_filter :current_user
-
+	#before_filter :current_user
+	before_filter :pages
   	# Creates new instance of Session.
 	def new
 		if current_user
 			flash[:notice] = "You are already logged in - YAHOO"
-			if current_user.is_admin?      		
+			if @current_user.is_admin?      		
      		redirect_to admin_users_path and return 
-     	elsif current_user.is_owner?     		
-     		redirect_to owner_path and return
-     	elsif current_user.is_tutor?     		
-     		redirect_to tutor_path and return
-     	elsif current_user.is_student?     		
-     		redirect_to student_path and return
+     	elsif @current_user.is_owner?     		
+     		redirect_to owners_path and return
+     	elsif @current_user.is_tutor?     		
+     		redirect_to tutors_path and return
+     	elsif @current_user.is_student?     		
+     		redirect_to students_path and return
      	end
     end
 		render :layout => 'public'
