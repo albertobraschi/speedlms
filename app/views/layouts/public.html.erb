@@ -24,11 +24,11 @@
 					<% end %>
 					
 					<% if @current_user and @current_user.is_owner? %>
-						<%= link_to 'Tutors', add_tutors_users_path %>
+						<%= link_to 'Tutors', add_tutors_owners_path %>
 					<% end %>
 					
 					<% if @current_user %>
-						<%= link_to 'My Info', edit_user_path(@current_user.id) %>
+						<%= link_to 'My Info', edit_owner_path(@current_user.resource_id) %>
             <%= link_to 'Logout', destroy_session_path, :method => :delete %>
 					<% end %>
         </span>

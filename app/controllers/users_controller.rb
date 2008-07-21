@@ -8,18 +8,8 @@ class UsersController < ApplicationController
     
   #Displays the index page of the current user who loggs in   
   def index
-    render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
+  	
   end  
-    
-  #sets @user variable
-  def edit 
-    @id = User.find(params[:id]).id
-    if @current_user.id == @id 
-      @user = User.find(params[:id]) 
-    else
-      render :text => "Sorry you cannot edit this user"  
-    end  
-  end
   
   #checks 
   def check_subdomain
@@ -74,19 +64,6 @@ class UsersController < ApplicationController
     render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   end
   
-  #Updates the fields of user
-  def update
-    @user = User.find(params[:id])
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-       flash[:notice] = "User was sucessfully updated"
-       format.html { redirect_to users_url}
-      else  
-       format.html {render :action => "edit"}
-      end
-    end    
-  end  
-  
   #Used to sent confirm mail if user forgot password.
   def forgot
    if request.post?
@@ -121,23 +98,9 @@ class UsersController < ApplicationController
      end
   end
   
-  #Used to add and invite tutors.
-  def add_tutors
-	 @tutors = User.find(:all, :conditions => ["resource_type = ? ",  "Tutor"])
-    if request.post?
-	    @user = User.new(params[:user])
-      @user.resource_type = User::RESOURCE_TYPE[:tutor] 
-       if @user.save
-         email = LoginDetailsMailer.create_sent(@user)
-		     email.set_content_type("text/html")
-		     LoginDetailsMailer.deliver(email)
-         flash[:notice] = "#{@user.login} is added as a tutor"
-		     @user = User.new
-       end 
-     end         
-  end  
+  
     
-  #deletes the user from the list of all users
+  #deletes the user
   def destroy
 	  @user = User.find(params[:id])
 	  @user.destroy

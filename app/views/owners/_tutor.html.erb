@@ -1,0 +1,25 @@
+<div id="edit_user">
+	<h2>
+		Listing Tutors
+	</h2>
+</div>
+<table>
+  <tr>
+		<th>
+			Login
+		</th>
+		<th>
+			Actions
+		</th>
+	</tr>
+	<% for tutor in @tutors %>
+	  <tr>
+			<td>
+				<%= h tutor.login %>
+			</td>
+			<td>
+				<%= link_to "remove", tutor, :method=> 'delete'%>
+			</td>
+	  </tr>	
+  <% end %>
+</table>
