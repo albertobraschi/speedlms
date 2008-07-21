@@ -1,20 +1,20 @@
 <h3>
     <span id = "top_right" >
-	<%= link_to 'Home',root_path %>
-    <% if Page.find_viewable_pages %>
-		<% for page in Page.find_viewable_pages %>
-			<%= link_to page.title, view_pages_session_path(:id => page.id) %>
-		<% end %>        
+    <%= link_to 'Home',root_path %>
+    <% if page.find_viewable_pages %>
+        <% for page in page.find_viewable_pages %>
+            <%= link_to page.title, view_pages_session_path(:id => page.id) %>
+	<% end %>        
+    <% end %>
+    <% if @current_user %>
+        <%= link_to 'My Info', edit_user_path(@current_user.id) %>
+	<%= link_to 'Logout', destroy_session_path, :method => :delete %>
+	<% if @current_user.speedlms_subdomain %>
+            <%= link_to 'Tutors', add_tutors_users_path %>
 	<% end %>
-	<% if @current_user %>
-		<%= link_to 'My Info', edit_user_path(@current_user.id) %>
-		<%= link_to 'Logout', destroy_session_path, :method => :delete %>
-		<% if @current_user.speedlms_subdomain %>
-			<%= link_to 'Tutors', add_tutors_users_path %>
-		<% end %>
-	<% else %> 
-		<%= link_to 'Login',new_session_path %>
-		<%= link_to 'Owner-SignUp',new_user_path %>
-	<% end %> 
+    <% else %> 
+	<%= link_to 'Login',new_session_path %>
+	<%= link_to 'Owner-SignUp',new_user_path %>
+    <% end %> 
     </span>
 </h3>

@@ -1,17 +1,15 @@
-<div id = "main_top">
- 	<% if flash[:notice] %>
-		<div id="notice">
-    		<%= flash[:notice] %>
-        </div>
-    <% end %>
-    <% if flash[:error] %>
-    	<div id="error">
-      		<%= flash[:error] %>
-     	</div>
-    <% end %>
-    <% if flash[:message] %>
-    	<div id="message">
-        	<%= flash[:message] %>
-        </div>
-    <% end %>
-</div>
+<% if flash[:notice] %>
+    <div id="notice">
+        <%= flash[:notice] %>
+    </div>
+<% end %>
+<% if flash[:error] %>
+    <div id="error">
+        <%= flash[:error] %>
+    </div>
+<% end %>
+<% if flash[:message] %>
+    <div id="message">
+        <%= flash[:message] %>
+    </div>
+<% end %>
