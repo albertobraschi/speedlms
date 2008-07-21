@@ -191,14 +191,14 @@ class UsersController < ApplicationController
   				else
   					@message = "Username available."
   				end
-  			else
-  				@message = "Username should not be blank."
   			end
+  		else
+  			@message = "Username should not be blank."
+  		end
   			render :update do |page|
   				page.replace_html 'username_availability_message',@message
   			end
-  		end
-	end
+		end
 	  
   	# Checks availability of speedlms subdomain for owner
   	def check_subdomain_availability

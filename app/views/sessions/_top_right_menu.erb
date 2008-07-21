@@ -9,12 +9,12 @@
 	<% if @current_user %>
 		<%= link_to 'My Info', edit_user_path(@current_user.id) %>
 		<%= link_to 'Logout', destroy_session_path, :method => :delete %>
-		<% if @current_user.speedlms_subdomain %>
-			<%= link_to 'Tutors', add_tutors_users_path %>
+		<% if @current_user.resource.speedlms_subdomain %>
+			<%= link_to 'Tutors', add_tutors_owners_path %>
 		<% end %>
 	<% else %> 
 		<%= link_to 'Login',new_session_path %>
-		<%= link_to 'Owner-SignUp',new_user_path %>
+		<%= link_to 'Owner-SignUp',new_owner_path %>
 	<% end %> 
     </span>
 </h3>
