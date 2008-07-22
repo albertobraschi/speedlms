@@ -4,21 +4,19 @@
     <%= stylesheet_link_tag "unsecure.css" , :media => "all" %>
     <%= javascript_include_tag :defaults %>
 </head>
-<body> 
+<body>  
     <div id = "header">
- 	<%= render( :partial => 'top_right_menu') %>
+	<%= render :partial => '/sessions/top_right_menu', :object => @page %>
     	<h1>Welcome to SpeedLMS PUBLIC CSS</h1>
     </div>
-    <div id = "main">
-        <div id = "main_top">
-            <%= render( :partial => 'flash_notices')%>
-        </div>     	
-        <div id = "main_content">
-            <%= yield %>        
-        </div>   	
-        <div id = "main_footer">
-        </div>
-   </div>
+	<div id = "main">
+            <% render :partial => '/sessions/flash_notices'%>
+            <div id = "main_content">
+                <%= yield %>        
+            </div>   	
+            <div id = "main_footer">
+            </div>
+   	</div>
 </body>
 </html>     
 

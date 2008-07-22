@@ -10,13 +10,16 @@ class SessionsController < ApplicationController
 		if current_user
 			flash[:notice] = "You are already logged in - YAHOO"
 			if current_user.is_admin?      		
-     			redirect_to admin_users_path and return 
-     		else     		
-     			redirect_to users_path and return
-     		end
-    	end
-		# Display the Public Pages
-    	render :layout => 'public'
+     		redirect_to admin_users_path and return 
+     	elsif current_user.is_owner?     		
+     		redirect_to owner_path and return
+     	elsif current_user.is_tutor?     		
+     		redirect_to tutor_path and return
+     	elsif current_user.is_student?     		
+     		redirect_to student_path and return
+     	end
+    end
+		render :layout => 'public'
 	end
   	
 	# Creates session for either openid or username/password login
@@ -104,7 +107,11 @@ private
 				end					
 			elsif @current_user.is_owner?
 				@owner = Owner.find_by_id(@current_user.resource_id)
-    		url = @owner.speedlms_url + users_path
+    		url = @owner.speedlms_url + owners_path
+			  redirect_to url
+			elsif @current_user.is_tutor?
+				@tutor = Tutor.find_by_id(@current_user.resource_id)
+    		url = @tutor.speedlms_url + tutors_path
 			  redirect_to url
 			end    
 		else

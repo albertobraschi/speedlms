@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   
 	before_filter :authorize, :only=>[:index]
 	before_filter :current_user, :except=>[:new, :create]
-    skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]  
+  skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]   
   
 	# Makes a new instance of user.
   	def new
@@ -94,7 +94,7 @@ class UsersController < ApplicationController
     	end
     	render :nothing => true
   	end
-  
+  	
   	# Confirm Invoice details worked
   	def confirm
     	if @invoice = Invoice.find(params[:id])
@@ -170,7 +170,7 @@ class UsersController < ApplicationController
        		end 
      	end         
   	end  
-    
+  	
   	# Deletes the user from the list of all users
   	def destroy
 	  	@user = User.find(params[:id])
@@ -191,14 +191,14 @@ class UsersController < ApplicationController
   				else
   					@message = "Username available."
   				end
-  			else
-  				@message = "Username should not be blank."
   			end
+  		else
+  			@message = "Username should not be blank."
+  		end
   			render :update do |page|
   				page.replace_html 'username_availability_message',@message
   			end
-  		end
-	end
+		end
 	  
   	# Checks availability of speedlms subdomain for owner
   	def check_subdomain_availability

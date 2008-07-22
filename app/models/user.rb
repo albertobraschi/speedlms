@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 	
 	belongs_to :resource, :polymorphic => true
 
+  RESOURCE_TYPE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
   attr_accessor :password
 	validates_presence_of     :firstname, :lastname
   validates_presence_of     :login, :email, 
@@ -93,6 +94,22 @@ class User < ActiveRecord::Base
   #checks if user is owner
   def is_owner?
   	if self.resource_type == RESOURCE_TYPE[:owner]
+  		return true
+  	else
+  	  return false
+  	end
+  end
+  
+  def is_tutor?
+  	if self.resource_type == RESOURCE_TYPE[:tutor]
+  		return true
+  	else
+  	  return false
+  	end
+  end
+  
+  def is_student?
+  	if self.resource_type == RESOURCE_TYPE[:student]
   		return true
   	else
   	  return false
