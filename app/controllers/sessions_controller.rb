@@ -38,6 +38,7 @@ class SessionsController < ApplicationController
 	
 	# View Pages for Public display that created by Admin user
 	def view_pages
+	current_user
 		if params[:id]
 	  		@page = Page.find_by_id(params[:id])
 	  	else
@@ -50,6 +51,7 @@ class SessionsController < ApplicationController
   	
 	# Destroys session    
 	def destroy
+	current_user
 		if @current_user.is_owner?
 			url = Owner.find(@current_user.resource_id).speedlms_url
 		elsif @current_user.is_admin?
