@@ -5,6 +5,18 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '9a32d74aad8124005db44b1b832882bb'
   
+  helper_method :pages
+  
+  #Finds all viewable pages.
+  def pages
+  	@pages = Page.find_viewable_pages
+  end
+  
+  #Finds current user 
+  def current_user
+    @current_user = User.find_by_id(session[:user_id])  if session[:user_id]    
+  end
+  
   private
   #check authorization of a user with session
   def authorize
@@ -34,11 +46,6 @@ class ApplicationController < ActionController::Base
         format.js
       end
     end
-  end
-  
-  #Finds current user 
-  def current_user
-    @current_user = User.find_by_id(session[:user_id])  if session[:user_id]    
   end
 
  # Not used currently	

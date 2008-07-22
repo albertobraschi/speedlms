@@ -3,7 +3,8 @@ class UsersController < ApplicationController
 	include ActiveMerchant::Billing
   
 	before_filter :authorize, :only=>[:index]
-	before_filter :current_user, :except=>[:new, :create]
+	#before_filter :current_user, :except=>[:new, :create]
+	before_filter :pages
   skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]   
   
 	# Makes a new instance of user.
@@ -44,14 +45,14 @@ class UsersController < ApplicationController
   	end  
 
   	# Sets @user variable
-  	def edit 
-    	@id = User.find(params[:id]).id
-    	if @current_user.id == @id 
-      		@user = User.find(params[:id]) 
-    	else
-      		render :text => "Sorry you cannot edit this user"  
-    	end  
-  	end
+  	#def edit 
+    	#@id = User.find(params[:id]).id
+    	#if @current_user.id == @id 
+      #		@user = User.find(params[:id]) 
+    	#else
+      #		render :text => "Sorry you cannot edit this user"  
+    	#end  
+  	#end
   
   	# Checks Subdomain 
   	def check_subdomain
@@ -108,17 +109,17 @@ class UsersController < ApplicationController
   	end
   
   	# Updates the fields of user
-  	def update
-    	@user = User.find(params[:id])
-    	respond_to do |format|
-      		if @user.update_attributes(params[:user])
-       			flash[:notice] = "User was sucessfully updated"
-       			format.html { redirect_to users_url}
-      		else  
-       			format.html {render :action => "edit"}
-      		end
-    	end    
-  	end  
+  	#def update
+    #	@user = User.find(params[:id])
+    #	respond_to do |format|
+     # 		if @user.update_attributes(params[:user])
+     #  			flash[:notice] = "User was sucessfully updated"
+     #  			format.html { redirect_to users_url}
+      #		else  
+      # 			format.html {render :action => "edit"}
+      #		end
+    	#end    
+  	#end  
   
   	# Used to sent confirm mail if user forgot password.
   	def forgot
@@ -184,12 +185,16 @@ class UsersController < ApplicationController
   		@username = params[:user][:login]
   		@users = User.find(:all)
   		if !@username.blank?
-  			@users.each do |user|
-  				if @username == user.login				
-  					@message = "Username not available"
-  					break
-  				else
-  					@message = "Username available."
+  			if @users.blank?
+  				@message = "Username available."
+  			else
+  				@users.each do |user|
+  					if @username == user.login				
+  						@message = "Username not available"
+  						break
+  					else
+  						@message = "Username available."
+  					end
   				end
   			end
   		else
@@ -199,28 +204,7 @@ class UsersController < ApplicationController
   				page.replace_html 'username_availability_message',@message
   			end
 		end
-	  
-  	# Checks availability of speedlms subdomain for owner
-  	def check_subdomain_availability
-  		@subdomain = params[:user][:speedlms_subdomain]
-  		@users = User.find(:all)
-  		if !@subdomain.blank?
-  			@users.each do |user|
-  				if @subdomain == user.speedlms_subdomain
-  					@message = "Subdomain not available"
-  					break
-  				else
-  					@message = "Subdomain available."
-  				end
-  			end
-  		else
-  			@message = "Subdomain should not be blank."
-  		end
-  		render :update do |page|
-  			page.replace_html "subdomain_availability_message",@message
-  		end
-  	end
-  
+		
 private
   	# Saves user and makes him/her current user.
   	def successful_signup 
