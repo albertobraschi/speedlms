@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 function toggle() {
- var element = $('form')
+ var element = $('signup_container')
  if ( element.style.display == "block") {
 	element.style.display = "none"
 	$('show').style.display = "block"
@@ -29,18 +29,169 @@ Add Tutors
 <%= link_to "hide form", "javascript:toggle()" %>
 </div>
 </div>
-
-<div id="form">
-<% form_for :user, @user do |f|%>
-<fieldset>
-<p><label for="login">Login: </label><%= f.text_field :login, :size => 15 %></p>
-<p><label for="firstname">Firstname: </label><%= f.text_field :firstname, :size => 15 %></p>
-<p><label for="lastname">Lastname: </label><%= f.text_field :lastname, :size => 15 %></p>
-<p><label for="email">Email: </label><%= f.text_field :email, :size => 15 %></p>
-<p><label for="password">Password: </label><%= f.password_field :password, :size => 15 %></p>
-<p><label for="password_confirmation">Confirm password: </label><%= f.password_field :password_confirmation, :size => 15 %></p>
-<p><label></label><%= f.hidden_field :resource_type %></p>
-<p><%= submit_tag 'submit' %></p>
-</fieldset>	
-<%end%>		
+	<div id = "signup_container">
+			<% form_for :tutor,:url => {:action => 'add_tutors'} do |a|%>
+			<% fields_for 'user' do |f| %>	
+			<fieldset class = "signup">	
+				<table>
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="firstname">
+									First Name:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.text_field :firstname, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="lastname">
+									Last Name:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.text_field :lastname, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="email">
+									Email:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.text_field :email, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+					<div id = "username_openid">					
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="login">
+									Username:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.text_field :login, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<div id = "username_availability_message">
+						
+						</div>
+					</tr>
+					<tr>
+						<td>
+							*(Check availability of username)
+						</td>
+						<td>
+							<%= submit_to_remote "check_username_available", "check availability", 
+								:url => {:controller => 'users', :action => 'check_username_availability'},:before => "Element.show('new_step_loading')", :complete => "Element.hide('new_step_loading')" %>
+								<span id = "new_step_loading" style ="display:none" class="spinner"><%=image_tag 'loading.gif' %></span>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="password">
+									Password:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.password_field :password, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="password_confirmation">
+									Confirm Password:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.password_field :password_confirmation, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+				</div>
+			</table>
+		</fieldset>
+		<fieldset class = "signup" >
+			<p class = "small_text">
+				If you wanted your speedlms site to be at mysubdomain.speedlms.com you should enter 
+				"mysubdomain" in the field below. Letters and numbers only — no spaces.
+			</p>
+				<table>
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="speedlms_subdomain">
+									SpeedLMS Subdomain:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<span class = "bold">
+									http://
+								</span>
+								<%= a.text_field :speedlms_subdomain, :size => 20, :class => 'first' %>
+								<span class = "bold">
+									.speedlms.com
+								</span>
+							</div>
+						</td>
+					</tr>					
+					<tr>
+						<td>
+							*(Check availability of subdomain)
+						</td>
+						<td>
+							<%= submit_to_remote "check_subdomain_available", "check availability", 
+							:url => {:action => 'check_subdomain_availability'},:before => "Element.show('new_subdomain_step_loading')", :complete => "Element.hide('new_subdomain_step_loading')" %>
+							<span id = "new_subdomain_step_loading" style ="display:none" class="spinner"><%=image_tag 'loading.gif' %></span>
+						</td>
+					</tr>
+					<tr>
+						<div id = "subdomain_availability_message" >
+						
+						</div>
+					</tr>
+			</table>
+		</fieldset>
+		<fieldset class
+		 = "signup">
+		<table>
+			<tr>
+				<td>
+				</td>
+				<td>
+					<%= a.submit "Add Owner" , :class => "submit" %>
+				</td>
+			</tr>
+		</table>
+		</fieldset>
+	<% end %>		
+<% end %>		
 </div>

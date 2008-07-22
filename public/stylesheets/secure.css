@@ -213,7 +213,7 @@ text-align:center;
 }
 
 #signup_container {
-  width: 360px;
+  width: 800px;
   margin: 0px;
   padding: 0px;
 }
@@ -327,13 +327,12 @@ a {
 margin: -2pt 0pt -6pt 362pt;
 }
 
-#form{
+#form {
 	display: none;
 }
 
-label
- {
-width: 10em;	
+label {
+width: 20em;	
 float: left;
 text-align: left;
 display: block;

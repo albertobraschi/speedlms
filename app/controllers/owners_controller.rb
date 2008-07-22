@@ -95,9 +95,13 @@ class OwnersController < ApplicationController
   #Used to add and invite tutors.
   def add_tutors
 	 @tutors = User.find(:all, :conditions => ["resource_type = ? ",  "Tutor"])
+	 @owner = @current_user.resource
     if request.post?
 	    @user = User.new(params[:user])
-      @user.resource_type = User::RESOURCE_TYPE[:tutor] 
+	    @tutor = Tutor.new(params[:tutor])
+	    @user.resource = @tutor
+	    @tutor.owner = @owner
+#      @user.resource_type = User::RESOURCE_TYPE[:tutor] 
        if @user.save
          email = LoginDetailsMailer.create_sent(@user)
 		     email.set_content_type("text/html")
