@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '9a32d74aad8124005db44b1b832882bb'
   
-  helper_method :pages
+  helper_method :pages, :current_user
   
   #Finds all viewable pages.
   def pages
@@ -20,7 +20,6 @@ class ApplicationController < ActionController::Base
   private
   #check authorization of a user with session
   def authorize
-    session[:user_id] = params[:sess] if params[:sess]
     unless User.find_by_id(session[:user_id])
       flash[:notice]="Please login"
       redirect_to new_session_path and return

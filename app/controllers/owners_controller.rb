@@ -119,7 +119,7 @@ class OwnersController < ApplicationController
 	  @current_user = @user
     session[:user_id] = @current_user.id
     @owner = Owner.find_by_id(@current_user.resource_id)
-    url = @owner.speedlms_url + users_path(:sess => session[:user_id])
+    url = @owner.speedlms_url + owners_path
     redirect_to url
   end 
   

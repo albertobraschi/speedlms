@@ -1,11 +1,12 @@
 class SessionsController < ApplicationController
 	include AuthenticatedSystem
 	# skip_before_filter :getSubdomainDetails
+	
 	# This filter looks for presence of remember_me.
 	before_filter :login_from_cookie, :only => [:new,:create] 
-	#before_filter :current_user
 	before_filter :pages
-  	# Creates new instance of Session.
+	
+  # Creates new instance of Session and checks if there is already a session.
 	def new
 		if current_user
 			flash[:notice] = "You are already logged in - YAHOO"
