@@ -94,8 +94,8 @@ class OwnersController < ApplicationController
   
   #Used to add and invite tutors.
   def add_tutors
-	 @tutors = User.find(:all, :conditions => ["resource_type = ? ",  "Tutor"])
 	 @owner = @current_user.resource
+	 @tutors = Tutor.find(:all, :conditions => ["owner_id = ? ",  @owner.id])
     if request.post?
 	    @user = User.new(params[:user])
 	    @tutor = Tutor.new(params[:tutor])

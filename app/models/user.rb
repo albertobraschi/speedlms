@@ -22,8 +22,9 @@ class User < ActiveRecord::Base
                       			:if => Proc.new{|a| a.email.length > 0 if a.email}
  
   validates_uniqueness_of   :login, :email, :if => (:not_openid? and Proc.new{|a| a.resource_type != RESOURCE_TYPE[:tutor]})
-  #validates_uniqueness_of   :login, :scope => :owner_id, :if => Proc.new{|a| a.resource_type == RESOURCE_TYPE[:tutor]}		         
-  validates_associated 			:resource             			                   
+	         
+  validates_associated 			:resource 
+              			                   
   before_save 							:encrypt_password
   
   # prevents a user from submitting a crafted form that bypasses activation
