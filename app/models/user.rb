@@ -38,17 +38,10 @@ class User < ActiveRecord::Base
 			@tutors = Tutor.find(:all, :conditions => ["owner_id = ?",@owner.id])
 			for tutor in @tutors 				
 				errors.add(:login, "has already been taken.") if self.login == tutor.user.login
+				errors.add(:email, "has already been taken.") if self.email == tutor.user.email
 			end			
   	end
   end
-  
-  #def owner_id
-  	#@owner_id = self.tutor.owner_id
-  #end
-  
-  #def owner_id=(owner_id)
-  	#@owner_id = owner_id
-  #end
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. 
   def self.authenticate(login, password)
