@@ -25,9 +25,9 @@
 				<%= link_to "hide form", "javascript:toggle()" %>
 			</div>
 		</fieldset>
-		<% if !error_messages_for('user','tutor').empty? %>
+		<% if !error_messages_for('tutor', 'user').empty? %>
 			<fieldset class = "signup">
-				<%= error_messages_for 'user', 'tutor' %>
+				<%= error_messages_for 'tutor', 'user' %>
 			</fieldset>
 		<% end %>
 		<div id = "form">			
@@ -98,16 +98,6 @@
 								</div>
 							</tr>
 							<tr>
-								<td>
-									*(Check availability of username)
-								</td>
-								<td>
-									<%= submit_to_remote "check_username_available", "check availability", 
-											:url => {:controller => 'users', :action => 'check_username_availability'},:before => "Element.show('new_step_loading')", :complete => "Element.hide('new_step_loading')" %>
-										<span id = "new_step_loading" style ="display:none" class="spinner"><%=image_tag 'loading.gif' %></span>
-								</td>
-							</tr>
-							<tr>
 								<th>
 									<div class = "normal" >
 										<label for="password">
@@ -164,16 +154,6 @@
 							</div>
 						</td>
 					</tr>					
-					<tr>
-						<td>
-							*(Check availability of subdomain)
-						</td>
-						<td>
-							<%= submit_to_remote "check_subdomain_available", "check availability", 
-								:url => {:action => 'check_subdomain_availability'},:before => "Element.show('new_subdomain_step_loading')", :complete => "Element.hide('new_subdomain_step_loading')" %>
-							<span id = "new_subdomain_step_loading" style ="display:none" class="spinner"><%=image_tag 'loading.gif' %></span>
-						</td>
-					</tr>
 					<tr>
 						<div id = "subdomain_availability_message" >
 					

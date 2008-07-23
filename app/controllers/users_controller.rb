@@ -160,7 +160,9 @@ class UsersController < ApplicationController
   	def destroy
   		current_user
 	  	@user = User.find(params[:id])
+	  	@tutor = @user.resource
 	  	@user.destroy
+	  	@tutor.destroy
 	  	redirect_to @current_user.resource.speedlms_url + add_tutors_owners_path
 	  	flash[:notice] = "User has been deleted"	
   	end

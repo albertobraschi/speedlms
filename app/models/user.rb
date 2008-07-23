@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   validates_format_of 			:email, :with =>%r{^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$}, 
                       			:if => Proc.new{|a| a.email.length > 0 if a.email}
  
-  validates_uniqueness_of   :login, :email, :if => (:not_openid? and Proc.new{|a| a.resource_type != RESOURCE_TYPE[:tutor]})
+  validates_uniqueness_of   :login, :email, :if => (:not_openid? and Proc.new{|a| a.resource_type == RESOURCE_TYPE[:owner]})
 	         
   validates_associated 			:resource 
               			                   
@@ -30,20 +30,15 @@ class User < ActiveRecord::Base
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :password, :password_confirmation, :pcode, :resource_type, :resource_id, :lastname, :firstname
-  
-  def before_save
+   
+  def validate
   	if self.resource_type == RESOURCE_TYPE[:tutor]
-  		@owners = User.find(:all, :conditions => ["resource_type = ?",'Tutor'])
-  		for owner in @owners
-  			@tutors = Tutor.find(:all, :conditions => ["id = ?",owner.id])
-  			for tutor in @tutors
-  				user = User.find_by_resource_id(tutor.id)
-  				if self.login == user.login
-  					errors.add("Username has been already taken.")
-  					break
-  				end
-  			end
-  		end
+			current_user
+			@owner = current_user.resource
+			@tutors = Tutor.find(:all, :conditions => ["owner_id = ?",@owner.id])
+			for tutor in @tutors 				
+				errors.add(:login, "has already been taken.") if self.login == tutor.user.login
+			end			
   	end
   end
   

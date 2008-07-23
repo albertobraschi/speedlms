@@ -98,10 +98,10 @@ class OwnersController < ApplicationController
 	 @tutors = Tutor.find(:all, :conditions => ["owner_id = ? ",  @owner.id])
     if request.post?
 	    @user = User.new(params[:user])
+	    @user.resource_type = RESOURCE_TYPE[:tutor]
 	    @tutor = Tutor.new(params[:tutor])
 	    @user.resource = @tutor
 	    @tutor.owner = @owner
-#      @user.resource_type = User::RESOURCE_TYPE[:tutor] 
        if @user.save
          email = LoginDetailsMailer.create_sent(@user)
 		     email.set_content_type("text/html")
