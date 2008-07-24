@@ -1,13 +1,23 @@
 class UsersController < ApplicationController
+
+	#This makes various methods of Restful_Authentication available to all actions of Users Controller.
 	include AuthenticatedSystem
+	
+	#This makes various methods of Active Merchant available to all actions of Users Controller.
 	include ActiveMerchant::Billing
   
+  #This prevents unauthorized users to access index page.
 	before_filter :authorize, :only=>[:index]
+	
+	#This makes all viewable pages available to all actions.
 	before_filter :pages
+	
+	#If the actions are confirm and notify,It skips the verify_authenticity_token filter.
   skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]   
   
 	# Makes a new instance of user.
   	def new
+  		#Firstly checks for if there is someone logged in.
   		if current_user
     		flash[:notice] = "Firstly logout and then create new user"
 			if current_user.is_admin?      		
@@ -44,22 +54,12 @@ class UsersController < ApplicationController
     	render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   	end  
 
-  	# Sets @user variable
-  	#def edit 
-    	#@id = User.find(params[:id]).id
-    	#if @current_user.id == @id 
-      #		@user = User.find(params[:id]) 
-    	#else
-      #		render :text => "Sorry you cannot edit this user"  
-    	#end  
+  	# Checks Subdomain 
+  	#def check_subdomain
+  		#@users = User.find(:all)
   	#end
   
-  	# Checks Subdomain 
-  	def check_subdomain
-  		@users = User.find(:all)
-  	end
-  
-  	# Creates invoice for a paid plan user.
+  	# Creates invoice for a paid plan Owner.
   	def payment
   		current_user
   		@plan = SignupPlan.find_by_id(@current_user.plan)
@@ -71,7 +71,7 @@ class UsersController < ApplicationController
   		@invoice.save!
   	end
   
-  	# Notifies the user after successful transaction on Paypal.
+  	# Notifies the Owner after successful transaction on Paypal.
   	def notify
     	notify = Paypal::Notification.new(request.raw_post)
     	plan = Plan.find(notify.item_id)
@@ -109,19 +109,6 @@ class UsersController < ApplicationController
     	render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   	end
   
-  	# Updates the fields of user
-  	#def update
-    #	@user = User.find(params[:id])
-    #	respond_to do |format|
-     # 		if @user.update_attributes(params[:user])
-     #  			flash[:notice] = "User was sucessfully updated"
-     #  			format.html { redirect_to users_url}
-      #		else  
-      # 			format.html {render :action => "edit"}
-      #		end
-    	#end    
-  	#end  
-  
   	# Used to sent confirm mail if user forgot password.
   	def forgot
 	   	if request.post?
@@ -148,7 +135,8 @@ class UsersController < ApplicationController
       	flash[:notice] = "Sorry this link has expired"
       	redirect_back_or_default('/')
       elsif request.post?
-       	if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
+       	if @user.update_attributes(:password => params[:user][:password], 
+       														 :password_confirmation => params[:user][:password_confirmation])
           @user.delete_pcode
           flash[:notice] = "Password reset successfully for #{@user.email}"
           redirect_back_or_default('/')
@@ -156,7 +144,7 @@ class UsersController < ApplicationController
      	end
   	end
   	
-  	# Deletes the user from the list of all users
+  	# Deletes the Tutor from an Owner's account.
   	def destroy
   		current_user
 	  	@user = User.find(params[:id])
@@ -167,7 +155,7 @@ class UsersController < ApplicationController
 	  	flash[:notice] = "User has been deleted"	
   	end
   
-  	# Checks availability of owner's username  
+  	# Checks availability of Owner's login 
   	def check_username_availability
   		@username = params[:user][:login]
   		@users = User.find(:all)
@@ -176,7 +164,7 @@ class UsersController < ApplicationController
   				@message = "Username available."
   			else
   				@users.each do |user|
-  					#checks for owner's login availability
+  					#Checks for Owner's login availability.
   					if params[:owner]
 							if @username == user.login				
 								@message = "Username not available"
@@ -184,19 +172,21 @@ class UsersController < ApplicationController
 							else
 								@message = "Username available."
 							end	
-						#checks for tutor's login availability																											
+						#Checks for Tutor's login availability.																											
 						elsif params[:tutor]
 							current_user
 							@owner = current_user.resource
 							@tutors = Tutor.find(:all, :conditions => ["owner_id = ?",@owner.id])
-							#So that @tutor_users not remains nil while using with << method.
+							#@Tutor_users should not remain nil while using with << method.
 							@tutor_users = []
 							if @tutors
 								@tutors.each do |tutor|
 									@tutor_users << tutor.user
 								end
-							end							
+							end	
+							#Finds all Users who are not Tutor.						
 							@non_tutors = User.find(:all, :conditions => ["resource_type != ?",'Tutor'])
+							#Combines two arrays (@tutor_users and @non_tutors) into one array and checks if login available.
 							for user in @tutor_users.concat(@non_tutors) 				
 								if params[:user][:login] == user.login
 									@message = "Username not available."
@@ -211,6 +201,7 @@ class UsersController < ApplicationController
   		else
   			@message = "Username should not be blank."
   		end
+  		#Renders message in the specified div according to availability of login.
   		render :update do |page|
   		page.replace_html 'username_availability_message',@message
   		end

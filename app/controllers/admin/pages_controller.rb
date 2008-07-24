@@ -1,8 +1,18 @@
 class Admin::PagesController < ApplicationController
+
+	#Specifies that the corresponding templates will use 'admin' layout.
 	layout 'admin'
+	
+	#This makes current user available to all actions except new and create.
 	before_filter :current_user 
+	
+	#This makes sure that only Admin can perform Administrative tasks.
   before_filter :authorized_as_admin
+  
+  #Checks for whether the currently deleting page is an index page or not?
 	before_filter :delete_index_page?, :only => [:destroy]
+	
+	#Includes the features in TinyMCE Editor.
 	uses_tiny_mce(:options => {:theme => 'advanced',
                            :browsers => %w{msie gecko},
                            :mode => "specific_textareas",
@@ -23,7 +33,8 @@ class Admin::PagesController < ApplicationController
                            :theme_advanced_buttons3 => [],
                            :plugins => %w{contextmenu paste}},
               :only => [:new, :edit, :show, :index])	
-             
+   
+  #Configures Active Scaffold for pages.
 	active_scaffold :page do |config|
   config.label = "Pages"
   config.columns = [:title,:description,:is_show, :is_index]
@@ -33,7 +44,8 @@ class Admin::PagesController < ApplicationController
   end 
   
   private
-  #prevent the index page from being deleted?
+  
+  #Prevents the index page from being deleted?
   def delete_index_page?
   	@page = Page.find(params[:id])
   	if @page.is_index == true

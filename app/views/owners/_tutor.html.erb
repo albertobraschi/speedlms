@@ -2,19 +2,19 @@
 	<h2>
 		Listing Tutors
 	</h2>
-<table>
-	<% for tutor in @tutors %>
-	  <tr>
-			<td>
-			<% if tutor.user %>
-				<%= h tutor.user.login %>			
-			</td>
-			<td>
-				<%= link_to "remove", user_path(tutor.user.id), :method=> 'delete'%>
-				<%= link_to "show" %>
-			<% end %>
-			</td>
-	  </tr>	
-  <% end %>
-</table>
+	<table>
+		<% for tutor in @tutors %>
+			<tr>
+				<td>
+				<% if tutor.user %>
+					<%= h tutor.user.login %>			
+				</td>
+				<td>
+					<%= link_to "remove", user_path(tutor.user.id), :method=> 'delete'%>
+					<%= link_to "show" %>
+				<% end %>
+				</td>
+			</tr>	
+		<% end %>
+	</table>
 </fieldset>

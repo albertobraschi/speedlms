@@ -1,5 +1,6 @@
 class LoginDetailsMailer < ActionMailer::Base
-
+	
+	#Sends login details to an invited Tutor.
   def sent(user)
     @subject    = 'LoginDetails'
 		@body["user"]       = user

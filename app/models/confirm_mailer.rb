@@ -1,6 +1,6 @@
 class ConfirmMailer < ActionMailer::Base
 
-  #Sent email to user who requested for "forgot password".
+  #Sends email to user who requested for "forgot password".
   def sent(user, url)
     @subject    = 'Resetting Password'
     @recipients = user.email

@@ -1,6 +1,4 @@
-
 <h4>Please pay for the plan.</h4>
-
 <b><%= @plan.name%></b>
 <b> Cost: </b><%= @plan.price %>
 <% payment_service_for @current_user.id, PAYPAL_ACCOUNT,

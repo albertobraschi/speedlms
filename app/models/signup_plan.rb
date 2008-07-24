@@ -1,7 +1,8 @@
 class SignupPlan < ActiveRecord::Base
+
+	#Sets a constant INFINITE_DEFINITION to 10000.
   INFINITE_DEFINITION = 10000
   has_many :users
-  @signup_plan = SignupPlan.new
   
   #Find available Sign up plans.
   def self.find_plans
