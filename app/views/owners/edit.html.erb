@@ -2,4 +2,194 @@
 	<h2>
 		Edit Owner Profile.
 	</h2>
-	<%= render :partial => "form" %>
+	<% unless error_messages_for('user','owner').empty? %>                             
+		<%= error_messages_for 'user','owner' %>
+	<% end %>	
+</fieldset>
+<% form_for @owner do |a| %>
+	<% fields_for 'user' do |f| %>	
+		<fieldset class = "signup">	
+			<table>
+				<tr>
+					<th>
+						<div class = "normal" >
+							<label for="firstname">
+								First Name:
+							</label>
+						</div>
+					</th>
+					<td>
+						<div class = "normal" >
+							<%= f.text_field :firstname, :size => 20, :class => 'first' %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<div class = "normal" >
+							<label for="lastname">
+								Last Name:
+							</label>
+						</div>
+					</th>
+					<td>
+						<div class = "normal" >
+							<%= f.text_field :lastname, :size => 20, :class => 'first' %>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<div class = "normal" >
+							<label for="email">
+								Email:
+							</label>
+						</div>
+					</th>
+					<td>
+						<div class = "normal" >
+							<%= f.text_field :email, :size => 20, :class => 'first' %>
+						</div>
+					</td>
+				</tr>
+				<div id = "username_openid">					
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="login">
+									Username:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.text_field :login, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="password">
+									Password:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.password_field :password, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<div class = "normal" >
+								<label for="password_confirmation">
+									Confirm Password:
+								</label>
+							</div>
+						</th>
+						<td>
+							<div class = "normal" >
+								<%= f.password_field :password_confirmation, :size => 20, :class => 'first' %>
+							</div>
+						</td>
+					</tr>
+				</div>
+			</table>
+		</fieldset>
+	<% end %>	
+  <fieldset class = "signup" >
+		<p class = "small_text">
+			If you wanted your speedlms site to be at mysubdomain.speedlms.com you should enter 
+			"mysubdomain" in the field below. Letters and numbers only — no spaces.
+		</p>
+		<table>
+			<tr>
+				<th>
+					<div class = "normal" >
+						<label for="speedlms_subdomain">
+							SpeedLMS Subdomain:
+						</label>
+					</div>
+				</th>
+				<td>
+					<div class = "normal" >
+						<span class = "bold">
+							http://
+						</span>
+						<%= a.text_field :speedlms_subdomain, :size => 20, :class => 'first' %>
+						<span class = "bold">
+							.speedlms.com
+						</span>
+					</div>
+				</td>
+			</tr>					
+		</table>
+	</fieldset>
+	<fieldset class = "signup" >
+		<table>
+			<tr>
+				<th>
+					<div class = "normal" >
+						<label for="organisation">
+							Organisation:
+						</label>
+					</div>
+				</th>
+				<td>
+					<div class = "normal" >
+						<%= a.text_field :organisation, :size => 20, :class => 'first' %>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<div class = "normal" >
+						<label for="logo">
+							Logo:
+						</label>
+					</div>
+				</th>
+				<td>
+					<div class = "normal" >
+						<%= a.file_field :logo, :size => 20, :class => 'first' %>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<div class = "normal" >
+						<label for="timezone">
+							Time Zone:
+						</label>
+					</div>
+				</th>
+				<td>
+					<div class = "normal" >
+						<%= a.time_zone_select :timezone %>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<div class = "normal" >
+						<label for="signup_plan_id">
+							Select a Plan
+						</label>
+					</div>
+				</th>
+				<td>					
+					<%= a.select :signup_plan_id, SignupPlan.find(:all).collect{|p| [p.name, p.id]}, {:include_blank => true} %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				</td>
+				<td>
+					<%= a.submit @owner.new_record? ? "Add Owner" : "Update Owner", :class => "submit" %>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+<% end %>
