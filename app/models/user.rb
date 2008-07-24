@@ -36,9 +36,17 @@ class User < ActiveRecord::Base
 			current_user
 			@owner = current_user.resource
 			@tutors = Tutor.find(:all, :conditions => ["owner_id = ?",@owner.id])
-			for tutor in @tutors 				
-				errors.add(:login, "has already been taken.") if self.login == tutor.user.login
-				errors.add(:email, "has already been taken.") if self.email == tutor.user.email
+			#So that @tutor_users not remains nil while using with << method.
+			@tutor_users = []
+			if @tutors
+				@tutors.each do |tutor|
+					@tutor_users << tutor.user
+				end
+			end
+			@non_tutors = User.find(:all, :conditions => ["resource_type != ?",'Tutor'])
+			for user in @tutor_users.concat(@non_tutors) 				
+				errors.add(:login, "has already been taken.") if self.login == user.login
+				errors.add(:email, "has already been taken.") if self.email == user.email
 			end			
   	end
   end

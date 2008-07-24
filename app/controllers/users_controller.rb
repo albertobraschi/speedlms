@@ -167,7 +167,7 @@ class UsersController < ApplicationController
 	  	flash[:notice] = "User has been deleted"	
   	end
   
-  	# Checks availability of username  
+  	# Checks availability of owner's username  
   	def check_username_availability
   		@username = params[:user][:login]
   		@users = User.find(:all)
@@ -176,19 +176,44 @@ class UsersController < ApplicationController
   				@message = "Username available."
   			else
   				@users.each do |user|
-  					if @username == user.login				
-  						@message = "Username not available"
-  						break
-  					else
-  						@message = "Username available."
-  					end
-  				end
+  					#checks for owner's login availability
+  					if params[:owner]
+							if @username == user.login				
+								@message = "Username not available"
+								break
+							else
+								@message = "Username available."
+							end	
+						#checks for tutor's login availability																											
+						elsif params[:tutor]
+							current_user
+							@owner = current_user.resource
+							@tutors = Tutor.find(:all, :conditions => ["owner_id = ?",@owner.id])
+							#So that @tutor_users not remains nil while using with << method.
+							@tutor_users = []
+							if @tutors
+								@tutors.each do |tutor|
+									@tutor_users << tutor.user
+								end
+							end							
+							@non_tutors = User.find(:all, :conditions => ["resource_type != ?",'Tutor'])
+							for user in @tutor_users.concat(@non_tutors) 				
+								if params[:user][:login] == user.login
+									@message = "Username not available."
+									break
+								else
+									@message = "Username available."
+								end
+							end							
+						end															
+					end
   			end
   		else
   			@message = "Username should not be blank."
   		end
-  			render :update do |page|
-  				page.replace_html 'username_availability_message',@message
-  			end
+  		render :update do |page|
+  		page.replace_html 'username_availability_message',@message
+  		end
 		end
+		
 end	

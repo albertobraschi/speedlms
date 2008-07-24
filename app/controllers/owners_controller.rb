@@ -69,7 +69,11 @@ class OwnersController < ApplicationController
   
   #checks availability of speedlms subdomain for owner
   def check_subdomain_availability
-  	@subdomain = params[:owner][:speedlms_subdomain]
+  	if params[:owner] and params[:owner][:speedlms_subdomain]
+  		@subdomain = params[:owner][:speedlms_subdomain]
+  	elsif params[:tutor] and params[:tutor][:speedlms_subdomain] 
+  		@subdomain = params[:tutor][:speedlms_subdomain] 
+  	end
   	@users = User.find(:all, :conditions => ["resource_type = ? or resource_type = ?",'Owner','Tutor'])  			
   	if !@subdomain.blank?
   		if @users.blank?

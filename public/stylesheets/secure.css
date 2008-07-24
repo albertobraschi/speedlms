@@ -343,3 +343,10 @@ input{
 	color: #781351;
 	border: 1px solid ;
 }
+
+#username_availability_message,
+#subdomain_availability_message {
+	width: 300px;
+	background: #ffcc00 none repeat scroll 0%;
+}
+
