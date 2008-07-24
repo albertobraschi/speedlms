@@ -9,6 +9,16 @@ class ApplicationController < ActionController::Base
   
   helper_method :pages, :current_user
   
+  include Spelling 
+  def spellcheck 
+    @headers['Content-Type'] = 'text/xml' 
+    @headers['charset'] = 'utf-8' 
+    suggestions = check_spelling(params[:check], params[:cmd], params[:lang]) 
+    xml = "#{suggestions}"
+    render :text => xml
+    return
+  end
+  
   #Finds all viewable pages.
   def pages
   	@pages = Page.find_viewable_pages
@@ -18,7 +28,7 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user = User.find_by_id(session[:user_id])  if session[:user_id]    
   end
-  
+    
   private
   #Checks whether an User is authorized or not?
   def authorize
