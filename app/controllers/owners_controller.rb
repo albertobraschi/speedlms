@@ -23,7 +23,8 @@ class OwnersController < ApplicationController
 	
 	def create
 		cookies.delete :auth_token
-		@user = User.new(params[:user]) 
+		@user = User.new(params[:user])
+		@user.resource_type = RESOURCE_TYPE[:owner] 
     @owner = Owner.new(params[:owner])
     @user.resource = @owner
     @price = SignupPlan.find_by_id(@owner.signup_plan_id).price if @owner.signup_plan_id
