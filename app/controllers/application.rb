@@ -1,24 +1,36 @@
 class ApplicationController < ActionController::Base
   
-  helper :all # include all helpers, all the time
+  # Include all helpers, all the time
+  helper :all
+   
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '9a32d74aad8124005db44b1b832882bb'
   
   helper_method :pages, :current_user
   
+  include Spelling 
+  def spellcheck 
+    @headers['Content-Type'] = 'text/xml' 
+    @headers['charset'] = 'utf-8' 
+    suggestions = check_spelling(params[:check], params[:cmd], params[:lang]) 
+    xml = "#{suggestions}"
+    render :text => xml
+    return
+  end
+  
   #Finds all viewable pages.
   def pages
   	@pages = Page.find_viewable_pages
   end
   
-  #Finds current user 
+  #Finds Current User 
   def current_user
     @current_user = User.find_by_id(session[:user_id])  if session[:user_id]    
   end
-  
+    
   private
-  #check authorization of a user with session
+  #Checks whether an User is authorized or not?
   def authorize
     unless User.find_by_id(session[:user_id])
       flash[:notice]="Please login"
@@ -26,7 +38,7 @@ class ApplicationController < ActionController::Base
     end       
   end
   
-  #checks whether an user is an admin or not!
+  #Checks whether an User is an Admin or not!
   def authorized_as_admin
   	unless  @current_user and @current_user.is_admin?
   		flash[:notice]="Please login as Administrator"
@@ -34,7 +46,7 @@ class ApplicationController < ActionController::Base
   	end
   end
 
-  # It automatically login an user if he has checked remember_me option.
+  # It automatically makes an User logged in,if he has checked remember_me option while login.
   def login_from_cookie
     return unless cookies[:auth_token] && session[:user_id].nil?
     user = User.find_by_remember_token(cookies[:auth_token]) 

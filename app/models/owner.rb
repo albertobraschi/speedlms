@@ -1,6 +1,6 @@
 class Owner < ActiveRecord::Base
 	belongs_to :signup_plan
-	has_many :users, :as => :resource, :dependent=>:destroy 
+	has_one :user, :as => :resource, :dependent=>:destroy 
 	has_many :courses
 	has_many :tutors
 	

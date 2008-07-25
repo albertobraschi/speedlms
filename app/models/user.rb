@@ -4,55 +4,61 @@ class User < ActiveRecord::Base
 	belongs_to :resource, :polymorphic => true
 
   RESOURCE_TYPE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
+  
   attr_accessor :password, :tutor_login, :tutor_email
-	validates_presence_of     :firstname, :lastname
+  
+  # Prevents a user from submitting a crafted form that bypasses activation
+  # Anything else you want your user to change should be added here.
+  attr_accessible :login, :email, :password, :password_confirmation, :pcode, :resource_type, :resource_id, :lastname, :firstname
+  
+	validates_presence_of     :firstname, :lastname	
   validates_presence_of     :login, :email, 
-  													:if => :not_openid?
+  													:if => :not_openid?  													
   validates_presence_of     :password, :password_confirmation, 
   													:if => :password_required? 
-  validates_length_of       :password, :within => 4..40, 
+  validates_length_of       :password, 
+  													:within => 4..40, 
   													:if => (:password_required? and Proc.new{|a| a.password.length > 0 if a.password})
   validates_confirmation_of :password,                   
   													:if => :password_required?
-  validates_length_of       :login,    :within => 3..40, 
+  validates_length_of       :login,    
+  													:within => 3..40, 
   													:if => (:not_openid? and Proc.new{ |a| a.login.length > 0 if a.login})
-  validates_length_of       :email,    :within => 3..40, 
+  validates_length_of       :email,    
+  													:within => 3..40, 
   													:if => (:not_openid? and Proc.new{|a| a.email.length > 0 if a.email}) 
-  validates_format_of 			:email, :with =>%r{^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$}, 
-                      			:if => Proc.new{|a| a.email.length > 0 if a.email}
- 
-  validates_uniqueness_of   :login, :email, :if => (:not_openid? and Proc.new{|a| a.resource_type != RESOURCE_TYPE[:tutor]})
-  #validates_uniqueness_of   :login, :scope => :owner_id, :if => Proc.new{|a| a.resource_type == RESOURCE_TYPE[:tutor]}		         
-  validates_associated 			:resource             			                   
+  validates_format_of 			:email, 
+  													:with =>%r{^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$}, 
+                      			:if => Proc.new{|a| a.email.length > 0 if a.email} 
+  validates_uniqueness_of   :login, :email, 
+  													:if => (:not_openid? and Proc.new{|a| a.resource_type == RESOURCE_TYPE[:owner]})	         
+  validates_associated 			:resource 
+              			                   
   before_save 							:encrypt_password
-  
-  # prevents a user from submitting a crafted form that bypasses activation
-  # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation, :pcode, :resource_type, :resource_id, :lastname, :firstname
-  
-  def before_save
+
+	#Validates login and email of a Tutor in scope of his/her Owner.
+	#Tutors may have same login,email for different Owners but unique login,email for same Owners.
+  def validate
   	if self.resource_type == RESOURCE_TYPE[:tutor]
-  		@owners = User.find(:all, :conditions => ["resource_type = ?",'Tutor'])
-  		for owner in @owners
-  			@tutors = Tutor.find(:all, :conditions => ["id = ?",owner.id])
-  			for tutor in @tutors
-  				user = User.find_by_resource_id(tutor.id)
-  				if self.login == user.login
-  					errors.add("Username has been already taken.")
-  					break
-  				end
-  			end
-  		end
+			current_user
+			@owner = current_user.resource
+			@tutors = Tutor.find(:all, :conditions => ["owner_id = ?",@owner.id])
+			#@Tutor_users should not remain nil while using with << method.
+			@tutor_users = []
+			if @tutors
+				@tutors.each do |tutor|
+					@tutor_users << tutor.user
+				end
+			end
+			#Finds all Users who are not Tutor.			
+			@non_tutors = User.find(:all, :conditions => ["resource_type != ?",'Tutor'])
+			#Combines two arrays (@tutor_users and @non_tutors) into one array and checks if login available.
+			for user in @tutor_users.concat(@non_tutors) 				
+				errors.add(:login, "has already been taken.") if self.login == user.login
+				errors.add(:email, "has already been taken.") if self.email == user.email
+			end			
   	end
   end
-  
-  #def owner_id
-  	#@owner_id = self.tutor.owner_id
-  #end
-  
-  #def owner_id=(owner_id)
-  	#@owner_id = owner_id
-  #end
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. 
   def self.authenticate(login, password)
@@ -60,7 +66,7 @@ class User < ActiveRecord::Base
     u && u.authenticated?(password) ? u : nil
   end
 
-  # Encrypts some data with the salt.
+  
   def self.encrypt(password, salt)
     Digest::SHA1.hexdigest("--#{salt}--#{password}--")
   end
@@ -75,12 +81,12 @@ class User < ActiveRecord::Base
     crypted_password == encrypt(password)
   end
 
-  #sets remember_token expiry time.
+  #Sets remember_token expiry time.
   def remember_token?
     remember_token_expires_at && Time.now.utc < remember_token_expires_at 
   end
 
-  # These create and unset the fields required for remembering users between browser closes
+  # It sets the field required for remembering User between browser closes
   def remember_me
     remember_me_for 2.weeks
   end
@@ -95,7 +101,7 @@ class User < ActiveRecord::Base
     save(false)
   end
   
-  #destroys remember_token and its expiry time
+  #Destroys remember_token and its expiry time
   def forget_me
     self.remember_token_expires_at = nil
     self.remember_token            = nil
@@ -107,7 +113,7 @@ class User < ActiveRecord::Base
     @activated
   end
   
-  #checks if user is admin
+  #Checks if user is Admin.
   def is_admin?
   	if self.resource_type == RESOURCE_TYPE[:admin]
   		return true
@@ -116,7 +122,7 @@ class User < ActiveRecord::Base
   	end
   end
   
-  #checks if user is owner
+  #Checks if user is Owner.
   def is_owner?
   	if self.resource_type == RESOURCE_TYPE[:owner]
   		return true
@@ -125,6 +131,7 @@ class User < ActiveRecord::Base
   	end
   end
   
+  #Checks if user is Tutor.
   def is_tutor?
   	if self.resource_type == RESOURCE_TYPE[:tutor]
   		return true
@@ -133,6 +140,7 @@ class User < ActiveRecord::Base
   	end
   end
   
+  #Checks if user is Student.
   def is_student?
   	if self.resource_type == RESOURCE_TYPE[:student]
   		return true
@@ -142,13 +150,13 @@ class User < ActiveRecord::Base
   end
   
   
-  #generates pcode for a user when requested for forgot password functionality
+  #Generates pcode for an User when he has requested for forgot password functionality.
   def generate_pcode
     self.pcode = Digest::SHA1.hexdigest(Time.now.to_s.split(//).sort_by {rand}.join )
     self.save
   end  
   
-  #deletes pcode generated when user has requested forgot password functionality.
+  #Deletes pcode generated after user has requested forgot password functionality.
   def delete_pcode
     self.pcode = nil
     self.save
@@ -162,12 +170,12 @@ class User < ActiveRecord::Base
       self.crypted_password = encrypt(password)
     end
       
-    #checks if password is required for validation
+    #Checks if password is required for validation
     def password_required?
       not_openid? && (crypted_password.blank? || !password.blank?)
     end
     
-    #checks for non-openid login
+    #Checks for non-openid login
     def not_openid?
       identity_url.blank?
     end

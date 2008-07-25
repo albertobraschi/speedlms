@@ -1,13 +1,17 @@
 class SessionsController < ApplicationController
+
+	#This makes various methods of Restful_Authentication available to all actions of Sessions Controller.
 	include AuthenticatedSystem
-	# skip_before_filter :getSubdomainDetails
 	
-	# This filter looks for presence of remember_me.
+	# This filter looks for presence of remember_me option while an user sings in.
 	before_filter :login_from_cookie, :only => [:new,:create] 
+	
+	#This makes all viewable pages available to all actions.
 	before_filter :pages
 	
   # Creates new instance of Session and checks if there is already a session.
 	def new
+		#Firstly checks for if there is someone logged in.
 		if current_user
 			flash[:notice] = "You are already logged in - YAHOO"
 			if @current_user.is_admin?      		
@@ -32,12 +36,12 @@ class SessionsController < ApplicationController
 		end
 	end
 	
-	# Display the MAIN index Page	
+	# Displays the MAIN index Page	
 	def index
 		render :layout => 'public'
 	end
 	
-	# View Pages for Public display that created by Admin user
+	# View Pages for Public display that has created by Admin user
 	def view_pages
 	current_user
 		if params[:id]
@@ -50,7 +54,7 @@ class SessionsController < ApplicationController
   	
 	# Destroys session    
 	def destroy
-	current_user
+		current_user
 		if @current_user.is_owner?
 			url = Owner.find(@current_user.resource_id).speedlms_url
 		elsif @current_user.is_admin?
@@ -66,8 +70,9 @@ class SessionsController < ApplicationController
 		end
 	end
                             
-protected
-    # Checks authentication for username/password login	
+	protected
+	
+  # Checks authentication for username/password login	
 	def password_authentication(name, password)
 		if @current_user =User.authenticate(params[:name], params[:password])
 			successful_login
@@ -76,7 +81,7 @@ protected
 		end
 	end
 
-    # Checks authentication for openid login	
+  # Checks authentication for openid login	
 	def open_id_authentication 
 		authenticate_with_open_id do |result, identity_url|
 			if result.successful?
@@ -91,7 +96,8 @@ protected
 		end
 	end
         
-private
+	private
+	
 	# Checks for presence of remember me redirects users according to their role
 	def successful_login
 		session[:user_id] = @current_user.id
@@ -128,4 +134,5 @@ private
 			format.js
 		end
 	end
+	
 end

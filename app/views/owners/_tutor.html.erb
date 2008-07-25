@@ -1,25 +1,20 @@
-<div id="edit_user">
+<fieldset class = "signup">
 	<h2>
 		Listing Tutors
 	</h2>
-</div>
-<table>
-  <tr>
-		<th>
-			Login
-		</th>
-		<th>
-			Actions
-		</th>
-	</tr>
-	<% for tutor in @tutors %>
-	  <tr>
-			<td>
-				<%= h tutor.login %>
-			</td>
-			<td>
-				<%= link_to "remove", tutor, :method=> 'delete'%>
-			</td>
-	  </tr>	
-  <% end %>
-</table>
+	<table>
+		<% for tutor in @tutors %>
+			<tr>
+				<td>
+				<% if tutor.user %>
+					<%= h tutor.user.login %>			
+				</td>
+				<td>
+					<%= link_to "remove", user_path(tutor.user.id), :method=> 'delete'%>
+					<%= link_to "show" %>
+				<% end %>
+				</td>
+			</tr>	
+		<% end %>
+	</table>
+</fieldset>

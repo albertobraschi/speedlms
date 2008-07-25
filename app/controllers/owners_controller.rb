@@ -1,9 +1,19 @@
 class OwnersController < ApplicationController
+
+	#This makes current user available to all actions except new and create.
 	before_filter :current_user, :except=>[:new, :create]
+	
+	#This prevents unauthorized users to access index page.
 	before_filter :authorize, :only=>[:index]
-	before_filter :authorize_owner, :only => [:edit, :update, :destroy]
+	
+	#This makes sure that a user can edit,update or destroy only his/her own account.
+	before_filter :authorize_owner, :only => [:edit,:update,:destroy]
+	
+	#This makes all viewable pages available to all actions.
 	before_filter :pages
+	
 	def new
+		#Firstly checks for if there is someone logged in.
 		if current_user
     	flash[:notice] = "Firstly logout and then create new owner"
 			if current_user.is_admin?      		
@@ -23,7 +33,8 @@ class OwnersController < ApplicationController
 	
 	def create
 		cookies.delete :auth_token
-		@user = User.new(params[:user]) 
+		@user = User.new(params[:user])
+		@user.resource_type = RESOURCE_TYPE[:owner] 
     @owner = Owner.new(params[:owner])
     @user.resource = @owner
     @price = SignupPlan.find_by_id(@owner.signup_plan_id).price if @owner.signup_plan_id
@@ -43,13 +54,13 @@ class OwnersController < ApplicationController
 		
 	end
 	
-	#Edits user's information
+	#Edits owner's information
   def edit
   	@owner = Owner.find_by_id(params[:id])
   	@user = @current_user
   end
   
-  #Updates user's information
+  #Updates owner's information
   def update
   	@user = @current_user
     @owner = Owner.find_by_id(params[:id])
@@ -67,9 +78,15 @@ class OwnersController < ApplicationController
 		
 	end
   
-  #checks availability of speedlms subdomain for owner
+  #Checks availability of speedlms subdomain for owner
   def check_subdomain_availability
-  	@subdomain = params[:owner][:speedlms_subdomain]
+  	#Checks if the user creating is an owner.
+  	if params[:owner] and params[:owner][:speedlms_subdomain]
+  		@subdomain = params[:owner][:speedlms_subdomain]
+  	#Checks if the user creating is a tutor.		
+  	elsif params[:tutor] and params[:tutor][:speedlms_subdomain] 
+  		@subdomain = params[:tutor][:speedlms_subdomain] 
+  	end
   	@users = User.find(:all, :conditions => ["resource_type = ? or resource_type = ?",'Owner','Tutor'])  			
   	if !@subdomain.blank?
   		if @users.blank?
@@ -85,24 +102,26 @@ class OwnersController < ApplicationController
   			end
   		end
   	else
-  			@message = "Subdomain should not be blank."
+  		@message = "Subdomain should not be blank."
   	end
+  	#Renders message in the specified div according to availability of subdomain.
   	render :update do |page|
-  	page.replace_html "subdomain_availability_message",@message
- 	end
+  		page.replace_html "subdomain_availability_message",@message
+ 		end
   end
   
-  #Used to add and invite tutors.
+  #Used to add and invite Tutors by an Owner.
   def add_tutors
-	 @tutors = User.find(:all, :conditions => ["resource_type = ? ",  "Tutor"])
 	 @owner = @current_user.resource
+	 @tutors = Tutor.find(:all, :conditions => ["owner_id = ? ",  @owner.id])
     if request.post?
 	    @user = User.new(params[:user])
+	    @user.resource_type = RESOURCE_TYPE[:tutor]
 	    @tutor = Tutor.new(params[:tutor])
 	    @user.resource = @tutor
 	    @tutor.owner = @owner
-#      @user.resource_type = User::RESOURCE_TYPE[:tutor] 
        if @user.save
+       	 #Sends email to Tutor after his/her account has created by Owner.
          email = LoginDetailsMailer.create_sent(@user)
 		     email.set_content_type("text/html")
 		     LoginDetailsMailer.deliver(email)
@@ -113,7 +132,8 @@ class OwnersController < ApplicationController
   end  
 
  private
-  #saves user and makes him/her current user.
+ 
+  #Saves Owner and makes him/her current user.
   def successful_signup
     @user.save
 	  email = OwnerWelcomeMail.create_sent(@user)
@@ -127,10 +147,11 @@ class OwnersController < ApplicationController
     redirect_to url
   end 
   
+  #This is used to authorize an user to perform actions like Edit/Delete/Destroy on his/her account information.
   def authorize_owner
-  owner = Owner.find_by_id(params[:id])
+		owner = Owner.find_by_id(params[:id])
   	unless current_user.resource == owner
-  		flash[:notice] = "You are not authorize to edit this user."
+  		flash[:notice] = "You are not authorized to alter this user."
   		redirect_to root_path	
   	end
   end

@@ -307,12 +307,6 @@ a {
 	font-weight: bold;
 }
 
-.form{
-	width: 50%;
-	float: left;
-	background: #F8F8F8 ;
-	margin: 1em 0em 4em 0em;
-}
 
 .labels{
 	width: 40%;
@@ -328,7 +322,7 @@ margin: -2pt 0pt -6pt 362pt;
 }
 
 #form {
-	display: none;
+	display: block;
 }
 
 label {
@@ -343,3 +337,14 @@ input{
 	color: #781351;
 	border: 1px solid ;
 }
+
+#username_availability_message,
+#subdomain_availability_message {
+	width: 300px;
+	background: #ffcc00 none repeat scroll 0%;
+}
+
+.small_text {
+	font-size: 10px;
+}
+
