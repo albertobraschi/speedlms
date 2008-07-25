@@ -22,7 +22,7 @@ class Admin::PagesController < ApplicationController
                            :theme_advanced_resizing => true,
                            :theme_advanced_resize_horizontal => false,
                            :height => 300,
-                           :width => 400,
+                           :width => 650,
                            :paste_auto_cleanup_on_paste => true,
                            :theme_advanced_buttons1 => %w{formatselect fontselect fontsizeselect bold italic 
                            																underline strikethrough separator justifyleft 

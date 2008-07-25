@@ -1,0 +1,19 @@
+			<tr>
+				<td>
+					*(Check availability of subdomain)
+				</td>
+				<td>
+					<%= submit_to_remote "check_subdomain_available", "check availability", 
+																:url => {:action => 'check_subdomain_availability'},
+																:before => "Element.show('new_subdomain_step_loading')", 
+																:complete => "Element.hide('new_subdomain_step_loading')" %>
+					<span id = "new_subdomain_step_loading" style ="display:none" class="spinner">
+						<%=image_tag 'loading.gif' %>
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<div id = "subdomain_availability_message" >
+						
+				</div>
+			</tr>

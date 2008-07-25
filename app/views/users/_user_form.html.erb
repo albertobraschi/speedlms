@@ -58,22 +58,7 @@
 						</div>
 					</td>
 				</tr>
-				<tr>
-					<div id = "username_availability_message">
-						
-					</div>
-				</tr>
-				<tr>
-					<td>
-						*(Check availability of username)
-					</td>
-					<td>
-						<%= submit_to_remote "check_username_available", "check availability", 
-																	:url => {:controller => 'users', :action => 'check_username_availability'},
-																	:before => "Element.show('new_step_loading')", :complete => "Element.hide('new_step_loading')" %>
-						<span id = "new_step_loading" style ="display:none" class="spinner"><%=image_tag 'loading.gif' %></span>
-					</td>
-				</tr>
+				<%= render :partial => '/users/check_username' %>
 				<tr>
 					<th>
 						<div class = "normal" >

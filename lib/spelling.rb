@@ -16,14 +16,14 @@ module Spelling
           error.strip!
           if (match_data = error.match(ASPELL_WORD_DATA_REGEX))
             arr = match_data[0].split(' ')
-            xml_response_values << error.split(",")
+            xml_response_values << arr[1]
           end 
         end 
       elsif (command == 'suggest') 
         for error in spelling_errors 
           error.strip! 
           if (match_data = error.match(ASPELL_WORD_DATA_REGEX)) 
-              xml_response_values << error.split(",")
+              xml_response_values << error.split(',')
           end
         end 
       end 

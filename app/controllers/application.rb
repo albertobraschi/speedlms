@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   
+  include Spelling 
   # Include all helpers, all the time
   helper :all
    
@@ -9,7 +10,7 @@ class ApplicationController < ActionController::Base
   
   helper_method :pages, :current_user
   
-  include Spelling 
+  
   def spellcheck 
     @headers['Content-Type'] = 'text/xml' 
     @headers['charset'] = 'utf-8' 
