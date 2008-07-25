@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 	belongs_to :resource, :polymorphic => true
 
   RESOURCE_TYPE = {:admin => "Admin", :owner => "Owner", :tutor => "Tutor", :student => "Student"}
-  attr_accessor :password
+  attr_accessor :password, :tutor_login, :tutor_email
 	validates_presence_of     :firstname, :lastname
   validates_presence_of     :login, :email, 
   													:if => :not_openid?
@@ -22,13 +22,37 @@ class User < ActiveRecord::Base
                       			:if => Proc.new{|a| a.email.length > 0 if a.email}
  
   validates_uniqueness_of   :login, :email, :if => (:not_openid? and Proc.new{|a| a.resource_type != RESOURCE_TYPE[:tutor]})
-  #validates_uniqueness_of   :login, :scope => Proc.new{|a| a.resource.owner_id}, :if => Proc.new{ |a| a.resource_type == RESOURCE_TYPE  [:tutor]}
-	validates_associated 			:resource             			                   
+  #validates_uniqueness_of   :login, :scope => :owner_id, :if => Proc.new{|a| a.resource_type == RESOURCE_TYPE[:tutor]}		         
+  validates_associated 			:resource             			                   
   before_save 							:encrypt_password
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :password, :password_confirmation, :pcode, :resource_type, :resource_id, :lastname, :firstname
+  
+  def before_save
+  	if self.resource_type == RESOURCE_TYPE[:tutor]
+  		@owners = User.find(:all, :conditions => ["resource_type = ?",'Tutor'])
+  		for owner in @owners
+  			@tutors = Tutor.find(:all, :conditions => ["id = ?",owner.id])
+  			for tutor in @tutors
+  				user = User.find_by_resource_id(tutor.id)
+  				if self.login == user.login
+  					errors.add("Username has been already taken.")
+  					break
+  				end
+  			end
+  		end
+  	end
+  end
+  
+  #def owner_id
+  	#@owner_id = self.tutor.owner_id
+  #end
+  
+  #def owner_id=(owner_id)
+  	#@owner_id = owner_id
+  #end
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. 
   def self.authenticate(login, password)

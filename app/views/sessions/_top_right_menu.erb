@@ -3,18 +3,16 @@
 		<%= link_to 'Home',root_path %>
 		<% @pages.each do |page| %>
 			<%= link_to page.title, view_pages_session_path(:id => page.id) %>
-		<% end %>        
-		<% if @current_user %>
-			<% if !@current_user.is_admin? %>
-				<%= link_to 'My Info', edit_owner_path(@current_user.resource_id) %>
-				<% if @current_user.resource.speedlms_subdomain %>
-					<%= link_to 'Tutors', add_tutors_owners_path %>
-				<% end %>
-			<% end %>
-			<%= link_to 'Logout', destroy_session_path, :method => :delete %>
-		<% else %> 
+		<% end %>
+		<% unless @current_user %>
 			<%= link_to 'Login',new_session_path %>
 			<%= link_to 'Owner-SignUp',new_owner_path %>
-		<% end %> 
-  </span>  
+		<% else %>
+			<% if @current_user.is_owner? %>
+				<%= link_to 'My Info', edit_owner_path(@current_user.resource_id) %>
+				<%= link_to 'Tutors', add_tutors_owners_path %>
+			<% end %>
+			<%= link_to 'Logout', destroy_session_path, :method => :delete %>
+		<% end %>		 
+  </span>
 </h3>

@@ -3,7 +3,6 @@ class UsersController < ApplicationController
 	include ActiveMerchant::Billing
   
 	before_filter :authorize, :only=>[:index]
-	#before_filter :current_user, :except=>[:new, :create]
 	before_filter :pages
   skip_before_filter :verify_authenticity_token, :only=> [:confirm, :notify]   
   
@@ -41,6 +40,7 @@ class UsersController < ApplicationController
   
   	# Displays the index page of the current user who loggs in   
   	def index
+  		current_user
     	render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   	end  
 
@@ -61,6 +61,7 @@ class UsersController < ApplicationController
   
   	# Creates invoice for a paid plan user.
   	def payment
+  		current_user
   		@plan = SignupPlan.find_by_id(@current_user.plan)
   		@invoice = Invoice.new
   		@invoice.signup_plan = @plan
@@ -144,39 +145,23 @@ class UsersController < ApplicationController
   	def reset
    		@user = User.find_by_pcode(params[:pcode]) unless params[:pcode].nil?
     	if @user.nil?
-      		flash[:notice] = "Sorry this link has expired"
-      		redirect_back_or_default('/')
-      	elsif request.post?
-        	if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
-          		@user.delete_pcode
-          		flash[:notice] = "Password reset successfully for #{@user.email}"
-          		redirect_back_or_default('/')
-        	end
+      	flash[:notice] = "Sorry this link has expired"
+      	redirect_back_or_default('/')
+      elsif request.post?
+       	if @user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
+          @user.delete_pcode
+          flash[:notice] = "Password reset successfully for #{@user.email}"
+          redirect_back_or_default('/')
+        end
      	end
   	end
-  
-
-  	# Used to add and invite tutors.
-  	def add_tutors
-	 	@tutors = User.find(:all, :conditions => ["resource_type = ? ",  "Tutor"])
-    	if request.post?
-	    	@user = User.new(params[:user])
-      		@user.resource_type = User::RESOURCE_TYPE[:tutor] 
-       		if @user.save
-         		email = LoginDetailsMailer.create_sent(@user)
-		     	email.set_content_type("text/html")
-		     	LoginDetailsMailer.deliver(email)
-         		flash[:notice] = "#{@user.login} is added as a tutor"
-		     	@user = User.new
-       		end 
-     	end         
-  	end  
   	
   	# Deletes the user from the list of all users
   	def destroy
+  		current_user
 	  	@user = User.find(params[:id])
 	  	@user.destroy
-	  	redirect_to @current_user.speedlms_url + add_tutors_users_path
+	  	redirect_to @current_user.resource.speedlms_url + add_tutors_owners_path
 	  	flash[:notice] = "User has been deleted"	
   	end
   
@@ -204,17 +189,4 @@ class UsersController < ApplicationController
   				page.replace_html 'username_availability_message',@message
   			end
 		end
-		
-private
-  	# Saves user and makes him/her current user.
-  	def successful_signup 
-    	@user.save
-	  	email = OwnerWelcomeMail.create_sent(@user)
-	  	email.set_content_type("text/html")
-	  	OwnerWelcomeMail.deliver(email)
-	  	flash[:notice] = "Thanks for sign up!"
-	  	@current_user = @user
-    	session[:user_id] = @current_user.id
-    	redirect_to @current_user.speedlms_url + users_path(:sess => session[:user_id])
-  	end 
-end
+end	

@@ -1,11 +1,12 @@
 class SessionsController < ApplicationController
 	include AuthenticatedSystem
 	# skip_before_filter :getSubdomainDetails
+	
 	# This filter looks for presence of remember_me.
 	before_filter :login_from_cookie, :only => [:new,:create] 
-	#before_filter :current_user
 	before_filter :pages
-  	# Creates new instance of Session.
+	
+  # Creates new instance of Session and checks if there is already a session.
 	def new
 		if current_user
 			flash[:notice] = "You are already logged in - YAHOO"
@@ -38,22 +39,22 @@ class SessionsController < ApplicationController
 	
 	# View Pages for Public display that created by Admin user
 	def view_pages
+	current_user
 		if params[:id]
 	  		@page = Page.find_by_id(params[:id])
 	  	else
 	  		@page = Page.find_index_page
-	  		if @page
-	  		end
 	  	end
 	  	render :layout => 'public'
 	end
   	
 	# Destroys session    
 	def destroy
+	current_user
 		if @current_user.is_owner?
 			url = Owner.find(@current_user.resource_id).speedlms_url
 		elsif @current_user.is_admin?
-			url = "http://speedlms.dev"
+			url = 'http://speedlms.dev'
 		end
 		@current_user.forget_me if logged_in?
 		cookies.delete :auth_token

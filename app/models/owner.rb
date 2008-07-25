@@ -1,8 +1,9 @@
 class Owner < ActiveRecord::Base
 	belongs_to :signup_plan
+	has_many :users, :as => :resource, :dependent=>:destroy 
 	has_many :courses
 	has_many :tutors
-	has_many :users, :as => :resource, :dependent=>:destroy 
+	
 	validates_presence_of     :signup_plan ,:speedlms_subdomain, :organisation, :timezone,
   													:message => "is must for Owner"
 	validates_format_of 			:logo, 

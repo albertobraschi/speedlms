@@ -95,9 +95,13 @@ class OwnersController < ApplicationController
   #Used to add and invite tutors.
   def add_tutors
 	 @tutors = User.find(:all, :conditions => ["resource_type = ? ",  "Tutor"])
+	 @owner = @current_user.resource
     if request.post?
 	    @user = User.new(params[:user])
-      @user.resource_type = User::RESOURCE_TYPE[:tutor] 
+	    @tutor = Tutor.new(params[:tutor])
+	    @user.resource = @tutor
+	    @tutor.owner = @owner
+#      @user.resource_type = User::RESOURCE_TYPE[:tutor] 
        if @user.save
          email = LoginDetailsMailer.create_sent(@user)
 		     email.set_content_type("text/html")
@@ -119,7 +123,7 @@ class OwnersController < ApplicationController
 	  @current_user = @user
     session[:user_id] = @current_user.id
     @owner = Owner.find_by_id(@current_user.resource_id)
-    url = @owner.speedlms_url + users_path(:sess => session[:user_id])
+    url = @owner.speedlms_url + owners_path
     redirect_to url
   end 
   
