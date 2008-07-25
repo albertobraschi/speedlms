@@ -1,16 +1,14 @@
 <html>
-	<head>
-    <title>
-    	Welcome to SpeedLMS
-    </title>
+<head>
+    <title>Welcome to SpeedLMS MERGED</title>
     <%= stylesheet_link_tag "unsecure.css" , :media => "all" %>
     <%= javascript_include_tag :defaults %>
-	</head>
-	<body>  
+</head>
+<body>  
     <div id = "header">
- 			<%= render :partial => '/sessions/top_right_menu', :collection => @pages, :object => @current_user %>
+		<%= render :partial => '/sessions/top_right_menu' %>
     	<h1>
-    		Welcome to SpeedLMS PUBLIC CSS
+    		Welcome to SpeedLMS MERGED
     	</h1>
     </div>
 		<div id = "main">

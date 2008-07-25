@@ -48,8 +48,6 @@ class SessionsController < ApplicationController
 	  		@page = Page.find_by_id(params[:id])
 	  	else
 	  		@page = Page.find_index_page
-	  		if @page
-	  		end
 	  	end
 	  	render :layout => 'public'
 	end
@@ -60,7 +58,7 @@ class SessionsController < ApplicationController
 		if @current_user.is_owner?
 			url = Owner.find(@current_user.resource_id).speedlms_url
 		elsif @current_user.is_admin?
-			url = "http://speedlms.dev"
+			url = 'http://speedlms.dev'
 		end
 		@current_user.forget_me if logged_in?
 		cookies.delete :auth_token
