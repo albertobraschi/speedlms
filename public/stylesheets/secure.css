@@ -1,3 +1,4 @@
+
 *{
 margin:0px;
 }
@@ -14,10 +15,9 @@ padding: 0px;
   background:#003366 none repeat scroll 0%;
   padding:0px;
   border-bottom: 3px solid #999999;
-}
-
-#header .admin{
-	background-color:#009900;
+    color:#FFCC00;
+  font-size:24px;
+  font-weight:normal;
 } 
 
 #main {
@@ -34,7 +34,7 @@ padding: 0px;
  
 #main_content {
   position: relative;  
-  margin: 2px ;
+  margin: 2px;
   text-align: left;
   padding: 0px;
 }
@@ -42,9 +42,10 @@ padding: 0px;
 #content_right {
   margin: 0 2px 4px 4px; 
   float: left;
-  width: 350px; 
+  width: 345px; 
   padding: 0 1px 4px 0px;
   text-align: center;
+  font-family: "Lucida Grande",arial,sans-serif;
 }
 
 #content_left {
@@ -55,6 +56,7 @@ padding: 0px;
   border-bottom: 3px solid #999999;
   border-right: 3px solid #999999;
   background: #FFFFFF;  
+  font-family: "Lucida Grande",arial,sans-serif;
 }       
 
 #clear {
@@ -102,14 +104,7 @@ padding: 0px;
   text-align:left;
 }   
 
-h2 {
-  color:#333333;
-  font-family:"Lucida Grande",arial,sans-serif;
-  font-size:18px;
-}
-
 #header h3 {
-  color:#ffffff;
   font-size:12px;
   font-weight:normal;
   margin:0pt;
@@ -121,6 +116,7 @@ h2 {
   float:right;
   position:relative;
   text-align:right;
+  width:300px;
 } 
 
 #header h3 a:link, #header h3 a:visited {
@@ -130,6 +126,12 @@ h2 {
 #header h3 a:hover {
   background: #0000ff;
   color: #FFFFFF;
+}
+
+h2 {
+  color:#333333;
+  font-family:"Lucida Grande",arial,sans-serif;
+  font-size:18px;
 }
 
 #content_left h2 {
@@ -175,40 +177,63 @@ fieldset.signup {
   font-weight: bold;
 }
 
+.small_text {
+	font-size: 10px;
+}
+
 .normal {
   color:#222222;
+  font-size:15px;
+  line-height:1.3em;
+  padding: 4px;
+}
+
+.signup_normal {
+	color:#222222;
   font-size:14px;
-  line-height:1.6em;
-  padding: 4px;	
+  line-height:1.3em;
+  padding: 4px;
 }
 
 #notice {
-  color: #ffffff;
-  font-size:12px;
-  line-height:1.3em;  
-  border: 1px solid #0000ff;
-  background: #7F38EC;
+ color: #000000;  
+  font-size:14px;
+  font-family:"Lucida Grande",arial,sans-serif;
+  font-weight: normal;
+  line-height:1.3em;
+  border: 1px solid #000000;
+  padding: 3px 3px 3px 3px;
+  margin: 5px 5pt 5px 5px;
+  background: #ffffcc;
 }
 
 #error {
-  color: #ffffff;  
-  font-size:12px;
+ color: #ff0033;  
+  font-size:14px;
+  font-family:"Lucida Grande",arial,sans-serif;
+  font-weight: normal;
   line-height:1.3em;
-  border :1px solid #ff0000;
-  background: #F62817;
+  border: 1px solid #ff0033;
+  padding: 3px 3px 3px 3px;
+  margin: 5px 5pt 5px 5px;
+  background: #f9bdbd;
 }
 
 #message {
-  color: #ffffff;  
-  font-size:12px;
+  color: #009900;  
+  font-size:14px;
+  font-family:"Lucida Grande",arial,sans-serif;
+  font-weight: normal;
   line-height:1.3em;
-  border :1px solid #00ff00;
+  border: 1px solid #009900;
+  padding: 3px 3px 3px 3px;
+  margin: 5px 5pt 5px 5px;
   background: #B5EAAA;
 }
 
 .container {
 margin:0pt auto;
-min-width:750px;
+min-width:800px;
 text-align:center;
 }
 
@@ -219,13 +244,13 @@ text-align:center;
 }
 
 div#signup .fieldset_left {
-  width: 150px;
+  width: 280px;
   float: left;
   text-align: right;  
 }
 
 div#signup .fieldset_right {
-  width: 160px;
+  width: 550px;
   float: right;
   margin-left: 0px;
 }
@@ -238,7 +263,7 @@ input.first {
 }
 
 #errorExplanation {
-		border: 1px solid #bbb;
+  	border: 1px solid #bbb;
   	line-height: 20px;
   	color: #000;
   	width: 350px;
@@ -255,7 +280,7 @@ input.first {
   	padding: 5px;
   	font-size: 14px;
   	border-bottom:1px solid #bbb;
-        color:#fff;
+    color:#fff;
 }
 
 #errorExplanation p {
@@ -285,57 +310,9 @@ input.first {
 a {
 	text-decoration: none;
 	}
-
-.resetPwd{
-	text-align: right;
-	margin: 2pt 200pt;
-}
-
-.fields{
-	float: left;
-	width: 40%;
-}
-.containers{
-	float: right;
-	margin-right: 475pt;
-}
-
-#edit_user{
-	background: #F8F8F8;
-	padding: 13px 30px 13px 24px;
-	margin: 0pt 441pt 5px 0px;
-	font-weight: bold;
-}
-
-
-.labels{
-	width: 40%;
-	float: left;
-}
-
-.fields{
-	width: 60%;
-}
-
-#links{
-margin: -2pt 0pt -6pt 362pt;
-}
-
-#form {
-	display: block;
-}
-
-label {
-width: 20em;	
-float: left;
-text-align: left;
-display: block;
-margin-right: 0.5em;
-}
-
-input{
-	color: #781351;
-	border: 1px solid ;
+	
+#username_openid {
+	
 }
 
 #username_availability_message,
@@ -344,7 +321,7 @@ input{
 	background: #ffcc00 none repeat scroll 0%;
 }
 
-.small_text {
-	font-size: 10px;
+th {
+	float: left;
 }
 
