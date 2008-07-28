@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   
-  include Spelling 
   # Include all helpers, all the time
   helper :all
    
@@ -9,16 +8,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # :secret => '9a32d74aad8124005db44b1b832882bb'
   
   helper_method :pages, :current_user
+   
   
-  
-  def spellcheck 
-    @headers['Content-Type'] = 'text/xml' 
-    @headers['charset'] = 'utf-8' 
-    suggestions = check_spelling(params[:check], params[:cmd], params[:lang]) 
-    xml = "#{suggestions}"
-    render :text => xml
-    return
-  end
   
   #Finds all viewable pages.
   def pages

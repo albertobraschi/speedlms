@@ -16,8 +16,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session, :collection => {:destroy => :delete, :index => :get}, :member => {:view_pages => :get}
   
   map.namespace :admin do |admin|
-     admin.resources :users, :sessions, :pages, :signup_plans
-     end 
+    admin.resources :users, :sessions, :pages, :signup_plans
+  end 
+  map.connect 'spellchecker', :controller => 'admin/pages', :action => 'spellchecker'
   map.connect 'admin', :controller => 'admin/users', :action => 'index'
   map.forgot '/forgot', :controller => 'users',     :action => 'forgot'
   map.reset '/reset/:pcode',  :controller => 'users',   :action => 'reset', :method => 'get'

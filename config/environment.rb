@@ -38,7 +38,7 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_proj_session',
+    :session_key => '_speedlms_session',
     :secret      => '1e7e3f46984858be9afa42f0ea6f634c8a144e8ed3edf389db38452218a7d5491c6c95f740d325bde16493802413e36fb5a0cc204c4414fed20f7b4fe81d1cb0'
   }
   config.after_initialize do

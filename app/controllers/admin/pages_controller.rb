@@ -1,5 +1,8 @@
 class Admin::PagesController < ApplicationController
-
+	
+	require 'json'
+  include Spelling 
+  
 	#Specifies that the corresponding templates will use 'admin' layout.
 	layout 'admin'
 	
@@ -12,7 +15,6 @@ class Admin::PagesController < ApplicationController
   #Checks for whether the currently deleting page is an index page or not?
 	before_filter :delete_index_page?, :only => [:destroy]
 	
-	#Includes the features in TinyMCE Editor.
 	uses_tiny_mce(:options => {:theme => 'advanced',
                            :browsers => %w{msie gecko},
                            :mode => "specific_textareas",
@@ -21,18 +23,17 @@ class Admin::PagesController < ApplicationController
                            :theme_advanced_toolbar_align => "left",
                            :theme_advanced_resizing => true,
                            :theme_advanced_resize_horizontal => false,
-                           :height => 300,
-                           :width => 650,
+                           :height => 400,
+                           :width => 500,
                            :paste_auto_cleanup_on_paste => true,
-                           :theme_advanced_buttons1 => %w{formatselect fontselect fontsizeselect bold italic 
-                           																underline strikethrough separator justifyleft 
-                           																justifycenter justifyright indent outdent separator 
-                           																bullist numlist forecolor backcolor separator link 
-                           																unlink image undo redo},
-                           :theme_advanced_buttons2 => [],
-                           :theme_advanced_buttons3 => [],
-                           :plugins => %w{contextmenu paste}},
-              :only => [:new, :edit, :show, :index])	
+                           :theme_advanced_buttons1 => %w{bold italic underline strikethrough justifyleft 
+                           																justifycenter justifyright forecolor backcolor spellchecker},
+													 :theme_advanced_buttons2 => [],
+												   :theme_advanced_buttons3 => [],                           																
+                           :plugins => %w{preview paste contextmenu spellchecker},
+ 													 :spellchecker_languages => "+English=en,Espanol=es",
+ 													 :spellchecker_rpc_path => "home/spellchecker"
+ 													 })	   
    
   #Configures Active Scaffold for pages.
 	active_scaffold :page do |config|
@@ -41,7 +42,18 @@ class Admin::PagesController < ApplicationController
   config.create.columns = [:title,:description,:is_show, :is_index]
   list.columns.exclude [:description]
   list.sorting = {:title => 'DESC'}   
-  end 
+  end
+  
+  
+  def spellchecker
+  p "fdjsgjsgjjjjdsjyhiudhjhj"
+    headers["Content-Type"] = "text/plain"
+    headers["charset"] =  "utf-8"
+    suggestions = check_spelling(params[:params][1], params[:method], params[:params][0])
+    results = {"id" => nil, "result" => suggestions, 'error' => nil}
+    render :text => results.to_json
+    return
+  end
   
   private
   
