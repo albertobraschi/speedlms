@@ -1,6 +1,6 @@
 class Admin::PagesController < ApplicationController
 	
-	require 'json'
+	#require 'json'
   include Spelling 
   
 	#Specifies that the corresponding templates will use 'admin' layout.
@@ -14,7 +14,6 @@ class Admin::PagesController < ApplicationController
   
   #Checks for whether the currently deleting page is an index page or not?
 	before_filter :delete_index_page?, :only => [:destroy]
-	
 	uses_tiny_mce(:options => {:theme => 'advanced',
                            :browsers => %w{msie gecko},
                            :mode => "specific_textareas",
@@ -32,7 +31,7 @@ class Admin::PagesController < ApplicationController
 												   :theme_advanced_buttons3 => [],                           																
                            :plugins => %w{preview paste contextmenu spellchecker},
  													 :spellchecker_languages => "+English=en,Espanol=es",
- 													 :spellchecker_rpc_path => "home/spellchecker"
+ 													 :spellchecker_rpc_path => "/javascripts/tiny_mce/plugins/spellchecker/tinyspell.php"
  													 })	   
    
   #Configures Active Scaffold for pages.
@@ -45,13 +44,16 @@ class Admin::PagesController < ApplicationController
   end
   
   
-  def spellchecker
+  def spellcheck
   p "fdjsgjsgjjjjdsjyhiudhjhj"
     headers["Content-Type"] = "text/plain"
     headers["charset"] =  "utf-8"
-    suggestions = check_spelling(params[:params][1], params[:method], params[:params][0])
-    results = {"id" => nil, "result" => suggestions, 'error' => nil}
-    render :text => results.to_json
+    #suggestions = check_spelling(params[:params][1], params[:method], params[:params][0])
+    suggestions = check_spelling(params[:check], params[:cmd], params[:lang])
+    #results = {"id" => nil, "result" => suggestions, 'error' => nil}
+    xml = "<?xml version='1.0' encoding='utf-8'?>#{suggestions}"    
+    #render :text => results.to_json
+    render :text => xml
     return
   end
   

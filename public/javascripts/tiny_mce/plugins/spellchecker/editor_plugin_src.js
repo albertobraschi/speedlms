@@ -165,7 +165,6 @@ var TinyMCE_SpellCheckerPlugin = {
 	 */
 	_getMenuButtonHTML : function(id, lang, img, mlang, mid, cmd, ui, val) {
 		var h = '', m, x;
-
 		cmd = 'tinyMCE.hideMenus();tinyMCE.execInstanceCommand(\'{$editor_id}\',\'' + cmd + '\'';
 
 		if (typeof(ui) != "undefined" && ui != null)
