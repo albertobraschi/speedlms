@@ -4,10 +4,10 @@ margin:0px;
 
 body {
 background-color:#D7D7D7;
-color:#222222;
-font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;
-margin: 0px;
-padding: 0px;
+	color:#222222;
+	font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;
+	margin: 0px;
+	padding: 0px;
   font-size: 14px;
   font-variant: normal;
 }
@@ -17,7 +17,7 @@ padding: 0px;
   url('../images/topbluefade.gif');
   font-size:40px;
   font-weight:normal;
-  background-repeat: repeat-x;
+  background-repeat:#FFFFFF repeat-x;
   padding:0px;
  }
 #header h1 {
@@ -61,7 +61,6 @@ h2 {
 
 #content_main {
   margin: 0 2px 4px 4px; 
-  background: #ffffff;
   float: left;
   padding: 0 1px 4px 0px;
 }
@@ -72,11 +71,16 @@ h2 {
   border-top: 3px solid #000000;
   border-left: 3px solid #000000;
   background: #999999;
-  float: left;
   padding: 2px 2px 2px 2px;
   width: 400px;
   vertical-align: middle;
 }
+
+div.login {
+	text-align: left;
+	background-color:#F5F5F5;
+}
+
 #content_left {
   margin: 2px 5px 2px 8px;
   padding: 4px 0px 4px 10px; 
@@ -101,13 +105,11 @@ h2 {
 #credential_login {
   margin: 1px;
   width: 320px;
-  height: 50px;
 }
 
 #credential_openid {
   margin: 1px;
   width: 320px;
-  height: 25px;
   display: none;
 }
 
@@ -219,6 +221,7 @@ text-align:center;
 }
 
 #signup_container {
+  background: #ffffff;
   width: 800px;
   margin: 0px;
   padding: 0px;
@@ -339,7 +342,7 @@ display: block;
 margin-right: 0.5em;
 }
 
-input{
+input {
 	color: #781351;
 	border: 1px solid ;
 }

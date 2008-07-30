@@ -13,81 +13,72 @@
 		}	
 </script>
 
-<div id = "content_menu">
-	<fieldset class = "mar_bot">
-	  <h2>
-	  	Login
-	  </h2>
-		<p class = "normal" >
-			Log in to SpeedLMS with your 
-		</p>
-		<p class = "normal">
-			<%= check_box_tag "openid_url",{},false,{:onClick => "javascript:swap(this)"}  %>
-			<label for="openid_url">
-				Use an OpenID for Login
-			</label>
-		</p>
-		<% form_tag(session_url) do %>  
-			<div id = 'credential_openid'>
-				<div class = 'fieldset_left'>
-					<p class = "normal" >
-						<label for="openid_url">
-							OpenID:
-						</label>
-					</p>
-				</div> 
-				<div class = "fieldset_right">
-					<p class = "normal" >
-						<%= text_field_tag "openid_url",{},:size => 15, :class => 'first'  %>
-					</p>
-				</div> 
-			</div>
-			<div id = 'credential_login'>
-				<div class = 'fieldset_left'>
-					<p class = "normal" >
-						<label for="name">
-							Username:
-						</label>
-					</p>
-					<p class = "normal" >
-						<label for="password">
-							Password:
-						</label>
-					</p>
-				</div>
-				<div class = "fieldset_right">
-					<p class = "normal" >
-						<%= text_field_tag "name",{},:size => 15, :class => 'first' %>
-					</p>
-					<p class = "normal" >
-						<%= password_field_tag "password",{},:size => 15, :class => 'first'  %>
-					</p>
-				</div>
-			</div>
-			<div class = "normal">
-				<%= check_box_tag "remember_me","yes",false %>
-				<label for="remember_me">
-					Remember me on this Computer.
-				</label>
-			</div>
-			<p>
-				<%= submit_tag 'Sign in', :disable_with => "Signing in&hellip;" %>
+<div align = 'center'>
+	<div id = "content_menu">
+	<div class = "login">
+		<fieldset>
+			<h2>
+				SpeedLMS Login
+			</h2>
+			<p class = "normal" >
+				Log in to SpeedLMS with your 
 			</p>
-			<p class = 'normal'>
-				<%= link_to 'I cannot access my account', :controller=> "users", :action => "forgot" %>
+			<p class = "normal">
+				<%= check_box_tag "openid_url",{},false,{:onClick => "javascript:swap(this)"}  %>				
+					Use an OpenID for Login			
 			</p>
-		<% end %>
-	</fieldset>
-	<fieldset class = "mar_bot" >
-		<h2>			
-			<%= link_to 'Sign up for FREE to SpeedLMS',new_owner_path %>
-		</h2>
-		<p class = "normal">                
-			<%= link_to 'About SpeedLMS',"" %>                
-			<%= link_to 'New Features!',"" %>                
-		</p>
-	</fieldset>
-</div>  
-</div>
-<div id = "clear" >
+			<% form_tag(session_url) do %>  
+				<div id = 'credential_openid'>					
+						<p class = "normal" >
+							<label for="openid_url">
+								OpenID:
+							</label>
+						</p>					
+						<p class = "normal" >
+							<%= text_field_tag "openid_url",{},:size => 35, :class => 'first'  %>
+						</p>					 
+				</div>
+				<div id = 'credential_login'>					
+						<p class = "bold" >
+							<label for="name">
+								Username:
+							</label>
+						</p>
+						<p class = "normal" >
+							<%= text_field_tag "name",{},:size => 35, :class => 'first' %>
+						</p>
+						<p class = "bold" >
+							<label for="password">
+								Password:
+							</label>
+						</p>						
+						<p class = "normal" >
+							<%= password_field_tag "password",{},:size => 35, :class => 'first'  %>
+						</p>					
+				</div>				
+				<p class = "normal">
+					<%= check_box_tag "remember_me","yes",false %>
+						Remember me on this Computer.
+				</p>
+				<p>
+					<%= submit_tag 'Sign in', :disable_with => "Signing in&hellip;" %>
+				</p>
+				<p class = 'normal'>
+					<%= link_to 'I cannot access my account', :controller=> "users", :action => "forgot" %>
+				</p>
+			<% end %>
+		</fieldset>
+		<fieldset>
+			<h2>			
+				<%= link_to 'Sign up for FREE to SpeedLMS',new_owner_path %>
+			</h2>
+			<p class = "normal">                
+				<%= link_to 'About SpeedLMS',"" %>                
+				<%= link_to 'New Features!',"" %>                
+			</p>
+		</fieldset>
+		</div>
+	</div> 	
+	<div id = "clear" >
+	</div>
 </div>
