@@ -107,6 +107,9 @@ class OwnersController < ApplicationController
   	#Renders message in the specified div according to availability of subdomain.
   	render :update do |page|
   		page.replace_html "subdomain_availability_message",@message
+  		page[:subdomain_availability_message].visual_effect(:highlight,
+                                  :startcolor => "#88ff88" ,
+                                  :endcolor => "#114411")
  		end
   end
   

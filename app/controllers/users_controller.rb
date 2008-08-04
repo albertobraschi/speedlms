@@ -199,6 +199,9 @@ class UsersController < ApplicationController
   		#Renders message in the specified div according to availability of login.
   		render :update do |page|
   		page.replace_html 'username_availability_message',@message
+  		page[:username_availability_message].visual_effect(:highlight,
+                                  :startcolor => "#88ff88" ,
+                                  :endcolor => "#114411")
   		end
 		end
 		
