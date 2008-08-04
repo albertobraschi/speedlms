@@ -1,6 +1,7 @@
 namespace :admin do
 	desc "This creates admin"
-	task :create => :environment do
+        puts "Creating Admin user: super pass123"
+        task :create => :environment do
 	  @user = User.find_by_resource_type("Admin")
 	  if @user 
 	    puts "There can be only one Admin"	
