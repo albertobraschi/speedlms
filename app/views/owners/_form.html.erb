@@ -88,7 +88,7 @@
 					</div>
 				</th>
 				<td>					
-					<%= a.select :signup_plan_id, SignupPlan.find(:all).collect{|p| [p.name, p.id]}, {:include_blank => true} %>
+					<%= a.select :signup_plan_id, SignupPlan.find(:all, :order => "price").collect{|p| [p.name, p.id]}, {:include_blank => false} %>
 				</td>
 			</tr>
 			<tr>

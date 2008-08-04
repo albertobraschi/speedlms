@@ -1,5 +1,4 @@
 class OwnersController < ApplicationController
-
 	#This makes current user available to all actions except new and create.
 	before_filter :current_user, :except=>[:new, :create]
 	
@@ -46,7 +45,7 @@ class OwnersController < ApplicationController
    			redirect_to :action => "payment",:id => @owner.signup_plan_id
    		end
    	else
-   		render :action => 'new',:layout => 'public'
+   		render :action => 'new',:layout => 'login'
    	end
 	end
 	
