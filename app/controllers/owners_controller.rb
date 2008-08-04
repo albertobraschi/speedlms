@@ -1,5 +1,4 @@
 class OwnersController < ApplicationController
-
 	#This makes current user available to all actions except new and create.
 	before_filter :current_user, :except=>[:new, :create]
 	
@@ -28,7 +27,7 @@ class OwnersController < ApplicationController
     end
     	@user = User.new()
 	    @owner = Owner.new() 
-  	  render :layout => 'public'
+  	  render :layout => 'login'
 	end
 	
 	def create
@@ -46,7 +45,7 @@ class OwnersController < ApplicationController
    			redirect_to :action => "payment",:id => @owner.signup_plan_id
    		end
    	else
-   		render :action => 'new',:layout => 'public'
+   		render :action => 'new',:layout => 'login'
    	end
 	end
 	
@@ -107,6 +106,9 @@ class OwnersController < ApplicationController
   	#Renders message in the specified div according to availability of subdomain.
   	render :update do |page|
   		page.replace_html "subdomain_availability_message",@message
+  		page[:subdomain_availability_message].visual_effect(:highlight,
+                                  :startcolor => "#88ff88" ,
+                                  :endcolor => "#114411")
  		end
   end
   

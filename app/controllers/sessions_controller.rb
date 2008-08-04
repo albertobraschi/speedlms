@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
         redirect_to students_path and return
       end
     end
-    render :layout => 'public'
+    render :layout => 'login'
   end
   	
   # Creates session for either openid or username/password login

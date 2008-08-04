@@ -8,7 +8,19 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # :secret => '9a32d74aad8124005db44b1b832882bb'
   
   helper_method :pages, :current_user
-   
+ 
+ def spellcheck
+  p "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    headers["Content-Type"] = "text/plain"
+    headers["charset"] =  "utf-8"
+    #suggestions = check_spelling(params[:params][1], params[:method], params[:params][0])
+    suggestions = check_spelling(params[:check], params[:cmd], params[:lang])
+    #results = {"id" => nil, "result" => suggestions, 'error' => nil}
+    xml = "<?xml version='1.0' encoding='utf-8'?>#{suggestions}"    
+    #render :text => results.to_json
+    render :text => xml
+    return
+  end  
   
   
   #Finds all viewable pages.
