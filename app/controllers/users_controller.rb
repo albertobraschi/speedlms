@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+	layout 'login'
 	#This makes various methods of Restful_Authentication available to all actions of Users Controller.
 	include AuthenticatedSystem
 	
@@ -27,7 +27,6 @@ class UsersController < ApplicationController
      		end
     	end
 	    @user = User.new() 
-  	  	render :layout => 'public'
   	end
   
   	# Creates a new user.  
@@ -44,7 +43,7 @@ class UsersController < ApplicationController
    				redirect_to(:action => "payment",:id => @user.signup_plan_id)
    			end
    		else
-   			render :action => 'new',:layout => 'public'
+   			render :action => 'new'
    		end
   	end
   
@@ -53,11 +52,6 @@ class UsersController < ApplicationController
   		current_user
     	render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
   	end  
-
-  	# Checks Subdomain 
-  	#def check_subdomain
-  		#@users = User.find(:all)
-  	#end
   
   	# Creates invoice for a paid plan Owner.
   	def payment
@@ -119,29 +113,30 @@ class UsersController < ApplicationController
 	        	email = ConfirmMailer.create_sent(user, url)
 	        	email.set_content_type("text/html")
 	        	ConfirmMailer.deliver(email)
-	        	flash[:notice] = "Notification sent to #{user.email}"
-	        	redirect_back_or_default('/')
+	        	flash.now[:notice] = "Notification sent to #{user.email}."
 	       	else
-	        	flash[:notice] = "Please enter a valid email"
-	        	render :action => 'forgot'
+	        	flash.now[:notice] = "Please enter a valid email."
 	      	end 
 	    end
   	end
   
   	# Used to reset password if user forgot it.
   	def reset
-   		@user = User.find_by_pcode(params[:pcode]) unless params[:pcode].nil?
-    	if @user.nil?
-      	flash[:notice] = "Sorry this link has expired"
-      	redirect_back_or_default('/')
-      elsif request.post?
-       	if @user.update_attributes(:password => params[:user][:password], 
-       														 :password_confirmation => params[:user][:password_confirmation])
-          @user.delete_pcode
-          flash[:notice] = "Password reset successfully for #{@user.email}"
-          redirect_back_or_default('/')
-        end
-     	end
+  		@user = User.find_by_pcode(params[:pcode]) if params[:pcode]		
+  		if @user and request.post?
+  			if !params[:user][:password].blank? and !params[:user][:password_confirmation].blank?
+					if @user.update_attributes(:password => params[:user][:password],
+																		 :password_confirmation => params[:user][:password_confirmation])
+						@user.delete_pcode
+						flash[:notice] = "Password reset successfully for #{@user.email}"
+						redirect_to new_session_path  				
+					end
+				else
+					flash.now[:notice] = "Enter password and password_confirmation."
+				end  			 			
+  		elsif @user.nil?
+  			flash.now[:notice] = "Sorry link has expired."
+  		end     	
   	end
   	
   	# Deletes the Tutor from an Owner's account.

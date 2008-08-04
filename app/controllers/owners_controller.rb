@@ -28,7 +28,7 @@ class OwnersController < ApplicationController
     end
     	@user = User.new()
 	    @owner = Owner.new() 
-  	  render :layout => 'public'
+  	  render :layout => 'login'
 	end
 	
 	def create
