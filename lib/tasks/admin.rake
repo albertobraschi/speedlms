@@ -6,7 +6,7 @@ namespace :admin do
 	    puts "There can be only one Admin"	
 		else				         		 
 		 	@admin = User.create(:firstname => 'super',:lastname => 'super', :login => "super",:email => "admin@speedlms.com",
-			                  :password => "pass123",:password_confirmation => "pass123",:resource_type => "Admin", :resource_id => 1)                         			                  
+			                  :password => "pass123",:password_confirmation => "pass123",:resource_type => "Admin")                         			                  
 			puts "#{@admin.login}" if @admin		                             
 			if @admin.save
 			  puts "created super admin"
