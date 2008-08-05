@@ -30,9 +30,8 @@ module Spelling
           end
         end 
       end 
-    end 
-    
+    end  
     return xml_response_values
-  end 
-  
+  end
+   
 end 
