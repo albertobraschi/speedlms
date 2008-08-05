@@ -6,18 +6,19 @@ module Spelling
   ASPELL_WORD_DATA_REGEX = Regexp.new(/\&\s\w+\s\d+\s\d+(.*)$/)
   ASPELL_PATH = "aspell"
   
-  def check_spelling(spell_check_text, command, lang)
+  def check_spelling(spell_check_text, command, lang) 
     xml_response_values = Array.new
-    spell_check_text = spell_check_text.join(' ') if command == 'checkWords'
-    spell_check_response = `echo "#{spell_check_text}" | #{ASPELL_PATH} -a -l #{lang}`
+    #spell_check_text = spell_check_text.join(' ') if command == 'checkWords'
+    #spell_check_text = spell_check_text.split(' ') if command == 'spell'
+    spell_check_response = `echo "#{spell_check_text}" | #{ASPELL_PATH} -a -l #{lang}`    
     if (spell_check_response != '')
       spelling_errors = spell_check_response.split("\n").slice(1..-1)
-      if (command == 'checkWords')
-        for error in spelling_errors
+      if (command == 'spell')
+        for error in spelling_errors        
           error.strip!
           if (match_data = error.match(ASPELL_WORD_DATA_REGEX))
             arr = match_data[0].split(' ')
-            xml_response_values << arr[1]
+            xml_response_values << arr[1]      
           end 
         end 
       elsif (command == 'getSuggestions') 
@@ -30,6 +31,8 @@ module Spelling
         end 
       end 
     end 
+    
     return xml_response_values
   end 
+  
 end 

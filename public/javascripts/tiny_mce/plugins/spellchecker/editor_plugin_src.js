@@ -12,7 +12,7 @@ var TinyMCE_SpellCheckerPlugin = {
 	_contextMenu : new TinyMCE_Menu(),
 	_menu : new TinyMCE_Menu(),
 	_counter : 0,
-	_ajaxPage : '/tinyspell.php',
+	_ajaxPage : '/admin/pages/spellcheck',
 
 	getInfo : function() {
 		return {
@@ -58,8 +58,8 @@ var TinyMCE_SpellCheckerPlugin = {
 
 					inst.selection.selectNode(elm, false, false);
 
-					self._sendAjax(self.baseURL + self._ajaxPage, self._ajaxResponse, 'post', args);
-
+//					self._sendAjax(self.baseURL + self._ajaxPage, self._ajaxResponse, 'post', args);
+					self._sendAjax(self._ajaxPage, self._ajaxResponse, 'post', args);
 					tinyMCE.cancelEvent(e);
 					return false;
 				}
@@ -294,7 +294,8 @@ var TinyMCE_SpellCheckerPlugin = {
 					inst.spellcheckerOn = true;
 					tinyMCE.switchClass(editor_id + '_spellchecker', 'mceMenuButtonSelected');
 
-					self._sendAjax(self.baseURL + self._ajaxPage, self._ajaxResponse, 'post', args);
+//					self._sendAjax(self.baseURL + self._ajaxPage, self._ajaxResponse, 'post', args);
+					self._sendAjax( self._ajaxPage, self._ajaxResponse, 'post', args);					
 				} else {
 					self._removeWords(inst.getDoc());
 					inst.spellcheckerOn = false;

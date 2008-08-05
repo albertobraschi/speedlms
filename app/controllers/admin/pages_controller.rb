@@ -1,6 +1,4 @@
 class Admin::PagesController < ApplicationController
-	
-	#require 'json'
   include Spelling 
   
 	#Specifies that the corresponding templates will use 'admin' layout.
@@ -11,6 +9,22 @@ class Admin::PagesController < ApplicationController
 	
 	#This makes sure that only Admin can perform Administrative tasks.
   before_filter :authorized_as_admin
+  
+  protect_from_forgery :only => [:spellcheck_contains]
+  
+  def spellcheck
+    headers["Content-Type"] = "text/plain"
+    headers["charset"] =  "utf-8"
+    #suggestions = check_spelling(params[:params][1], params[:method], params[:params][0])
+    suggestions = check_spelling(params[:check], params[:cmd], params[:lang])
+    debugger
+    results = {"id" => nil, "result" => suggestions, 'error' => nil}
+    xml = "<?xml version='1.0' encoding='utf-8'?><res id='' cmd='spell'>#{suggestions.join('+')}</res>"
+    
+    #xml = "#{suggestions}"
+    render :text => xml
+    return
+  end
   
   #Checks for whether the currently deleting page is an index page or not?
 	before_filter :delete_index_page?, :only => [:destroy]
@@ -30,7 +44,7 @@ class Admin::PagesController < ApplicationController
 													 :theme_advanced_buttons2 => [],
 												   :theme_advanced_buttons3 => [],                           																
                            :plugins => %w{preview paste contextmenu spellchecker},
- 													 :spellchecker_languages => "+English=en,Espanol=es",
+ 													 :spellchecker_languages => "+English=en",
  													 :spellchecker_rpc_path => "/javascripts/tiny_mce/plugins/spellchecker/tinyspell.php"
  													 })	   
    
