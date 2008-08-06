@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   
   #This makes current user available to all actions .
 	before_filter :current_user
-	
+	before_filter :current_owner, :except => :show
 	#This prevents unauthorized users to access index page.
 	before_filter :authorize
 	
@@ -15,7 +15,7 @@ class CoursesController < ApplicationController
 	
 	
 	def show
-	  @course = current_user.resourse.courses.find_by_id(paramd[:id])
+	  @course = course.find_by_id(paramd[:id])
 	end
 	
 	def new
@@ -29,8 +29,8 @@ class CoursesController < ApplicationController
 
 	def create
 	  @course = Course.new(params[:course])
+	  params[:tutors].each {|t| @course.tutors<< Tutor.find(t)} 
 	  respond_to do |format|
-	  @owner = current_user.resource
       if @owner.courses << @course
         @courses = @owner.courses
         format.html { redirect_to courses_path}
@@ -47,7 +47,7 @@ class CoursesController < ApplicationController
   end
   
   def edit
-    @course = current_user.resource.courses.find_by_id(params[:id])
+    @course = @owner.courses.find_by_id(params[:id])
     respond_to do |format|
       format.html 
       format.js { render :partial =>'form', :object => @course}
@@ -56,8 +56,10 @@ class CoursesController < ApplicationController
   end
   
   def update
-    @course = current_user.resource.courses.find_by_id(params[:id])
+    @course = @owner.courses.find_by_id(params[:id])
     @course.update_attributes(params[:course])
+    @course.tutors = []
+    params[:tutors].each {|t| @course.tutors<< Tutor.find(t)}
      respond_to do |format|
         format.html {render course_path(@course)}
         format.js {
@@ -69,10 +71,10 @@ class CoursesController < ApplicationController
 	end
 	
 	def destroy
-	  @course = current_user.resource.courses.find_by_id(params[:id])
+	  @course = @owner.courses.find_by_id(params[:id])
     @course.destroy
     respond_to do |format|
-        @courses = current_user.resource.courses
+        @courses = @owner.courses
         format.html { redirect_to courses_path}
         format.js {
           render :update do |page|
@@ -82,4 +84,16 @@ class CoursesController < ApplicationController
     end
 	end
 	
+	
+	private
+	def current_owner
+	  resource = current_user.resource
+	  if resource.class == Owner
+	    @owner = resource
+	  else
+	    flash[:message]= "This action is only allowed to owner."
+	    redirect_to courses_url
+    end
+    
+	end
 end

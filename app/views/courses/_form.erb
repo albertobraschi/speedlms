@@ -14,7 +14,11 @@
   <lable> Display In quick navigation dropdown.</lable>
   </p>
   <h4>Assign tutors </h4>
-  
+    <% current_user.resource.tutors.each do |t| %>
+      <%= check_box_tag 'tutors[]',t.id, @course.includes_tutor?(t.id) %>
+      <%= t.user.login %>
+      
+    <% end %>
   <br />
   <%= submit_tag 'Save'%>
 <% end %>
