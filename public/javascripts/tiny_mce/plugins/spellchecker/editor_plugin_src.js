@@ -379,14 +379,15 @@ var TinyMCE_SpellCheckerPlugin = {
 	},
 
 	_ajaxResponse : function(xml, text) {
+		//alert(xml);
 		var el = xml ? xml.documentElement : null;
 		var inst = tinyMCE.selectedInstance, self = TinyMCE_SpellCheckerPlugin;
-		var cmd = el ? el.getAttribute("cmd") : null, err, id = el ? el.getAttribute("id") : null;
+		var cmd = el ? el.getAttribute("cmd") : null, err, id = el ? el.getAttribute("id") : null;//"spell";
+		
+		if (id)//
+			inst = tinyMCE.getInstanceById(id.substring(0, id.indexOf('|')));//
 
-		if (id)
-			inst = tinyMCE.getInstanceById(id.substring(0, id.indexOf('|')));
-
-		// Workaround for crash in Gecko
+		//Workaround for crash in Gecko
 		if (tinyMCE.isGecko)
 			window.focus();
 
@@ -402,7 +403,7 @@ var TinyMCE_SpellCheckerPlugin = {
 		if (cmd == "suggest" && id != inst.editorId + "|" + self._counter)
 			return;
 
-		if (!el) {
+		if (!el) {//(el)
 			text = '' + text;
 
 			if (text.length > 500)
@@ -414,7 +415,7 @@ var TinyMCE_SpellCheckerPlugin = {
 			return;
 		}
 
-		err = el.getAttribute("error");
+		err = el.getAttribute("error");//"bhdgd";
 
 		if (err == "true") {
 			inst.spellcheckerOn = false;
@@ -425,6 +426,7 @@ var TinyMCE_SpellCheckerPlugin = {
 
 		switch (cmd) {
 			case "spell":
+			//alert("spell");
 				if (xml.documentElement.firstChild) {
 					self._markWords(inst.getDoc(), inst.getBody(), decodeURIComponent(el.firstChild.nodeValue).split('+'));
 					inst.selection.moveToBookmark(inst.spellCheckerBookmark);

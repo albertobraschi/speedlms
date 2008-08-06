@@ -59,14 +59,12 @@ class Admin::PagesController < ApplicationController
   end
   
   def spellcheck
-    p "fdjsgjsgjjjjdsjyhiudhjhj"
     headers["Content-Type"] = "text/plain"
     headers["charset"] =  "utf-8"
     #suggestions = check_spelling(params[:params][1], params[:method], params[:params][0])
     suggestions = check_spelling(params[:check], params[:cmd], params[:lang])
     #results = {"id" => nil, "result" => suggestions, 'error' => nil}
-    xml = "<?xml version='1.0' encoding='utf-8'?>#{suggestions}"    
-    #render :text => results.to_json
+    xml = "<?xml version='1.0' encoding='utf-8' ?><res id='' cmd ='spell'>#{suggestions.join('+')}</res>"    
     render :text => xml
     return
   end

@@ -10,7 +10,7 @@ module Spelling
     xml_response_values = Array.new
     #spell_check_text = spell_check_text.join(' ') if command == 'checkWords'
     #spell_check_text = spell_check_text.split(' ') if command == 'spell'
-    spell_check_response = `echo "#{spell_check_text}" | #{ASPELL_PATH} -a -l #{lang}`    
+    spell_check_response = `echo "#{spell_check_text}" | #{ASPELL_PATH} -a -l #{lang}`
     if (spell_check_response != '')
       spelling_errors = spell_check_response.split("\n").slice(1..-1)
       if (command == 'spell')
@@ -20,7 +20,7 @@ module Spelling
             arr = match_data[0].split(' ')
             xml_response_values << arr[1]      
           end 
-        end 
+        end
       elsif (command == 'getSuggestions') 
         for error in spelling_errors 
           error.strip! 

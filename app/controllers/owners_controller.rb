@@ -85,24 +85,16 @@ class OwnersController < ApplicationController
   	#Checks if the user creating is a tutor.		
   	elsif params[:tutor] and params[:tutor][:speedlms_subdomain] 
   		@subdomain = params[:tutor][:speedlms_subdomain] 
-  	end
-  	@users = User.find(:all, :conditions => ["resource_type = ? or resource_type = ?",'Owner','Tutor'])  			
+  	end  	
   	if !@subdomain.blank?
-  		if @users.blank?
+  		if Tutor.find_by_speedlms_subdomain(@subdomain) or Owner.find_by_speedlms_subdomain(@subdomain)
+  			@message = "Subdomain not available"
+  		else
   			@message = "Subdomain available."
-  		else 
-  			@users.each do |user|
-  				if @subdomain == user.resource.speedlms_subdomain
-  					@message = "Subdomain not available"
-  					break
-  				else
-  					@message = "Subdomain available."
-  				end
-  			end
   		end
   	else
   		@message = "Subdomain should not be blank."
-  	end
+  	end  	
   	#Renders message in the specified div according to availability of subdomain.
   	render :update do |page|
   		page.replace_html "subdomain_availability_message",@message
@@ -111,7 +103,7 @@ class OwnersController < ApplicationController
                                   :endcolor => "#114411")
  		end
   end
-  
+    
   #Used to add and invite Tutors by an Owner.
   def add_tutors
 	 @owner = @current_user.resource
