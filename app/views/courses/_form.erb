@@ -1,0 +1,20 @@
+<% remote_form_for @course do |form| %>
+  <lable>Name:</lable>
+  <p>
+  <%= form.text_field :name %> 
+  </p>
+  <br />
+  <lable>Description:</lable>
+  <p>
+  <%= form.text_area :description, :rows=>3, :cols =>30 %> 
+  </p>
+  <br />
+  <p>
+  <%= form.check_box :display_quick_navigation_dropdown %>
+  <lable> Display In quick navigation dropdown.</lable>
+  </p>
+  <h4>Assign tutors </h4>
+  
+  <br />
+  <%= submit_tag 'Save'%>
+<% end %>
