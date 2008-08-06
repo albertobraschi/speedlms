@@ -1,0 +1,9 @@
+<%= link_to_function 'Create a new course', "Effect.toggle('course_form', 'Blind')"%>
+
+<div id = 'course_form' style = "display:none;">
+<%= render :partial =>'form'%>
+</div>
+<div id = 'course_list'>
+  <%= render :partial=> @courses %>
+</div>
+<br />

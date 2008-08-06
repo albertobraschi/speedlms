@@ -1,0 +1,10 @@
+<% dom_id = dom_id(course) %>
+<%= "<li id= #{dom_id}>" %>
+    <%= link_to_remote course.name,:url => edit_course_path(course),:method =>:get, :update =>dom_id%>
+    &nbsp;&nbsp;
+    
+    <%=link_to_remote '[X]',{:url => course_path(course.id), :method=> 'delete', :confirm =>' Are you sure?'}, :title =>'Delete it' %>
+  <p>
+    <%= course.description %>
+  </p>
+</li>
