@@ -3,13 +3,20 @@ margin:0px;
 }
 
 body {
-background-color:#D7D7D7;
 	color:#222222;
 	font-family:"Lucida Grande",verdana,arial,helvetica,sans-serif;
 	margin: 0px;
 	padding: 0px;
   font-size: 14px;
   font-variant: normal;
+}
+
+body.public {
+	background-color:#FFF9DF;
+}
+
+body.login {
+	background:	#FFFFFF url(images/topbluefade.gif) repeat-x scroll 0%
 }
 
 #header {
@@ -28,6 +35,13 @@ background-color:#D7D7D7;
   padding:0pt 0pt 10px;
   text-align:left;
 }   
+
+h1.login {
+	border-bottom :8px solid #FFCC33;
+	font-size: 18px;
+	padding-bottom: 8px;
+	
+}
 
 h2 {
   color:#333333;
@@ -147,6 +161,14 @@ div.login {
   margin:0pt 0pt 3px;
   padding:0pt;
 } 
+
+#login_box {
+	font-size: 16pt;
+	line-height: 140%;
+	margin: 0pt auto;
+	text-align: left;
+	width: 450px;
+}
 
 h3 {
 color:#000000;
@@ -362,4 +384,14 @@ input {
 
 .small_text {
 	font-size: 10px;
+}
+
+p.login {
+	font-size:18px;
+}
+
+div.back_to_home {
+border-top:1px solid #FFCC33;
+margin-top:30px;
+padding-top:10px;
 }

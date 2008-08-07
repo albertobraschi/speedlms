@@ -1,7 +1,19 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-# one:
-#   column: value
-#
-# two:
-#   column: value
+jitendra:
+ id: 1
+ speedlms_subdomain: jitendra
+ owner_id: 1
+ 
+rai:
+ id: 2
+ speedlms_subdomain: rai
+ owner_id: 1
+ 
+ankur:
+ id: 3
+ speedlms_subdomain: ankur
+ owner_id: 2
+ 
+gupta:
+ id: 4
+ speedlms_subdomain: gupta
+ owner_id: 2 

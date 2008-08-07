@@ -98,21 +98,7 @@ class UserTest < Test::Unit::TestCase
   end
 	
 	def test_logo_format
-  	ok = %w{ fred.gif fred.jpg fred.png FRED.JPG FRED.Jpg
-           http://a.b.c/x/y/z/fred.gif }
-  	bad = %w{ fred.doc fred.gif/more fred.gif.more }
   	
-  	ok.each do |name|                                       
-    user = User.new(:firstname => "jitendra", :lastname => 'rai', 
-    								:login => "jitendrarai", :email => "jitendra@gmail.com",
-    								:password => 'magadh', :password_confirmation => 'magadh', 
-    								:role => 'Owner',:identity_url => nil,
-    								:organisation => 'vinsol', :timezone => '(UTC + 5:30) New Delhi', 
-    								:speedlms_subdomain => 'jitendra', :logo => name)
-    								
-    plan = SignupPlan.new(:name => 'Free')
-    user.signup_plan = plan
-    assert user.valid?, user.errors.full_messages
   	end
   	
   	bad.each do |name|

@@ -1,7 +1,23 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-# one:
-#   column: value
-#
-# two:
-#   column: value
+physics:
+ id: 1
+ name: mechanics
+ status: complete
+ description: kinetics
+ display_quick_navigation_dropdown: yes
+ owner_id: 1
+ 
+chemistry:
+ id: 2
+ name: organic
+ status: complete
+ description: carbon nitrogen etc	 
+ display_quick_navigation_dropdown: yes
+ owner_id: 1
+ 
+math:
+ id: 3
+ name: calculas
+ status: complete
+ description: differentiation integration
+ display_quick_navigation_dropdown: yes
+ owner_id: 1

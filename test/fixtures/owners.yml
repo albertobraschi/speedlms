@@ -1,7 +1,23 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-# one:
-#   column: value
-#
-# two:
-#   column: value
+quentin:
+ id: 1
+ organisation: vinsol
+ logo: image1.jpg
+ speedlms_subdomain: quentine
+ timezone: (UTC + 5:30) New Delhi
+ signup_plan_id: 1 
+ 
+aaron:
+ id: 2
+ organisation: logitech
+ logo: image2.jpg
+ speedlms_subdomain: aaron
+ timezone: (UTC + 5:30) New Delhi
+ signup_plan_id: 2 
+ 
+abra:
+ id: 3
+ organisation: logitech
+ logo: image3.jpg
+ speedlms_subdomain: abra
+ timezone: (UTC + 5:30) New Delhi
+ signup_plan_id: 1 

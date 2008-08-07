@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
 	
   # Displays the MAIN index Page	
   def index
-    render :layout => 'public'
+    render :layout => 'login'
   end
 	
   # View Pages for Public display that has created by Admin user
