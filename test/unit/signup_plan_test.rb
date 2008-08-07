@@ -6,12 +6,12 @@ class SignupPlanTest < ActiveSupport::TestCase
     assert true
   end
   
-  def test_for_signup_plan_has_many_users
-  	user1 = users(:abra)
-  	user2 = users(:laloo)
+  def test_for_signup_plan_has_many_owners
+  	owner1 = owners(:abra)
+  	owner2 = owners(:quentin)
   	plan = signup_plans(:one)
-  	assert_equal user1.signup_plan.name, plan.name
-  	assert_equal user2.signup_plan.name, plan.name
+  	assert_equal owner1.signup_plan.name, plan.name
+  	assert_equal owner2.signup_plan.name, plan.name
   end
   
   def test_for_find_plans
