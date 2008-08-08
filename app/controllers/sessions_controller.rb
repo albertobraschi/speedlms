@@ -44,12 +44,17 @@ class SessionsController < ApplicationController
   # View Pages for Public display that has created by Admin user
   def view_pages
     current_user
-    if params[:id]
-      @page = Page.find_by_id(params[:id])
+    current_subdomain
+    if @current_subdomain
+    	redirect_to new_session_path
     else
-      @page = Page.find_index_page
+		  if params[:id]
+		    @page = Page.find_by_id(params[:id])
+		  else
+		    @page = Page.find_index_page
+		  end
+		  render :layout => 'public'
     end
-    render :layout => 'public'
   end
   	
   # Destroys session    
