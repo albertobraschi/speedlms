@@ -1,0 +1,8 @@
+<h2>
+  You are tutor on the following courses.
+</h2>
+<ul id ='course_list'>
+  <% @courses.each do |course| %>
+    <%= link_to course.name, course_path(course) %>
+  <% end %>
+</ul>

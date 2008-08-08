@@ -1,0 +1,11 @@
+<div class= 'course'>
+  <h1> 
+    Course: <%= @course.name %>
+  </h1>
+  <p class = 'course_desc'>
+    <%= @course.description %>
+  </p>
+  <div class='tutor_list'>
+    <b>Tutors on this course:</b> <%=@course.tutors.collect{|t| t.user.login}.join%>
+  </div>
+</div>

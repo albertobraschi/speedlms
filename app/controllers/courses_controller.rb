@@ -1,21 +1,22 @@
 class CoursesController < ApplicationController
   
+  #This prevents unauthorized users to access index page.
+	before_filter :authorize
   #This makes current user available to all actions .
 	before_filter :current_user
 	before_filter :current_owner, :except => :show
-	#This prevents unauthorized users to access index page.
-	before_filter :authorize
+
 	
 	#This makes sure that a user can edit,update or destroy only his/her own account.
 	# before_filter :authorize_owner, :only => [:edit,:update,:destroy]
 	
 	#This makes all viewable pages available to all actions.
 	# Dont think this is necessary. Thats needed in sessions controler only.
-	before_filter :pages
+	# before_filter :pages
 	
 	
 	def show
-	  @course = course.find_by_id(paramd[:id])
+	  @course = Course.find_by_id(params[:id])
 	end
 	
 	def new
@@ -24,7 +25,7 @@ class CoursesController < ApplicationController
 	
 	def index
 	  @course = Course.new
-	  @courses = current_user.resource.courses.find :all
+	  @courses = @current_user.resource.courses.find :all
 	end
 
 	def create
@@ -87,7 +88,7 @@ class CoursesController < ApplicationController
 	
 	private
 	def current_owner
-	  resource = current_user.resource
+	  resource = @current_user.resource
 	  if resource.class == Owner
 	    @owner = resource
 	  else
