@@ -1,5 +1,6 @@
 <%= error_messages_for :user %>
-<div class = "resetPwd">
+<%= render :partial => '/sessions/flash_notices'%>
+<div class = "resetPwd">	
 	<% form_for :user do |f| -%>
 		<table id="newedit" cellpadding = 10 cellspacing = 10>
       <thead>
