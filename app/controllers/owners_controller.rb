@@ -11,7 +11,7 @@ class OwnersController < ApplicationController
 	def new
 		#Firstly checks for if there is someone logged in.
 		if @current_user
-    	flash[:notice] = "Firstly logout and then create new owner"
+    	flash[:notice] = "Firstly logout and then create."
 			if @current_user.is_admin?      		
      		redirect_to admin_users_path and return 
      	elsif @current_user.is_owner?     		
@@ -27,7 +27,7 @@ class OwnersController < ApplicationController
   	  render :layout => 'login'
 	end
 	
-	def create
+	def create		
 		cookies.delete :auth_token
 		@user = User.new(params[:user])
 		@user.resource_type = RESOURCE_TYPE[:owner] 
@@ -88,6 +88,7 @@ class OwnersController < ApplicationController
   	if !@subdomain.blank?
   		if Tutor.find_by_speedlms_subdomain(@subdomain) or Owner.find_by_speedlms_subdomain(@subdomain)
   			@message = "Subdomain not available"
+  			p @message
   		else
   			@message = "Subdomain available."
   		end
@@ -113,6 +114,7 @@ class OwnersController < ApplicationController
 	    @tutor = Tutor.new(params[:tutor])
 	    @user.resource = @tutor
 	    @tutor.owner = @owner
+	    debugger
        if @user.save
        	 #Sends email to Tutor after his/her account has created by Owner.
          email = LoginDetailsMailer.create_sent(@user)

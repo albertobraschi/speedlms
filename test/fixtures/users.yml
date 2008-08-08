@@ -30,3 +30,36 @@ abra:
  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
  resource_type: Owner
  resource_id: 3
+ 
+admin:
+ id: 4
+ firstname: admin
+ lastname: admin
+ login: administrator
+ email: admin@gmail.com
+ salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+ crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+ resource_type: Admin
+ resource_id: 
+ 
+tutor_1:
+ id: 5
+ firstname: anuj
+ lastname: mehrotra
+ login: anuj
+ email: anuj@gmail.com
+ salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+ crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+ resource_type: Tutor
+ resource_id: 1
+ 
+student_1:
+ id: 6
+ firstname: himanshu
+ lastname: srivastava
+ login: himanshu
+ email: himanshu@gmail.com
+ salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+ crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+ resource_type: Student
+ resource_id: 1

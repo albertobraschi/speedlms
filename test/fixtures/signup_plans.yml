@@ -15,3 +15,12 @@ two:
  no_of_courses: 15
  no_of_students: 50
  price: 119
+ 
+free:
+ id: 3
+ name: plan3
+ time_period: 1
+ no_of_tutors: 1
+ no_of_courses: 2
+ no_of_students: 5
+ price: 0
