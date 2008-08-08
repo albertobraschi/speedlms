@@ -1,6 +1,8 @@
 <h3>
   <span id = "top_right" >
 		<% if @current_user and @current_user.is_owner? %>
+			<%= link_to 'Home', owners_path %>
+			<%= link_to 'Courses', courses_path %>		
 			<%= link_to 'My Info', edit_owner_path(@current_user.resource_id) %>
 			<%= link_to 'Tutors', add_tutors_owners_path %>
 			<%= link_to 'Logout', destroy_session_path, :method => :delete %>

@@ -1,6 +1,6 @@
 class OwnersController < ApplicationController
 	#This makes current user available to all actions except new and create.
-	before_filter :current_user, :except=>[:new, :create]
+	before_filter :current_user
 	
 	#This prevents unauthorized users to access index page.
 	before_filter :authorize, :only=>[:index]
@@ -8,20 +8,17 @@ class OwnersController < ApplicationController
 	#This makes sure that a user can edit,update or destroy only his/her own account.
 	before_filter :authorize_owner, :only => [:edit,:update,:destroy]
 	
-	#This makes all viewable pages available to all actions.
-	before_filter :pages
-	
 	def new
 		#Firstly checks for if there is someone logged in.
-		if current_user
+		if @current_user
     	flash[:notice] = "Firstly logout and then create new owner"
-			if current_user.is_admin?      		
+			if @current_user.is_admin?      		
      		redirect_to admin_users_path and return 
-     	elsif current_user.is_owner?     		
+     	elsif @current_user.is_owner?     		
      		redirect_to owners_path and return
-     	elsif current_user.is_tutor?     		
+     	elsif @current_user.is_tutor?     		
      		redirect_to tutors_path and return
-     	elsif current_user.is_student?     		
+     	elsif @current_user.is_student?     		
      		redirect_to students_path and return
      	end
     end
@@ -50,7 +47,9 @@ class OwnersController < ApplicationController
 	end
 	
 	def index
-		
+		@owner = @current_user.resource
+		@tutors = @owner.tutors
+		@courses = @owner.courses
 	end
 	
 	#Edits owner's information
@@ -144,9 +143,9 @@ class OwnersController < ApplicationController
   #This is used to authorize an user to perform actions like Edit/Delete/Destroy on his/her account information.
   def authorize_owner
 		owner = Owner.find_by_id(params[:id])
-  	unless current_user.resource == owner
-  		flash[:notice] = "You are not authorized to alter this user."
-  		redirect_to root_path	
+  	unless @current_user.resource == owner
+  		flash[:notice] = "You are not authorized to do this."
+  		redirect_to owners_path	
   	end
   end
   

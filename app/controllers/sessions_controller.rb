@@ -79,12 +79,25 @@ class SessionsController < ApplicationController
 	
   # Checks authentication for username/password login	
   def password_authentication(name, password)
+  	current_subdomain 
+  	user = User.find_by_login(params[:name])
+  	if user
+			if user.is_owner? or user.is_tutor?
+				user_subdomain = user.resource.speedlms_subdomain
+				url_subdomain = @current_subdomain
+				if user_subdomain != url_subdomain
+					flash[:notice] = "You can't login to this sudomain url.Please enter your subdomain in url."
+					redirect_to new_session_path and return
+				end
+			end
+  	end
     if @current_user =User.authenticate(params[:name], params[:password])
       successful_login
     else
       failed_login "Sorry, Invaild login."
     end
   end
+
 
   # Checks authentication for openid login	
   def open_id_authentication 
@@ -141,3 +154,7 @@ class SessionsController < ApplicationController
   end
 	
 end
+
+
+
+
