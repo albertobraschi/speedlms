@@ -182,8 +182,6 @@ fieldset.mar_bot {
   background-color:#ffffff;
 }
 
-# background-color:#EDF3FE;
-
 fieldset.signup {
   background-color:#FFFFFF;
 }
@@ -288,7 +286,7 @@ input.first {
 }
 
 #errorExplanation h2 {
-    background: #CC0000 url(../images/alertbad_icon.gif) no-repeat scroll left center;
+    background: #CC0000 no-repeat scroll left center;
   	font-weight: normal;
   	padding: 5px;
   	font-size: 14px;
@@ -395,3 +393,4 @@ border-top:1px solid #FFCC33;
 margin-top:30px;
 padding-top:10px;
 }
+

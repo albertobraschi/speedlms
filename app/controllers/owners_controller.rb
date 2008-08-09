@@ -15,7 +15,7 @@ class OwnersController < ApplicationController
 			if @current_user.is_admin?      		
      		redirect_to admin_users_path and return 
      	elsif @current_user.is_owner?     		
-     		redirect_to owners_path and return
+     		redirect_to ownerDesk_path and return
      	elsif @current_user.is_tutor?     		
      		redirect_to tutors_path and return
      	elsif @current_user.is_student?     		
@@ -65,16 +65,12 @@ class OwnersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user]) and @owner.update_attributes(params[:owner])
         flash[:notice] = "User was sucessfully updated"
-        format.html { redirect_to owners_url}
+        format.html { redirect_to ownerDesk_url}
       else  
         format.html {render :action => "edit"}
       end
     end    
   end  
-	
-	def destroy
-		
-	end
   
   #Checks availability of speedlms subdomain for owner
   def check_subdomain_availability
@@ -114,7 +110,6 @@ class OwnersController < ApplicationController
 	    @tutor = Tutor.new(params[:tutor])
 	    @user.resource = @tutor
 	    @tutor.owner = @owner
-	    debugger
        if @user.save
        	 #Sends email to Tutor after his/her account has created by Owner.
          email = LoginDetailsMailer.create_sent(@user)
@@ -138,7 +133,7 @@ class OwnersController < ApplicationController
 	  @current_user = @user
     session[:user_id] = @current_user.id
     @owner = Owner.find_by_id(@current_user.resource_id)
-    url = @owner.speedlms_url + owners_path
+    url = @owner.speedlms_url + ownerDesk_path
     redirect_to url
   end 
   
@@ -147,7 +142,7 @@ class OwnersController < ApplicationController
 		owner = Owner.find_by_id(params[:id])
   	unless @current_user.resource == owner
   		flash[:notice] = "You are not authorized to do this."
-  		redirect_to owners_path	
+  		redirect_to ownerDesk_path	
   	end
   end
   

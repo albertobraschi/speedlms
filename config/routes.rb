@@ -1,28 +1,34 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :users, :collection => {:payment => :get, :confirm => :post}, :member=>{:notify => :get}
+
+	# The priority is based upon order of creation: first created -> highest priority.
+
+  map.resources :users,  :collection => {:payment => :get, :confirm => :post}, :member=>{:notify => :get}
+  map.resource :session, :collection => {:destroy => :delete, :index => :get}, :member => {:view_pages => :get}
   map.resources :owners, :collection => {:add_tutors => :get}
   map.resources :tutors 
   map.resources :students
   map.resources :courses
-  # The priority is based upon order of creation: first created -> highest priority.
-
-  # Sample of regular route:
-  #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
-  # Keep in mind you can assign values other than :controller and :action
+    
+  map.root 																:controller => 'sessions', 			:action => 'view_pages'
+  map.login '/login', 										:controller => 'sessions', 			:action => 'new'
+  map.how_to_login '/how_to_login', 			:controller => 'sessions', 			:action => 'index'
+  map.logout '/logout', 									:controller => 'sessions', 			:action => 'destroy'
   
+  map.signup '/signup', 									:controller => 'owners', 				:action => 'new'
+  map.ownerDesk '/ownerDesk', 						:controller => 'owners', 				:action => 'index'
+  
+  map.forgot '/forgot', 									:controller => 'users',     		:action => 'forgot'
+  map.reset '/reset/:pcode',  						:controller => 'users',   			:action => 'reset', 					:method => 'get'
+   
   map.open_id_complete 'session', :controller => "sessions", :action => "create", :requirements => { :method => :get }
-  
-  map.root :controller => 'sessions', :action => 'view_pages'
-  
-  map.resource :session, :collection => {:destroy => :delete, :index => :get}, :member => {:view_pages => :get}
-  
+          
   map.namespace :admin do |admin|
     admin.resources :users, :sessions, :pages, :signup_plans
-  end 
+  end
+     
   map.connect 'spellchecker', :controller => 'admin/pages', :action => 'spellchecker'
   map.connect 'admin', :controller => 'admin/users', :action => 'index'
-  map.forgot '/forgot', :controller => 'users',     :action => 'forgot'
-  map.reset '/reset/:pcode',  :controller => 'users',   :action => 'reset', :method => 'get'
+  
   # Sample of named route:
   #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
   # This route can be invoked with purchase_url(:id => product.id)
@@ -50,4 +56,5 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
+  
 end

@@ -4,7 +4,7 @@ quentin:
  logo: image1.jpg
  speedlms_subdomain: quentine
  timezone: (UTC + 5:30) New Delhi
- signup_plan_id: 1 
+ signup_plan_id: 1  
  
 aaron:
  id: 2
@@ -16,8 +16,16 @@ aaron:
  
 abra:
  id: 3
- organisation: logitech
+ organisation: arraytech
  logo: image3.jpg
  speedlms_subdomain: abra
  timezone: (UTC + 5:30) New Delhi
  signup_plan_id: 3 
+ 
+john:
+ id: 4
+ organisation: microsoft
+ logo: image4.jpg
+ speedlms_subdomain: john
+ timezone: (UTC + 5:30) New Delhi
+ signup_plan_id: 1 

@@ -49,17 +49,27 @@
 									</div>
 								</th>
 								<td>
-									<div class = "normal" >
-										<span class = "bold">
+									<%= a.text_field :speedlms_subdomain, :size => 20, :class => 'first' %>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									For Example:
+								</td>
+								<td>
+									<div>
+										<span>
 											http://
 										</span>
-										<%= a.text_field :speedlms_subdomain, :size => 20, :class => 'first' %>
 										<span class = "bold">
-											.speedlms.com
+											mysubdomain
 										</span>
+										<span>
+											.speedlms.com
+										</span>			
 									</div>
 								</td>
-							</tr>					
+							</tr>				
 							<%= render :partial => '/owners/check_subdomain' %>
 						</table>
 				</fieldset>

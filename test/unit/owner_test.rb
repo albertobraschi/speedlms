@@ -4,23 +4,13 @@ class OwnerTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   fixtures :all
   
-  def test_truth
-    assert true
-  end
-  
   def test_owners_belongs_to_signup_plan
   	plan = signup_plans(:one)
   	user1 = users(:quentin)
   	owner1 = owners(:quentin)
     								
 		user2 = users(:aaron)
-		owner2 = owners(:aaron)
-				    								
-		user1.resource = owner1    								
-  	owner1.signup_plan = plan
-  	
-  	user2.resource = owner2
-  	owner2.signup_plan = plan
+		owner2 = owners(:aaron)				    					
   	
   	assert user1.valid?
   	assert user2.valid?
@@ -72,7 +62,6 @@ class OwnerTest < ActiveSupport::TestCase
     	owner = owners(:quentin) 
     	owner.logo = name  								
     	plan = signup_plans(:one)
-   	 	user.resource = owner
     	owner.signup_plan = plan
     	assert user.valid?
   	end

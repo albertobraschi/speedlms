@@ -12,8 +12,8 @@
 					<% @pages.each do |page| %>
 						<%= link_to page.title, view_pages_session_path(:id => page.id) %>
 					<% end %>
-						<%= link_to 'Login',index_session_path %>
-						<%= link_to 'Pricing & Sign-up',new_owner_path %>
+						<%= link_to 'Login',how_to_login_path %>
+						<%= link_to 'Pricing & Sign-up',signup_path %>
       	</span>
 			</h3>
       <h1><%= link_to(image_tag('speedlmslogo-small.png', :border => 0 ))%></h1>

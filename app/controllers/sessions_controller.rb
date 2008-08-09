@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
       if @current_user.is_admin?      		
         redirect_to admin_users_path and return 
       elsif @current_user.is_owner?     		
-        redirect_to owners_path and return
+        redirect_to ownerDesk_path and return
       elsif @current_user.is_tutor?     		
         redirect_to tutors_path and return
       elsif @current_user.is_student?     		
@@ -46,7 +46,7 @@ class SessionsController < ApplicationController
     current_user
     current_subdomain
     if @current_subdomain
-    	redirect_to new_session_path
+    	redirect_to login_path
     else
 		  if params[:id]
 		    @page = Page.find_by_id(params[:id])
@@ -68,7 +68,7 @@ class SessionsController < ApplicationController
     @current_user.forget_me if logged_in?
     cookies.delete :auth_token
     reset_session
-    flash[:message] = "You are successfully logged out."
+    flash[:notice] = "You are successfully logged out."
     respond_to do |format|
       format.html {redirect_to url}
       format.js
@@ -87,7 +87,7 @@ class SessionsController < ApplicationController
 				url_subdomain = @current_subdomain
 				if user_subdomain != url_subdomain
 					flash[:notice] = "You can't login to this sudomain url.Please enter your subdomain in url."
-					redirect_to new_session_path and return
+					redirect_to login_path and return
 				end
 			end
   	end
@@ -132,7 +132,7 @@ class SessionsController < ApplicationController
         end					
       elsif @current_user.is_owner?
         @owner = Owner.find_by_id(@current_user.resource_id)
-        url = @owner.speedlms_url + owners_path
+        url = @owner.speedlms_url + ownerDesk_path
         redirect_to url
       elsif @current_user.is_tutor?
         @tutor = Tutor.find_by_id(@current_user.resource_id)
