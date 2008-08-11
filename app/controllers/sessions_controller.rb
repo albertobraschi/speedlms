@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
     if using_open_id?
       open_id_authentication
     else
-      password_authentication(params[:name], params[:password])       
+      password_authentication(params[:name], params[:password])
     end
   end
 	
@@ -81,7 +81,7 @@ class SessionsController < ApplicationController
   def password_authentication(name, password)
   	current_subdomain 
   	user = User.find_by_login(params[:name])
-  	if user
+  	if user 		 
 			if user.is_owner? or user.is_tutor?
 				user_subdomain = user.resource.speedlms_subdomain
 				url_subdomain = @current_subdomain
@@ -91,7 +91,7 @@ class SessionsController < ApplicationController
 				end
 			end
   	end
-    if @current_user =User.authenticate(params[:name], params[:password])
+    if @current_user = User.authenticate(params[:name], params[:password])
       successful_login
     else
       failed_login "Sorry, Invaild login."
@@ -154,7 +154,3 @@ class SessionsController < ApplicationController
   end
 	
 end
-
-
-
-

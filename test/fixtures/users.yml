@@ -63,3 +63,25 @@ student_1:
  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
  resource_type: Student
  resource_id: 1
+ 
+tutor_2:
+ id: 7
+ firstname: ricky
+ lastname: ponting
+ login: ricky
+ email: ricky@gmail.com
+ salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+ crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+ resource_type: Tutor
+ resource_id: 2
+ 
+bill:
+ id: 8
+ firstname: bill
+ lastname: smith
+ login: bill
+ email: bill@gmail.com
+ salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+ crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+ resource_type: Owner
+ resource_id: 5

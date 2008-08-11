@@ -8,12 +8,3 @@ rai:
  speedlms_subdomain: rai
  owner_id: 1
  
-ankur:
- id: 3
- speedlms_subdomain: ankur
- owner_id: 2
- 
-gupta:
- id: 4
- speedlms_subdomain: gupta
- owner_id: 2 

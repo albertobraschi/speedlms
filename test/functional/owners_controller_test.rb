@@ -14,13 +14,13 @@ class OwnersControllerTest < ActionController::TestCase
     @response   = ActionController::TestResponse.new
   end
   
-  def test_index_without_owner
+  def test_index_without_logged_in_user
     get :index
-    assert_redirected_to :action => "new", :controller => 'sessions'
+    assert_redirected_to login_path
 		assert_equal "Please login" , flash[:notice]
   end
   
-  def test_index_with_owner
+  def test_index_with_logged_in_user
     get :index, {}, { :user_id => users(:quentin).id}
     assert_response :success
     assert_template "index"
@@ -34,7 +34,7 @@ class OwnersControllerTest < ActionController::TestCase
   
   def test_new_with_current_user_as_owner
   	get :new, {}, {:user_id => users(:quentin).id}
-    assert_redirected_to owners_path
+    assert_redirected_to ownerDesk_path
     assert_equal "Firstly logout and then create.", flash[:notice]
   end
   
@@ -74,30 +74,40 @@ class OwnersControllerTest < ActionController::TestCase
   end
   
   def test_edit_owner
-  	get :edit, {:id => '1'}, {:user_id => users(:quentin).id}
+  	get :edit, {:id => 1}, {:user_id => users(:quentin).id}
   	assert_template 'edit'
   	assert_response :success
   end
   
-  def test_update_valid_owner
-  	post :update, {:id => '1', :user => {:id => '1', :firstname => 'kquentin'}}, {:user_id => users(:quentin).id}
+  def test_update_with_valid_owner
+  	post :update, {:id => 1, :user => {:id => 1, :firstname => 'kquentin'}}, {:user_id => users(:quentin).id}
   	assert_equal "User was sucessfully updated", flash[:notice]
-  	assert_redirected_to owners_url
+  	assert_redirected_to ownerDesk_url
   end
   
-  def test_update_invalid_owner
-  	post :update, {:id => '1', :user => {:id => '1', :email => 'invalid'}}, {:user_id => users(:quentin).id}
+  def test_update_with_invalid_owner
+  	post :update, {:id => 1, :user => {:id => 1, :email => 'invalid'}}, {:user_id => users(:quentin).id}
   	assert_template 'edit'
   end
   
-  #def test_add_tutors
-  	#post :add_tutors, {:id => '1',:tutor => {"speedlms_subdomain"=>"aaaaaaa"}, :user => {:password_confirmation => "aaaaa", :firstname =>"aaaaa", :lastname =>"aaaa", :login => "aaaaa", :password => "aaaaa", :email => "aaa11@gmail.com"}}, {:user_id => users(:quentin).id}
-  	#assert_equal "raju is added as a tutor", flash[:notice]  	
-  #end
+  def test_add_tutors
+  	post :add_tutors, {:id => 1,:tutor => {"speedlms_subdomain"=>"aaaaaaa"}, :user => {:password_confirmation => "aaaaa", :firstname =>"aaaaa", :lastname =>"aaaa", :login => "aaaaa", :password => "aaaaa", :email => "aaa11@gmail.com"}}, {:user_id => users(:quentin).id}
+  	assert_equal "aaaaa is added as a tutor", flash[:notice]  	
+  end
   
-  #def test_check_availability_of_subdomain
-  	#post, :check_subdomain_availability, {:owner => {:speedlms_subdomain => 'aaron'}}, {}
-  	#assert_equal "Subdomain should not be blank", @message
-  #end
+  def test_check_unavailability_of_subdomain
+  	post :check_subdomain_availability, {:owner => {:speedlms_subdomain => 'aaron'}}, {}
+  	assert_equal "Subdomain not available.", flash[:message]
+  end
  
+  def test_check_availability_of_subdomain
+  	post :check_subdomain_availability, {:owner => {:speedlms_subdomain => 'mike'}}, {}
+  	assert_equal "Subdomain available.", flash[:message]
+  end
+  
+  def test_check_subdomain_availability_with_blank_parameter
+  	post :check_subdomain_availability, {:owner => {:speedlms_subdomain => ''}}, {}
+  	assert_equal "Subdomain should not be blank.", flash[:message]
+  end
+
 end

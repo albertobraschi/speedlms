@@ -29,3 +29,12 @@ john:
  speedlms_subdomain: john
  timezone: (UTC + 5:30) New Delhi
  signup_plan_id: 1 
+ 
+bill:
+ id: 5
+ organisation: microsoft
+ logo: image5.jpg
+ speedlms_subdomain: bill
+ timezone: (UTC + 5:30) New Delhi
+ signup_plan_id: 2 
+

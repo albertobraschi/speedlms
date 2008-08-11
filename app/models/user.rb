@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
 			#Finds all Users who are not Tutor.			
 			@non_tutors = User.find(:all, :conditions => ["resource_type != ?",'Tutor'])
 			#Combines two arrays (@tutor_users and @non_tutors) into one array and checks if login available.
-			for user in @tutor_users.concat(@non_tutors)			
+			for user in @tutor_users.concat(@non_tutors)		
 				errors.add(:login, "has already been taken.") if self.login == user.login
 				errors.add(:email, "has already been taken.") if self.email == user.email
 			end			

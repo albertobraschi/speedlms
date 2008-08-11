@@ -83,17 +83,16 @@ class OwnersController < ApplicationController
   	end  	
   	if !@subdomain.blank?
   		if Tutor.find_by_speedlms_subdomain(@subdomain) or Owner.find_by_speedlms_subdomain(@subdomain)
-  			@message = "Subdomain not available"
-  			p @message
+  			flash[:message] = "Subdomain not available."  			
   		else
-  			@message = "Subdomain available."
+  			flash[:message] = "Subdomain available."
   		end
   	else
-  		@message = "Subdomain should not be blank."
-  	end  	
+  			flash[:message] = "Subdomain should not be blank."
+  	end 	
   	#Renders message in the specified div according to availability of subdomain.
   	render :update do |page|
-  		page.replace_html "subdomain_availability_message",@message
+  		page.replace_html "subdomain_availability_message", flash[:message]
   		page[:subdomain_availability_message].visual_effect(:highlight,
                                   :startcolor => "#88ff88" ,
                                   :endcolor => "#114411")
