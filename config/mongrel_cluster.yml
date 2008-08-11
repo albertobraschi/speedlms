@@ -1,5 +1,5 @@
 --- 
-cwd: /var/www/html/spedlms/current
+cwd: /var/www/html/speedlms/current
 log_file: log/mongrel.log
 port: 3500
 environment: production
