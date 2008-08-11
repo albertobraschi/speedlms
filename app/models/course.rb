@@ -3,6 +3,9 @@ class Course < ActiveRecord::Base
 	has_and_belongs_to_many :tutors
 	has_and_belongs_to_many :students
 	
+	validates_presence_of :name, :description
+	
+	
 	def includes_tutor?(tutor_id)
 	  if self.new_record?
 	    return false
