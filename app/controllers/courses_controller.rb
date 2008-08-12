@@ -41,10 +41,9 @@ class CoursesController < ApplicationController
           end
         }
       else  
-        format.html render new_course_path
+        format.html {render new_course_path}
       end
     end 
-
   end
   
   def edit
@@ -57,6 +56,7 @@ class CoursesController < ApplicationController
   end
   
   def update
+  debugger
     @course = @owner.courses.find_by_id(params[:id])
     @course.update_attributes(params[:course])
     @course.tutors = []
@@ -75,7 +75,7 @@ class CoursesController < ApplicationController
 	  @course = @owner.courses.find_by_id(params[:id])
     @course.destroy
     respond_to do |format|
-        @courses = @owner.courses
+        @courses = @owner.courses        
         format.html { redirect_to courses_path}
         format.js {
           render :update do |page|
