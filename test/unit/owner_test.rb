@@ -38,8 +38,8 @@ class OwnerTest < ActiveSupport::TestCase
   
   def test_owner_has_many_tutors
   	owner1 = owners(:quentin)
-  	tutor1 = tutors(:jitendra)
-  	tutor2 = tutors(:rai)
+  	tutor1 = tutors(:tutor_1)
+  	tutor2 = tutors(:tutor_2)
   	assert_equal owner1.speedlms_subdomain, tutor1.owner.speedlms_subdomain, tutor2.owner.speedlms_subdomain
   end
   

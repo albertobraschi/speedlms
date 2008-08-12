@@ -1,10 +1,10 @@
-jitendra:
+tutor_1:
  id: 1
- speedlms_subdomain: anuj
+ speedlms_subdomain: tutor1
  owner_id: 1
  
-rai:
+tutor_2:
  id: 2
- speedlms_subdomain: rai
+ speedlms_subdomain: tutor2
  owner_id: 1
  
