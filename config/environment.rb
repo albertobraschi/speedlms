@@ -127,3 +127,8 @@ else
   PAYPAL_ACCOUNT = 'paypalaccount@example.com'
 end
 
+begin
+  String.class_eval { remove_method :chars } 
+rescue NameError
+  # all Ok 
+end 
