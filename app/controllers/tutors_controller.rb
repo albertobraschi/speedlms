@@ -5,13 +5,13 @@ class TutorsController < ApplicationController
   #This makes current user available to all actions .
 	before_filter :current_user
 	before_filter :current_tutor, :only =>[]
+	
 	def index
 	  @courses = @tutor.courses
 	end
-	
-	
-	
+			
 	private
+	
 	def current_tutor
 	  resource = @current_user.resource
 	  if resource.class == Tutor
@@ -19,8 +19,7 @@ class TutorsController < ApplicationController
 	  else
 	    flash[:message]= "This action is only allowed for tutor."
 	    redirect_to courses_url
-    end
-    
+    end    
 	end
 
 end

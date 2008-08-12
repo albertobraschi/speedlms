@@ -62,8 +62,10 @@ class SessionsController < ApplicationController
     current_user
     if @current_user.is_owner?
       url = Owner.find(@current_user.resource_id).speedlms_url
+      elsif @current_user.is_tutor?
+      url = Tutor.find(@current_user.resource_id).speedlms_url
     elsif @current_user.is_admin?
-      url = 'http://speedlms.dev'
+      url = root_url
     end
     @current_user.forget_me if logged_in?
     cookies.delete :auth_token
@@ -85,10 +87,10 @@ class SessionsController < ApplicationController
 			if user.is_owner? or user.is_tutor?
 				user_subdomain = user.resource.speedlms_subdomain
 				url_subdomain = @current_subdomain
-				if user_subdomain != url_subdomain
+				if user_subdomain and user_subdomain != url_subdomain
 					flash[:notice] = "You can't login to this sudomain url.Please enter your subdomain in url."
 					redirect_to login_path and return
-				end
+				end				
 			end
   	end
     if @current_user = User.authenticate(params[:name], params[:password])
