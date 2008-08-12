@@ -15,7 +15,7 @@ class StudentTest < ActiveSupport::TestCase
   	c1 = courses(:physics)
   	c2 = courses(:chemistry)
   	assert_equal s1.courses[0], s2.courses[1]
-  	assert_equal c1.students[0], c2.students[0]
+  	assert_equal c1.students[0], c2.students[1]
   end
   
 end
