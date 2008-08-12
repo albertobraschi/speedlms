@@ -83,7 +83,7 @@ class OwnersController < ApplicationController
   	end  	
   	if !@subdomain.blank?
   		if Tutor.find_by_speedlms_subdomain(@subdomain) or Owner.find_by_speedlms_subdomain(@subdomain)
-  			@message = "Subdomain not available."  			
+  			@message = "Subdomain not available."			
   		else
   			@message = "Subdomain available."
   		end

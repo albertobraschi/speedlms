@@ -140,7 +140,7 @@ class UsersController < ApplicationController
   				#Checks for Owner's login availability.
   				if params[:owner]
 						if @username == user.login				
-							@message = "Username not available"
+							@message = "Username not available."
 							break
 						else
 							@message = "Username available."

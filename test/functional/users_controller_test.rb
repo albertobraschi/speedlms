@@ -39,14 +39,14 @@ class UsersControllerTest < Test::Unit::TestCase
   
   def test_forgot_password_with_valid_email
   	post :forgot, {:user => {:email => 'aaron@example.com'}}, {}
-  	#assert_equal "Notification sent to aaron@example.com.", flash.now[:notice]
   	assert_response :success
+  	assert_tag :tag => 'div', :attributes => {:id => 'notice'}, :parent => {:tag => 'div', :attributes => {:id => 'main_content'}}
   end
   
   def test_forgot_password_with_invalid_email
   	post :forgot, {:user => {:email => 'aaron@gmail.com'}}, {}
-  	#assert_equal flash.now[:notice], "Please enter a valid email."
-  	assert_response :success
+		assert_response :success		
+  	assert_tag :tag => 'div', :attributes => {:id => 'notice'}, :parent => {:tag => 'div', :attributes => {:id => 'main_content'}}
   end
   
   def test_reset_password_if_user_exists
@@ -60,16 +60,35 @@ class UsersControllerTest < Test::Unit::TestCase
   	assert_equal flash[:notice], "Enter password and password_confirmation."
   end
   
-  def	test_reset_password_without_user
-  	post :reset, {:pcode => 'eff63acc64d5aed689640', :user => {:password => 'aaaaaa', :password_confirmation => 'aaaaaa'}}, {}
-  	#assert_equal flash.now[:notice], "Sorry link has expired."
+  def test_check_username_availability_when_owner_username_is_available
+  	xhr :post, :check_username_availability, {:user => {:login => 'steve'}, :owner => {}}, {}
+  	assert_equal "Username available.", assigns(:message)
   end
   
-  def test_delete_user
-  	delete :destroy, {:id => 5 }, {:user_id => users(:quentin).id}
-  	assert_equal flash[:notice], "User has been deleted"	
-  	assert_redirected_to http://quentine.speedlms.dev/owners/add_tutors
-  end
+   def test_check_username_availability_when_owner_username_is_not_available
+  	xhr :post, :check_username_availability, {:user => {:login => 'bill'}, :owner => {}}, {}
+  	assert_equal "Username not available.", assigns(:message)
+   end
+   
+   def test_check_username_availability_when_owner_username_is_blank
+  	xhr :post, :check_username_availability, {:user => {:login => ''}, :owner => {}}, {}
+  	assert_equal "Username should not be blank.", assigns(:message)
+   end
+   
+   def test_check_username_availability_when_tutor_username_is_available
+  	xhr :post, :check_username_availability, {:user => {:login => 'steve'}, :tutor => {}}, {:user_id => users(:quentin).id}
+  	assert_equal "Username available.", assigns(:message)
+   end
+  
+   def test_check_username_availability_when_tutor_username_is_not_available
+  	xhr :post, :check_username_availability, {:user => {:login => 'bill'}, :tutor => {}}, {:user_id => users(:quentin).id}
+  	assert_equal "Username not available.", assigns(:message)
+   end
+   
+   def test_check_username_availability_when_tutor_username_is_blank
+  	xhr :post, :check_username_availability, {:user => {:login => ''}, :tutor => {}}, {:user_id => users(:quentin).id}
+  	assert_equal "Username should not be blank.", assigns(:message)
+   end
 	
   #def test_should_allow_signup
     #assert_difference 'User.count' do

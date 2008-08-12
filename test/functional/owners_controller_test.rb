@@ -98,19 +98,19 @@ class OwnersControllerTest < ActionController::TestCase
   def test_check_unavailability_of_subdomain
   	xhr :post, :check_subdomain_availability, {:owner => {:speedlms_subdomain => 'aaron'}}, {}
   	assert_response :success
-  	#assert_equal "Subdomain not available.", flash[:message]
+  	assert_equal "Subdomain not available.", assigns(:message)
   end
  
   def test_check_availability_of_subdomain
   	xhr :post, :check_subdomain_availability, {:owner => {:speedlms_subdomain => 'mike'}}, {}
   	assert_response :success  	
-  	#assert_equal "Subdomain available.", flash[:message]
+  	assert_equal "Subdomain available.", assigns(:message)
   end
   
   def test_check_subdomain_availability_with_blank_parameter
   	xhr :post, :check_subdomain_availability, {:owner => {:speedlms_subdomain => ''}}, {}
   	assert_response :success  	
-  	#assert_equal "Subdomain should not be blank.", flash[:message]
+  	assert_equal "Subdomain should not be blank.", assigns(:message)
   end
 
 end
