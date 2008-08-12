@@ -1,0 +1,11 @@
+one:
+ course_id: 1
+ tutor_id: 1
+ 
+two:
+ course_id: 2
+ tutor_id: 1
+ 
+three:
+ course_id: 3
+ tutor_id: 2

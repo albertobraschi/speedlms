@@ -56,7 +56,6 @@ class CoursesController < ApplicationController
   end
   
   def update
-  debugger
     @course = @owner.courses.find_by_id(params[:id])
     @course.update_attributes(params[:course])
     @course.tutors = []

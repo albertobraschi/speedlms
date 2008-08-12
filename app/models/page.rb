@@ -4,7 +4,7 @@ class Page < ActiveRecord::Base
 	
 	#Finds collection of those pages which admin wants to show('is_show' = true)
 	def self.find_viewable_pages
-	  find(:all, :conditions => ["is_show = ? and is_index != ?",1,1])
+	  find(:all, :conditions => ["is_show = ?",1])
 	end
 	
 	#Finds that page which is set as index page by admin

@@ -34,36 +34,22 @@ class CoursesControllerTest < ActionController::TestCase
   
   def test_create_course_with_valid_parameters
   	xhr :post, :create, {:tutors => ['1'], :course => {:name => 'zoology', :description => 'animal classification', :status => 'complete', :display_quick_navigation_dropdown => true, :owner_id => 1}}, {:user_id => users(:aaron).id} 	
-  	assert_response :success  	
-  end
-
-  #def test_create_course_with_invalid_parameters
-  	#xhr :post, :create, {:tutors => ['1'], :course => {:name => '', :description => 'animal classification', :status => 'complete', :display_quick_navigation_dropdown => true, :owner_id => 1}}, {:user_id => users(:aaron).id} 	
-  	#assert_response :success  	
-  #end
-  
-  def test_edit_course
-  	xhr :post, :show, {:id => 1}, {:user_id => users(:aaron).id}
-  	assert_response :success
+  	assert_response :success	
   end
   
   def test_update_course_with_valid_parameters
-  	xhr :post, :show, {:id => 1, :course => {:name => 'botany'}}, {:user_id => users(:aaron).id}
+  	xhr :post, :update, {:id => 1, :tutors => [1], :course => {:name => 'botany'}}, {:user_id => users(:quentin).id}
   	assert_response :success
+  	assert_equal "botany", assigns(:course).name
   end	
-  
-  #def test_update_course_with_invalid_parameters
-  	#xhr :post, :show, {:id => 1, :course => {:name => ''}}, {:user_id => users(:aaron).id}
-  	#assert_response :success
-  #end	
 	  
   def test_show_course
-  	xhr :post, :show, {:id => 1}, {:user_id => users(:aaron).id}
+  	xhr :post, :show, {:id => 1}, {:user_id => users(:quentin).id}
   	assert_response :success
   end	 
   
   def test_destroy_course
-  	xhr :post, :show, {:id => 1}, {:user_id => users(:aaron).id}
+  	xhr :post, :destroy, {:id => 1}, {:user_id => users(:quentin).id}
   	assert_response :success
   end
 	  

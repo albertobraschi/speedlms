@@ -20,7 +20,7 @@ class PageTest < ActiveSupport::TestCase
 	end
 	
 	def test_for_find_viewable_pages
-	#fixture pages.yml contains two instance of page.
+		#fixture pages.yml contains two instance of page.
 		page = Page.find_viewable_pages
 		assert_equal page.size, 2
 	end
