@@ -11,11 +11,20 @@ class TutorTest < ActiveSupport::TestCase
   	assert_equal tutor1.owner, tutor2.owner
   end
   
-  def test_tutor_has_one_user_as_resource
+  def test_user_has_one_tutor_as_resource
   	tutor1 = tutors(:tutor_1)
   	user = users(:tutor_1)
   	assert_equal tutor1.user.resource_type, "Tutor"
   	assert_equal tutor1.id, user.resource_id
+  end
+  
+  def test_tutor_has_and_belongs_to_many_courses
+  	t1 = tutors(:tutor_1)
+  	t2 = tutors(:tutor_2)
+  	c1 = courses(:physics)
+  	c2 = courses(:chemistry)
+  	assert_equal t1.courses[0], t2.courses[1]
+  	assert_equal c1.tutors[0], c2.tutors[1]  	
   end
   
   def test_speedlms_subdomain_required

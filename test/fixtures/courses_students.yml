@@ -1,15 +1,16 @@
 one:
  course_id: 1
- tutor_id: 1
- 
+ student_id: 1
+	
 two:
  course_id: 1
- tutor_id: 2
+ student_id: 2
  
 three:
  course_id: 2
- tutor_id: 1
- 
+ student_id: 1
+
 four:
  course_id: 2
- tutor_id: 2
+ student_id: 2
+ 

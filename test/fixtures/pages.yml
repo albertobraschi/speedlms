@@ -1,10 +1,12 @@
 one:
+ id: 1
  title: page1
  description: This is page one.
  is_show: true
  is_index: true
 
 two:
+ id: 2
  title: page2
  description: This is page two.
  is_show: true

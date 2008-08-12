@@ -24,5 +24,11 @@ class PageTest < ActiveSupport::TestCase
 		page = Page.find_viewable_pages
 		assert_equal page.size, 2
 	end
+	
+		def test_for_find_index_page
+		#fixture pages.yml contains two instance of page.
+		page = Page.find_index_page
+		assert_equal page.title, "page1"
+	end
 		
 end

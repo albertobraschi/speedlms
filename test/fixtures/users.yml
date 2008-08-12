@@ -86,3 +86,14 @@ bill:
  resource_type: Owner
  resource_id: 5
  pcode: 284e83e2f8c466fbd35eff63acc64d5aed689640
+ 
+student_2:
+ id: 9
+ firstname: iyan
+ lastname: batham
+ login: iyan
+ email: iyan@gmail.com
+ salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+ crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+ resource_type: Student
+ resource_id: 2
