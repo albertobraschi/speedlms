@@ -1,23 +1,22 @@
 <h4>Please pay for the plan.</h4>
 <b><%= @plan.name%></b>
 <b> Cost: </b><%= @plan.price %>
-<% payment_service_for @current_user.id, PAYPAL_ACCOUNT,
-        :amount => @plan.price, :currency => 'USD',
-        :service => :paypal do |service| 
-# change these to @current_user.first name and last name
-    service.customer :first_name => @current_user.firstname,
-        :last_name => @current_user.lastname,
-        :email => @current_user.email
+<% payment_service_for @invoice.id,
+											 PAYPAL_ACCOUNT,
+        							 :amount => @plan.price, 
+        							 :currency => 'USD',
+								       :service => :paypal do |service| %>
+   <% service.customer :first_name => @current_user.firstname,
+        							 :last_name => @current_user.lastname,
+                       :email => @current_user.email %>
     
-    service.item_name "Payment for #{@plan.name}-Invoice:#{@invoice.id}"
-    service.invoice "Speedlmstest#{@invoice.id}"
-    service.tax '0.00'
+   <% service.item_name "Payment for #{@plan.name}-Invoice:#{@invoice.id}" %>
+   <% service.invoice "Speedlmstest#{@invoice.id}" %>
+   <% service.tax '0.00' %>
 
-    service.notify_url url_for(:only_path => false, :action => 'notify')
-    service.return_url confirm_users_path(:only_path => false, :id => @invoice.id)
-        
-    service.cancel_return_url url_for(:only_path => false,
-        :controller => 'users', :action => 'payment') %>
+   <% service.notify_url url_for(:only_path => false, :action => 'notify') %>
+   <% service.return_url confirm_users_path(:only_path => false, :id => @invoice.id) %>
+   <% service.cancel_return_url url_for(:only_path => false, :controller => 'users', :action => 'payment') %>
 
     <!-- display payment summary here -->
 

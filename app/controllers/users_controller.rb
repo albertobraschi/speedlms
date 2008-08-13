@@ -34,6 +34,7 @@ class UsersController < ApplicationController
   # Creates invoice for a paid plan Owner.
   def payment
   	current_user
+  	@owner = Owner.find(@current_user.resource_id)
   	@plan = SignupPlan.find_by_id(params[:id])
   	@current_user.resource.signup_plan = @plan
   	@invoice = Invoice.new
@@ -74,13 +75,19 @@ class UsersController < ApplicationController
   def confirm
    	if @invoice = Invoice.find(params[:id])
    		@invoice.confirm
-   		flash[:notice] = "Payment made successfully via paypal."
    		InvoiceMailor.deliver_confirmation(@invoice)
+   		@user = User.find_by_id(@invoice.user_id)   		
+   		@owner = @user.resource
+   		@plan = SignupPlan.find(@invoice.signup_plan.id)
+   		@owner.update_attributes(:signup_plan_id => @invoice.signup_plan_id)
+   		reset_session
+   		url = @owner.speedlms_url 
+   		flash[:notice] = "Thanking you for purchasing #{@plan.name}.Please login to your url #{url} by following the instruction given on this page."
+  		redirect_to how_to_login_path and return
    	else
    		flash[:message] = "Not a valid URL."
-   	end
-   	@current_user.resource.update_attributes(:signup_plan_id => @invoice.signup_plan_id)
-   	render :action => 'owners/index'
+   		render :controller => 'owners', :action => 'new'
+   	end  	
   end
   
   # Used to sent confirm mail if user forgot password.
