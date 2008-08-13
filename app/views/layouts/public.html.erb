@@ -7,10 +7,13 @@
   <body class = "public">  
     <div id = "header">
     	<h3>
-  			<span id = "top_right" >
-      		<%= link_to 'Home',root_path %>
+  			<span id = "top_right" >  		
 					<% @pages.each do |page| %>
-						<%= link_to page.title, view_pages_session_path(:id => page.id) %>
+					  <% if page.title == 'Home' %>
+					  	<%= link_to 'Home',root_path %>
+					  <% else %>
+							<%= link_to page.title, view_pages_session_path(:id => page.id) %>
+						<% end %>
 					<% end %>
 						<%= link_to 'Login',how_to_login_path %>
 						<%= link_to 'Pricing & Sign-up',signup_path %>
