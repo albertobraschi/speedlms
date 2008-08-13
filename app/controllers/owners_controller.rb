@@ -113,6 +113,7 @@ class OwnersController < ApplicationController
 	    @tutor.owner = @owner
        if @user.save
        	 #Sends email to Tutor after his/her account has created by Owner.
+       	 @tutors = Tutor.find(:all, :conditions => ["owner_id = ? ",  @owner.id])
          email = LoginDetailsMailer.create_sent(@user)
 		     email.set_content_type("text/html")
 		     LoginDetailsMailer.deliver(email)
