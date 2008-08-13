@@ -5,8 +5,8 @@
         :amount => @plan.price, :currency => 'USD',
         :service => :paypal do |service| 
 # change these to @current_user.first name and last name
-    service.customer :first_name =>'ritu',
-        :last_name => 'kamthan',
+    service.customer :first_name => @current_user.firstname,
+        :last_name => @current_user.lastname,
         :email => @current_user.email
     
     service.item_name "Payment for #{@plan.name}-Invoice:#{@invoice.id}"

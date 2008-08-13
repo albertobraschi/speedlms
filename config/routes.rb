@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
 
 	# The priority is based upon order of creation: first created -> highest priority.
 
-  map.resources :users,  :collection => {:payment => :get, :confirm => :post}, :member=>{:notify => :get}
+  map.resources :users,  :collection => {:confirm => :post}, :member=>{:payment => :get, :notify => :get}
   map.resource :session, :collection => {:destroy => :delete, :index => :get}, :member => {:view_pages => :get}
   map.resources :owners, :collection => {:add_tutors => :get}
   map.resources :tutors 

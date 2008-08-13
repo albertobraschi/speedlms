@@ -33,14 +33,16 @@ class OwnersController < ApplicationController
 		@user.resource_type = RESOURCE_TYPE[:owner] 
     @owner = Owner.new(params[:owner])
     @user.resource = @owner
-    @price = SignupPlan.find_by_id(@owner.signup_plan_id).price if @owner.signup_plan_id
+    @signup_plan = SignupPlan.find(@owner.signup_plan_id) if @owner.signup_plan_id
+    @price = @signup_plan.price 
     if @user.valid? 
     	#FREE is a constant and equal to 0.0
-    	if @price == FREE
+    	#if @price == FREE
+    		@owner.signup_plan = SignupPlan.find_by_name("Free")
     		successful_signup
-    	else
-   			redirect_to :action => "payment",:id => @owner.signup_plan_id
-   		end
+    	#else
+   			#redirect_to payment_user_path(@owner.signup_plan_id)
+   		#end
    	else
    		render :action => 'new',:layout => 'login'
    	end
@@ -131,9 +133,14 @@ class OwnersController < ApplicationController
 	  flash[:notice] = "Thanks for sign up!"
 	  @current_user = @user
     session[:user_id] = @current_user.id
-    @owner = Owner.find_by_id(@current_user.resource_id)
-    url = @owner.speedlms_url + ownerDesk_path
-    redirect_to url
+    
+    if @price == FREE
+	    @owner = Owner.find_by_id(@current_user.resource_id)
+  	  url = @owner.speedlms_url + ownerDesk_path
+  	  redirect_to url
+  	else
+  		redirect_to payment_user_path(@signup_plan.id)
+  	end  	
   end 
   
   #This is used to authorize an user to perform actions like Edit/Delete/Destroy on his/her account information.

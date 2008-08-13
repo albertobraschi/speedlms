@@ -34,7 +34,8 @@ class UsersController < ApplicationController
   # Creates invoice for a paid plan Owner.
   def payment
   	current_user
-  	@plan = SignupPlan.find_by_id(@current_user.plan)
+  	@plan = SignupPlan.find_by_id(params[:id])
+  	@current_user.resource.signup_plan = @plan
   	@invoice = Invoice.new
   	@invoice.signup_plan = @plan
   	@invoice.user = @current_user
@@ -78,7 +79,8 @@ class UsersController < ApplicationController
    	else
    		flash[:message] = "Not a valid URL."
    	end
-   	render :action => "#{@current_user.resource_type.downcase}_index" if @current_user.resource_type
+   	@current_user.resource.update_attributes(:signup_plan_id => @invoice.signup_plan_id)
+   	render :action => 'owners/index'
   end
   
   # Used to sent confirm mail if user forgot password.
