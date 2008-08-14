@@ -12,20 +12,6 @@ class Admin::PagesController < ApplicationController
   
   protect_from_forgery :only => [:spellcheck_contains]
   
-  def spellcheck
-    headers["Content-Type"] = "text/plain"
-    headers["charset"] =  "utf-8"
-    #suggestions = check_spelling(params[:params][1], params[:method], params[:params][0])
-    suggestions = check_spelling(params[:check], params[:cmd], params[:lang])
-    debugger
-    results = {"id" => nil, "result" => suggestions, 'error' => nil}
-    xml = "<?xml version='1.0' encoding='utf-8'?><res id='' cmd='spell'>#{suggestions.join('+')}</res>"
-    
-    #xml = "#{suggestions}"
-    render :text => xml
-    return
-  end
-  
   #Checks for whether the currently deleting page is an index page or not?
   before_filter :delete_index_page?, :only => [:destroy]
   uses_tiny_mce(:options => {:theme => 'advanced',
